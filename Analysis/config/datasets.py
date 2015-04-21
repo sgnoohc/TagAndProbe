@@ -13,7 +13,7 @@ sys.path.append(analysis_path + "/config")
 ## ------------------------------------------------------------------------------------------------------------------- #
 
 ## path to the lepton trees
-lepton_tree_tag  = "V00-00-06"
+lepton_tree_tag  = "test"
 lepton_tree_path = "/nfs-7/userdata/gzevi/lepton_trees/" + lepton_tree_tag
 
 ## good run list
@@ -23,7 +23,7 @@ run_list = cms.string(analysis_path + "/json/final_19p49fb.txt")
 dy_test = cms.PSet(
 	name     = cms.string("dy_test"),
 	title    = cms.string("DY test"),
-	files    = cms.vstring([lepton_tree_path+'/dy.root']),
+	files    = cms.vstring([lepton_tree_path+'/DY.root']),
 	is_data  = cms.bool(False),
 	run_list = cms.string('')
 )
