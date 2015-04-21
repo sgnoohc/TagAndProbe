@@ -1,0 +1,10 @@
+<use name="root"/>
+<use name="boost"/>
+<use name="FWCore/FWLite"/>
+<use name="FWCore/PythonParameterSet"/>
+<use name="TagAndProbe/Analysis"/>
+<environment>
+  <bin file="tnp_make_plots.cc"/>
+  <bin file="tnp_eff_plots.cc"/>
+  <bin file="tnp_compare.cc"/>
+</environment>
