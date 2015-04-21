@@ -65,8 +65,8 @@ namespace tnp
         if (lepton_type == Lepton::Electron)
         {
             // cut values and variables
-            const float el_is_barrel   = fabs(el_etaSC()) < 1.4442;
-            const float el_is_endcap   = fabs(el_etaSC()) > 1.566;
+            const float el_is_barrel   = fabs(etaSC()) < 1.4442;
+            const float el_is_endcap   = fabs(etaSC()) > 1.566;
             const float el_is_crack    = not (el_is_barrel or el_is_endcap);
             const float el_tag_pt      = tag_p4().pt(); 
             const float el_tag_pt_cut  = 30.0;

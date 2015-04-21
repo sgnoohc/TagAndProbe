@@ -17,6 +17,13 @@ To set things up on UAF:
 
    scramv1 b -j10
 
+To also have the LeptonBabyMaker available
+
+   git clone git@github.com:cmstas/LeptonBabyMaker.git
+   cd LeptonBabyMaker
+   . setupCORE.sh
+   cd ../
+
 To run the first steps (make dilepMass plots and fit them to 
 extrac efficiencies) on a small LeptonTree:
    cd TagAndProbe/Analysis
@@ -33,9 +40,3 @@ Regarding LeptonTrees:
 Useful tool to remake LeptonTree.h/cc files after changing the LeptonTree
     TagAndProbe/Analysis/tools/makeLeptonTreeClassFiles.sh
 
-LeptonTree making is currently based on the SSAnalysis.
-To install (in a different directory), follow:
-   https://github.com/cmstas/SSAnalysis/blob/master/install.sh
-And to get the changes for TagAndProbe
-   git checkout gzeviTNP
-To make trees, all the code is in FakeRate/babymaker

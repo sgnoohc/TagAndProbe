@@ -237,7 +237,7 @@ int MassPlotLooper::Analyze(long long entry)
         // tag and probe
         // ------------------------------------------------------------------------------------ //
 
-        if (m_verbose) {cout << Form("\nrun %u, ls %u, evt %u", run(), lumi(), event()) << endl;}
+        if (m_verbose) {cout << Form("\nrun %u, ls %u, evt %u", evt_run(), evt_lumiBlock(), evt_event()) << endl;}
 
         // mode
         const bool is_mu   = (m_lepton_type == tnp::Lepton::Muon);
@@ -271,7 +271,7 @@ int MassPlotLooper::Analyze(long long entry)
         }
 
         // require OS leptons
-        if( (is_el && (tag_charge() * el_charge()) > 0) || is_mu ) // GZ FIX Need to add mu_charge to LeptonTree
+        if( (tag_charge() * charge()) > 0) // GZ FIX Need to add mu_charge to LeptonTree
         {
             if (m_verbose) {cout << "Did not pass OS requirement" << endl;}
             return 0;
@@ -308,7 +308,7 @@ int MassPlotLooper::Analyze(long long entry)
         const float eta_min     = (not has_eta_bins ? 999999.0  : m_eta_bins.front());
         const float eta_max     = (not has_eta_bins ? -999999.0 : m_eta_bins.back() );
         const float use_abs_eta = (eta_min >= 0);
-	const float probe_eta   = use_abs_eta ? fabs(is_el ? el_etaSC() : p4().eta()) : (is_el ? el_etaSC() : p4().eta());
+	const float probe_eta   = use_abs_eta ? fabs(is_el ? etaSC() : p4().eta()) : (is_el ? etaSC() : p4().eta());
         if (has_eta_bins and not (eta_min < probe_eta && probe_eta < eta_max))
         {
             if (m_verbose) {cout << "outside eta bins" << endl;}
@@ -389,7 +389,7 @@ int MassPlotLooper::Analyze(long long entry)
     }
     catch (std::exception& e)
     {
-        cout << Form("Fatal error on run %d, ls %d, event %d", run(), lumi(), event()) << endl;
+        cout << Form("Fatal error on run %d, ls %d, event %d", evt_run(), evt_lumiBlock(), evt_event()) << endl;
         cout << e.what() << endl;
         cout << "Exiting..." << endl;
         exit(1);
@@ -554,9 +554,9 @@ int ScanChain
             }
 
             // check run/ls/evt
-            unsigned int run = lepton_tree_obj.run();
-            unsigned int ls  = lepton_tree_obj.lumi();
-            unsigned int evt = lepton_tree_obj.event();
+            unsigned int run = lepton_tree_obj.evt_run();
+            unsigned int ls  = lepton_tree_obj.evt_lumiBlock();
+            unsigned int evt = lepton_tree_obj.evt_event();
 
             if (evt_event >= 0)
             {
