@@ -13,7 +13,7 @@ To set things up on UAF:
    git checkout tnp_V00-00-00
    cd $CMSSW_BASE/src/
 
-   git clone git@github.com:gzevi/TagAndProbe.git
+   git clone git@github.com:cmstas/TagAndProbe.git
 
    scramv1 b -j10
 
