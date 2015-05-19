@@ -31,13 +31,14 @@ el_id = cms.PSet(
 	output_label = cms.string("compare"),
 
 	## path to the efficiency results to compare 
-	eff_results_path = cms.string(analysis_path+"/plots/ElectronID_EGammaMediumWP/electron/EGammaMediumWPDenID_EGammaMediumWPNum"),
+	eff_results_path = cms.string(analysis_path+"/plots/ElectronID_EGammaMediumWP/electron/EGammaMediumWPDenBoth_EGammaMediumWPNum"),
 
 	## first result to compare
-	dataset1 = single_el,
+	#dataset1 = single_el,
+        dataset1 = double_el_test,
 
 	## second result to compare
-	dataset2 = dy_full,
+	dataset2 = dy_test,
 
 	## suffix to print the plots (before the fit)
 	## blank means do not print
@@ -70,4 +71,5 @@ mu_id = cms.PSet(
 )
 
 # a vector of all the comparison PSets --> will do them all.
-process.tnp_compare = cms.VPSet(el_id, mu_id)
+#process.tnp_compare = cms.VPSet(el_id, mu_id)
+process.tnp_compare = cms.VPSet(el_id)

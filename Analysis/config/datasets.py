@@ -23,7 +23,7 @@ run_list = cms.string(analysis_path + "/json/final_19p49fb.txt")
 dy_test = cms.PSet(
 	name     = cms.string("dy_test"),
 	title    = cms.string("DY test"),
-	files    = cms.vstring([lepton_tree_path+'/DY.root']),
+	files    = cms.vstring(['/home/users/gzevi/TagProbe/CMSSW_7_4_1/src/LeptonBabyMaker/DY.root']),
 	is_data  = cms.bool(False),
 	run_list = cms.string('')
 )
@@ -68,6 +68,13 @@ double_el = cms.PSet(
 	name     = cms.string("data_double_el"),
 	title    = cms.string("DoubleElectron_Run2012"),
 	files    = cms.vstring([lepton_tree_path+'/DoubleElectron_Run2012*/*.root']),
+	is_data  = cms.bool(True),
+	run_list = run_list 
+)
+double_el_test = cms.PSet(
+	name     = cms.string("data_double_el"),
+	title    = cms.string("DoubleElectron_Run2012"),
+	files    = cms.vstring(['/home/users/gzevi/TagProbe/CMSSW_7_4_1/src/LeptonBabyMakerWorks/DoubleEle2012Saved.root']),
 	is_data  = cms.bool(True),
 	run_list = run_list 
 )

@@ -54,7 +54,8 @@ tnp_parameters = cms.PSet(
 	
 	# datasets to run on
 	#datasets = cms.VPSet(dy_full, single_el),
-        datasets = cms.VPSet(dy_test),
+        #datasets = cms.VPSet(dy_test),
+        datasets = cms.VPSet(dy_test, double_el_test),
 
 	## bins for the observables
 	## supported pt, eta, phi, and # vertices

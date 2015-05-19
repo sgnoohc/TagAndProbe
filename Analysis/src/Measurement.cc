@@ -70,14 +70,14 @@ namespace tnp
             const float el_is_crack    = not (el_is_barrel or el_is_endcap);
             const float el_tag_pt      = tag_p4().pt(); 
             const float el_tag_pt_cut  = 30.0;
-	    const float el_iso         = iso();
+	    const float el_iso         = miniiso();
 	    const float el_iso_eg_cut  = 0.15;
 
             // cut decisions 
             const bool el_passes_pt       = (el_tag_pt > el_tag_pt_cut);
             const bool el_passes_trig_tag = true; //GZ need update
             const bool el_passes_eg_iso   = (el_iso < el_iso_eg_cut); 
-            const bool el_passes_id       = passes_id(); //GZ need update with ID only (no ISO)
+            const bool el_passes_id       = passes_SS_tight_noiso_v3(); //GZ need update with ID only (no ISO)
 
             // EGamma Medium WP (2012)
             // https://twiki.cern.ch/twiki/bin/viewauth/CMS/EgammaCutBasedIdentification 
@@ -129,7 +129,7 @@ namespace tnp
         {
             // cut values and variables
             const float mu_tag_pt      = tag_p4().pt();
-            const float mu_iso         = iso();
+            const float mu_iso         = miniiso();
             const float mu_iso_pog_cut = 0.15;  // Muon POG value (not sure about this one)
             const float mu_tag_pt_cut  = 30.0;
 
@@ -137,7 +137,7 @@ namespace tnp
             const bool mu_passes_pt       = (mu_tag_pt > mu_tag_pt_cut);
             const bool mu_passes_trig_tag = true; //GZ need update
             const bool mu_passes_pog_iso  = (mu_iso < mu_iso_pog_cut); 
-            const bool mu_passes_pog_id   = passes_id(); //GZ need update with ID only (no ISO)
+            const bool mu_passes_pog_id   = passes_SS_tight_noiso_v3(); //GZ need update with ID only (no ISO)
 
             // Muon POG Selections (2012)
             // From: https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId
