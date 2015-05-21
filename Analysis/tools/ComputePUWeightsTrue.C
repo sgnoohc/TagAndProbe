@@ -20,7 +20,7 @@ void ComputePUWeightsTrue
         {
             throw std::runtime_error("[ComputePUWeightsTrue] Error: target file not found!");
         }
-        TH1D* const h_target = dynamic_cast<TH1D*>(target_file.Get("pileup"));
+        TH1D* const h_target = dynamic_cast<TH1D*>(target_file.Get("puWeights"));
         if (not h_target)
         {
             throw std::runtime_error("[ComputePUWeightsTrue] Error: target histogram not found!");

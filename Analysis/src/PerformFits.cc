@@ -31,6 +31,7 @@
 #include "RooPolynomial.h"
 #include "RooChebychev.h"
 #include "RooArgusBG.h"
+#include "RooWorkspace.h"
 
 // CMSSW
 #include "PhysicsTools/TagAndProbe/interface/RooCMSShape.h"
@@ -50,552 +51,140 @@ const double GammaZ = 2.4952;
 
 namespace tnp
 {
+    // ----------------------------------------------------------------- //
     // PDF defintions
     // ----------------------------------------------------------------- //
-    // ----------------------------------------------------------------- //
-
-    // simple base class to hold the PDF types
-    struct PdfBase
-    {
-        PdfBase() {}
-        RooAbsPdfPtr model;
-    };
-
-    // BreitWigner * Cystal Ball  
-    // ----------------------------------------------------------------- //
-
-    struct BreitWignerCBPdf : public PdfBase
-    {
-        BreitWignerCBPdf(RooRealVar& x, const std::string& label);
-        RooRealVar* mz;
-        RooRealVar* gammaz;
-        RooBreitWigner* bw;
-        RooRealVar* mean;
-        RooRealVar* sigma;
-        RooRealVar* alpha;
-        RooRealVar* n;
-        RooCBShape* cb;
-    };
-
-    BreitWignerCBPdf::BreitWignerCBPdf(RooRealVar& x, const std::string& label)
-    {
-        // z mass 
-        string title = Form("mz%s", label.c_str());
-        mz = new RooRealVar(title.c_str(), title.c_str(), Mz, 80, 100, "GeV");
-        //mz->setConstant(kTRUE);
-
-        // z width
-        title = Form("gammaz%s", label.c_str());
-        gammaz = new RooRealVar(title.c_str(), title.c_str(), GammaZ, 0.1, 10, "GeV");
-        //gammaz->setConstant(kTRUE);
-
-        // the BW
-        title = Form("bw%s", label.c_str());
-        bw = new RooBreitWigner(title.c_str(), title.c_str(), x, *mz, *gammaz);
-
-        // Crystal ball
-        title = Form("mean%s"  , label.c_str()); mean  = new RooRealVar(title.c_str(), title.c_str(), 0 , -10 , 10);
-        title = Form("sigma%s" , label.c_str()); sigma = new RooRealVar(title.c_str(), title.c_str(), 1 , 0.1 , 10);
-        title = Form("alpha%s" , label.c_str()); alpha = new RooRealVar(title.c_str(), title.c_str(), 5 , 0   , 20);
-        title = Form("n%s"     , label.c_str()); n     = new RooRealVar(title.c_str(), title.c_str(), 1 , 0   , 10);
-        title = Form("cb%s"    , label.c_str()); cb    = new RooCBShape(title.c_str(), title.c_str(), x, *mean , *sigma , *alpha , *n);
-        title = Form("BWconvCB%s", label.c_str());
-        model = RooAbsPdfPtr(new RooFFTConvPdf(title.c_str(), title.c_str(), x, *bw, *cb));
-    }
-
-    // MC template 
-    // ----------------------------------------------------------------- //
-
-    struct MCTemplateConvGausPdf : public PdfBase
-    {
-        MCTemplateConvGausPdf(RooRealVar &m, TH1* hist, const std::string& label, RooRealVar *sigma0=0, int intOrder=1);
-        RooRealVar  *mean;
-        RooRealVar  *sigma;
-        RooGaussian *gaus;
-        TH1         *inHist;
-        RooDataHist *dataHist;
-        RooHistPdf  *histPdf;
-    };
-
-    MCTemplateConvGausPdf::MCTemplateConvGausPdf(RooRealVar &m, TH1* hist, const std::string& label, RooRealVar *sigma0, int intOrder)
-    {  
-        string title;
-        title = Form("mean%s"  , label.c_str()); mean  = new RooRealVar(title.c_str(), title.c_str(), 0 , -10 , 10);
-        title = Form("sigma%s" , label.c_str()); sigma = new RooRealVar(title.c_str(), title.c_str(), 2 ,   0 , 10);
-        title = Form("gaus%s"  , label.c_str()); gaus  = new RooGaussian(title.c_str(), title.c_str(), m, *mean , *sigma);
-
-        title = Form("inHist_%s",hist->GetName());
-        inHist = dynamic_cast<TH1*>(hist->Clone(title.c_str()));
-        title = Form("dataHist%s",label.c_str()); dataHist = new RooDataHist(title.c_str(), title.c_str(), RooArgSet(m), inHist);
-        title = Form("histPdf%s" ,label.c_str()); histPdf  = new RooHistPdf(title.c_str(), title.c_str(), m,*dataHist, intOrder);
-        title = Form("signal%s"  ,label.c_str()); model    = new RooFFTConvPdf(title.c_str(), title.c_str(), m, *histPdf, *gaus);
-    }
-
-    // Exponential 
-    // ----------------------------------------------------------------- //
-
-    struct ExponentialPdf : public PdfBase
-    {
-        ExponentialPdf(RooRealVar& x, const std::string& label);
-        RooRealVar* t;
-        RooExponential* cb;
-    };
-
-    ExponentialPdf::ExponentialPdf(RooRealVar& x, const std::string& label)
-    {
-        string title = Form("t%s", label.c_str()); 
-        t = new RooRealVar(title.c_str(), title.c_str(), -0.1, -1.0, 0.0);
-
-        title = Form("exp%s", label.c_str()); 
-        model = RooAbsPdfPtr(new RooExponential(title.c_str(), title.c_str(), x, *t));
-    }
-
-    // Argus 
-    // ----------------------------------------------------------------- //
-
-    struct ArgusPdf : public PdfBase
-    {
-        ArgusPdf(RooRealVar& x, const std::string& label);
-        RooRealVar* m;
-        RooRealVar* c;
-        RooRealVar* p;
-        RooArgusBG* argus;
-    };
-
-    ArgusPdf::ArgusPdf(RooRealVar& x, const std::string& label)
-    {
-        string title;
-        title = Form("m%s", label.c_str()); m = new RooRealVar(title.c_str(), title.c_str(), -20);
-        title = Form("c%s", label.c_str()); c = new RooRealVar(title.c_str(), title.c_str(), -100);
-        title = Form("p%s", label.c_str()); p = new RooRealVar(title.c_str(), title.c_str(), -1);
-
-        title = Form("argus%s", label.c_str()); 
-        model = RooAbsPdfPtr(new RooArgusBG(title.c_str(), title.c_str(), x, *m, *c, *p));
-    }
-
-    // eff * Exponential 
-    // ----------------------------------------------------------------- //
-
-    struct ErfExpPdf : public PdfBase
-    {
-        ErfExpPdf(RooRealVar &m, const std::string& label);
-        RooRealVar *alfa;
-        RooRealVar *beta; 
-        RooRealVar *gamma; 
-        RooRealVar *peak;
-    };
-
-    ErfExpPdf::ErfExpPdf(RooRealVar& x, const std::string& label)
-    {
-        string title;
-        title = Form("alfa%s" , label.c_str());  alfa = new RooRealVar(title.c_str(), title.c_str(), 50  ,  5, 200);
-        title = Form("beta%s" , label.c_str());  beta = new RooRealVar(title.c_str(), title.c_str(), 0.01,  0, 10 );
-        title = Form("gamma%s", label.c_str()); gamma = new RooRealVar(title.c_str(), title.c_str(), 0.1 ,  0, 1.0);
-        title = Form("peak%s" , label.c_str());  peak = new RooRealVar(title.c_str(), title.c_str(), Mz  , 85, 97 );
-        peak->setConstant(kTRUE);  
-
-        title = Form("background%s", label.c_str());
-        model = RooAbsPdfPtr(new RooCMSShape(title.c_str(), title.c_str(), x, *alfa, *beta, *gamma, *peak));
-    }
-
-    // ChecychevPdf 
-    // ----------------------------------------------------------------- //
-
-    struct ChebychevPdf : public PdfBase
-    {
-        ChebychevPdf (RooRealVar &m, const std::string& label);
-        RooRealVar *a0;
-        RooRealVar *a1; 
-    };
-
-    ChebychevPdf::ChebychevPdf(RooRealVar& x, const std::string& label)
-    {
-        string title;
-        title = Form("a0%s", label.c_str()); a0 = new RooRealVar(title.c_str(), title.c_str(), 0.0, -10, 10);
-        title = Form("a1%s", label.c_str()); a1 = new RooRealVar(title.c_str(), title.c_str(), 0.0, -10, 10);
-
-        title = Form("background%s", label.c_str());
-        model = RooAbsPdfPtr(new RooChebychev(title.c_str(), title.c_str(), x, RooArgList(*a0, *a1)));
-    }
-
-    // Checychev * Exp
-    // ----------------------------------------------------------------- //
-
-    struct ChebyExpPdf : public PdfBase
-    {
-        ChebyExpPdf (RooRealVar &m, const std::string& label);
-        RooRealVar *a0;
-        RooRealVar *a1; 
-        RooRealVar *t; 
-        RooExponential *exp;
-        RooChebychev *chevychev;
-    };
-
-    ChebyExpPdf::ChebyExpPdf(RooRealVar& x, const std::string& label)
-    {
-        string title;
-        title = Form("a0%s", label.c_str()); a0 = new RooRealVar(title.c_str(), title.c_str(), 0.0, -10, 10);
-        title = Form("a1%s", label.c_str()); a1 = new RooRealVar(title.c_str(), title.c_str(), 0.0, -10, 10);
-        title = Form("t%s", label.c_str());   t = new RooRealVar(title.c_str(), title.c_str(), -0.1, -1.0, 0.0);
-
-        title = Form("exp%s", label.c_str()); 
-        exp = new RooExponential(title.c_str(), title.c_str(), x, *t);
-
-        title = Form("background%s", label.c_str());
-        chevychev = new RooChebychev(title.c_str(), title.c_str(), x, RooArgList(*a0, *a1));
-
-        title = Form("chevyexp%s", label.c_str());
-        model = RooAbsPdfPtr(new RooFFTConvPdf(title.c_str(), title.c_str(), x, *chevychev, *exp));
-    }
-
-    // Linear * exp + constant
-    // ----------------------------------------------------------------- //
-
-    // not working
-    struct LinearExpPdf : public PdfBase
-    {
-        LinearExpPdf(RooRealVar &x, const std::string& label);
-        RooRealVar *a0;
-        RooRealVar *a1;
-        RooRealVar *t;
-        RooExponential *exp;
-        RooPolynomial *poly;
-        RooProdPdf* polyexp;
-    };
-
-    // (a0 + a1*m) * exp{t*m} + c
-    LinearExpPdf::LinearExpPdf(RooRealVar &x, const std::string& l)
-    {
-        a0 = new RooRealVar(Form("a0%s", l.c_str()), Form("a0%s", l.c_str()), 0);
-        a1 = new RooRealVar(Form("a1%s", l.c_str()), Form("a1%s", l.c_str()), 0.5, 0.10, 10);
-        t  = new RooRealVar(Form("t%s" , l.c_str()), Form("t%s" , l.c_str()), -0.05, -100.00, 0.0);
- 
-        a0->setConstant(true);
-
-        string title = Form("exp%s", l.c_str()); 
-        exp = new RooExponential(title.c_str(), title.c_str(), x, *t);
-
-        title = Form("poly%s", l.c_str());
-        poly = new RooPolynomial(title.c_str(), title.c_str(), x, RooArgList(*a0, *a1), 0);
-
-        title = Form("polyexp%s", l.c_str());
-        polyexp = new RooProdPdf(title.c_str(), title.c_str(), RooArgList(*poly, *exp));
-        model = RooAbsPdfPtr(polyexp);
-    }
-
-    // Quadratic * exp
-    // ----------------------------------------------------------------- //
-
-    // not working
-    struct Poly2ExpPdf : public PdfBase
-    {
-        Poly2ExpPdf(RooRealVar &x, const std::string& label);
-        RooRealVar *a0;
-        RooRealVar *a1;
-        RooRealVar *a2;
-        RooRealVar *t;
-        RooExponential *exp;
-        RooPolynomial *poly;
-    };
-
-    // (1 + a1*m + a2*m^2) * exp{-t}
-    Poly2ExpPdf::Poly2ExpPdf(RooRealVar &x, const std::string& l)
-    {
-        a0 = new RooRealVar(Form("a0%s", l.c_str()), Form("a0%s", l.c_str()), 0.0);
-        a1 = new RooRealVar(Form("a1%s", l.c_str()), Form("a1%s", l.c_str()), -0.001);
-        a2 = new RooRealVar(Form("a2%s", l.c_str()), Form("a2%s", l.c_str()), 0.0);
-        t  = new RooRealVar(Form("t%s" , l.c_str()), Form("t%s" , l.c_str()), -0.05, -100.00, 0.0);
-
-        string title = Form("exp%s", l.c_str()); 
-        exp = new RooExponential(title.c_str(), title.c_str(), x, *t);
-
-        title = Form("poly%s", l.c_str());
-        poly = new RooPolynomial(title.c_str(), title.c_str(), x, RooArgList(*a0, *a1, *a2), 0);
-
-        title = Form("background%s", l.c_str());
-        model = RooAbsPdfPtr(new RooProdPdf(title.c_str(), title.c_str(), RooArgList(*poly, *exp)));
-    }
-
-    // 3rd order polynomial * exp 
-    // ----------------------------------------------------------------- //
-
-    struct Poly3ExpPdf : public PdfBase
-    {
-        Poly3ExpPdf(RooRealVar &x, const std::string& label);
-        RooRealVar *a0;
-        RooRealVar *a1;
-        RooRealVar *a2;
-        RooRealVar *a3;
-        RooRealVar *t;
-        RooExponential *exp;
-        RooPolynomial *poly;
-    };
-
-    Poly3ExpPdf::Poly3ExpPdf(RooRealVar &x, const std::string& l)
-    {
-        a0 = new RooRealVar(Form("a0%s", l.c_str()), Form("a0%s", l.c_str()), 0.0);
-        a1 = new RooRealVar(Form("a1%s", l.c_str()), Form("a1%s", l.c_str()), 0.0);
-        a2 = new RooRealVar(Form("a2%s", l.c_str()), Form("a2%s", l.c_str()), 0.0);
-        a3 = new RooRealVar(Form("a3%s", l.c_str()), Form("a3%s", l.c_str()), 0.0);
-        t  = new RooRealVar(Form("t%s" , l.c_str()), Form("t%s" , l.c_str()), -0.05, -10.00, 0.0);
-
-        // (a0 + a1*x + a2*x^2 + a3*x^3 + a4*x^4) * exp{-t}
-        string title = Form("exp%s", l.c_str()); 
-        exp = new RooExponential(title.c_str(), title.c_str(), x, *t);
-
-        title = Form("poly%s", l.c_str());
-        poly = new RooPolynomial(title.c_str(), title.c_str(), x, RooArgList(*a0, *a1, *a2, *a3), 0);
-
-        title = Form("background%s", l.c_str());
-        model = RooAbsPdfPtr(new RooProdPdf(title.c_str(), title.c_str(), RooArgList(*poly, *exp)));
-    }
-
-    // 4th order polynomial * exp 
-    // ----------------------------------------------------------------- //
-
-    struct Poly4ExpPdf : public PdfBase
-    {
-        Poly4ExpPdf(RooRealVar &x, const std::string& label);
-        RooRealVar *a0;
-        RooRealVar *a1;
-        RooRealVar *a2;
-        RooRealVar *a3;
-        RooRealVar *a4;
-        RooRealVar *t;
-        RooExponential *exp;
-        RooPolynomial *poly;
-    };
-
-    Poly4ExpPdf::Poly4ExpPdf(RooRealVar &x, const std::string& l)
-    {
-        a0 = new RooRealVar(Form("a0%s", l.c_str()), Form("a0%s", l.c_str()), 0.0);
-        a1 = new RooRealVar(Form("a1%s", l.c_str()), Form("a1%s", l.c_str()), 0.0);
-        a2 = new RooRealVar(Form("a2%s", l.c_str()), Form("a2%s", l.c_str()), 0.0);
-        a3 = new RooRealVar(Form("a3%s", l.c_str()), Form("a3%s", l.c_str()), 0.0);
-        a4 = new RooRealVar(Form("a4%s", l.c_str()), Form("a4%s", l.c_str()), 0.0);
-        t  = new RooRealVar(Form("t%s" , l.c_str()), Form("t%s" , l.c_str()), -1e-6, -10.0, 0.00);
-
-        // (a0 + a1*x + a2*x^2 + a3*x^3 + a4*x^4) * exp{-t}
-        string title = Form("exp%s", l.c_str()); 
-        exp = new RooExponential(title.c_str(), title.c_str(), x, *t);
-
-        title = Form("poly%s", l.c_str());
-        poly = new RooPolynomial(title.c_str(), title.c_str(), x, RooArgList(*a0, *a1, *a2, *a3, *a4));
-
-        title = Form("background%s", l.c_str());
-        model = RooAbsPdfPtr(new RooProdPdf(title.c_str(), title.c_str(), RooArgList(*poly, *exp)));
-    }
-
-    // 8th order polynomial * exp 
-    // ----------------------------------------------------------------- //
-
-    struct Poly8ExpPdf : public PdfBase
-    {
-        Poly8ExpPdf(RooRealVar &x, const std::string& label);
-        RooRealVar *a0;
-        RooRealVar *a1;
-        RooRealVar *a2;
-        RooRealVar *a3;
-        RooRealVar *a4;
-        RooRealVar *a5;
-        RooRealVar *a6;
-        RooRealVar *a7;
-        RooRealVar *a8;
-        RooRealVar *t;
-        RooExponential *exp;
-        RooPolynomial *poly;
-    };
-
-    // Sum(an*x^n) * exp{-|t|*x}, n = 0, 8
-    Poly8ExpPdf::Poly8ExpPdf(RooRealVar &x, const std::string& l)
-    {
-        a0 = new RooRealVar(Form("a0%s", l.c_str()), Form("a0%s", l.c_str()), 0.0);
-        a1 = new RooRealVar(Form("a1%s", l.c_str()), Form("a1%s", l.c_str()), 0.0);
-        a2 = new RooRealVar(Form("a2%s", l.c_str()), Form("a2%s", l.c_str()), 0.0);
-        a3 = new RooRealVar(Form("a3%s", l.c_str()), Form("a3%s", l.c_str()), 0.0);
-        a4 = new RooRealVar(Form("a4%s", l.c_str()), Form("a4%s", l.c_str()), 0.0);
-        a5 = new RooRealVar(Form("a5%s", l.c_str()), Form("a5%s", l.c_str()), 0.0);
-        a6 = new RooRealVar(Form("a6%s", l.c_str()), Form("a6%s", l.c_str()), 0.0);
-        a7 = new RooRealVar(Form("a7%s", l.c_str()), Form("a7%s", l.c_str()), 0.0);
-        a8 = new RooRealVar(Form("a8%s", l.c_str()), Form("a8%s", l.c_str()), 0.0);
-        t  = new RooRealVar(Form("t%s" , l.c_str()), Form("t%s" , l.c_str()), -1e-6, -10.0, 0.00);
-
-        // (a0 + a1*x + a2*x^2 + a3*x^3 + a4*x^4) * exp{-t}
-        string title = Form("exp%s", l.c_str()); 
-        exp = new RooExponential(title.c_str(), title.c_str(), x, *t);
-
-        title = Form("poly%s", l.c_str());
-        poly = new RooPolynomial(title.c_str(), title.c_str(), x, RooArgList(*a0, *a1, *a2, *a3, *a4, *a5, *a6, *a7, *a8));
-
-        title = Form("background%s", l.c_str());
-        model = RooAbsPdfPtr(new RooProdPdf(title.c_str(), title.c_str(), RooArgList(*poly, *exp)));
-    }
-
-    // linear 
-    // ----------------------------------------------------------------- //
-
-    struct LinearPdf : public PdfBase
-    {
-        LinearPdf(RooRealVar &x, const std::string& label);
-        RooRealVar *a0;
-        RooRealVar *a1;
-    };
-
-    LinearPdf::LinearPdf(RooRealVar &x, const std::string& l)
-    {
-        a0 = new RooRealVar(Form("a0%s", l.c_str()), Form("a0%s", l.c_str()),   0.0);
-        a1 = new RooRealVar(Form("a1%s", l.c_str()), Form("a1%s", l.c_str()),   0.0);
-
-        // (1 + a1*m + a2*m^2) * exp{-t}
-        string title = Form("background%s", l.c_str());
-        model = RooAbsPdfPtr(new RooPolynomial(title.c_str(), title.c_str(), x, RooArgList(*a0, *a1)));
-    }
-
-    // 2nd order polynomial 
-    // ----------------------------------------------------------------- //
-
-    struct Poly2Pdf : public PdfBase
-    {
-        Poly2Pdf(RooRealVar &x, const std::string& label);
-        RooRealVar *a0;
-        RooRealVar *a1;
-        RooRealVar *a2;
-    };
-
-    Poly2Pdf::Poly2Pdf(RooRealVar &x, const std::string& l)
-    {
-        a0 = new RooRealVar(Form("a0%s", l.c_str()), Form("a0%s", l.c_str()), -0.02, 0, -0.05);
-        a1 = new RooRealVar(Form("a1%s", l.c_str()), Form("a1%s", l.c_str()), 0.000, -0.01, 0.01);
-        a2 = new RooRealVar(Form("a2%s", l.c_str()), Form("a2%s", l.c_str()), 0.0);
-                                                                              
-        // (1 + a1*m + a2*m^2)
-        string title = Form("background%s", l.c_str());
-        model = RooAbsPdfPtr(new RooPolynomial(title.c_str(), title.c_str(), x, RooArgList(*a0, *a1, *a2)));
-    }
-
-    // 3rd order polynomial 
-    // ----------------------------------------------------------------- //
-
-    struct Poly3Pdf : public PdfBase
-    {
-        Poly3Pdf(RooRealVar &x, const std::string& label);
-        RooRealVar *a0;
-        RooRealVar *a1;
-        RooRealVar *a2;
-        RooRealVar *a3;
-    };
-
-    Poly3Pdf::Poly3Pdf(RooRealVar &x, const std::string& l)
-    {
-        a0 = new RooRealVar(Form("a0%s", l.c_str()), Form("a0%s", l.c_str()),   0.0);
-        a1 = new RooRealVar(Form("a1%s", l.c_str()), Form("a1%s", l.c_str()),   0.0);
-        a2 = new RooRealVar(Form("a2%s", l.c_str()), Form("a2%s", l.c_str()),   0.0);
-        a3 = new RooRealVar(Form("a3%s", l.c_str()), Form("a3%s", l.c_str()),   0.0);
-
-        // (1 + a1*m + a2*m^2+ a3*m^3)
-        string title = Form("background%s", l.c_str());
-        model = RooAbsPdfPtr(new RooPolynomial(title.c_str(), title.c_str(), x, RooArgList(*a0, *a1, *a2, *a3)));
-    }
-
-    // 6th order polynomial 
-    // ----------------------------------------------------------------- //
-
-    struct Poly6Pdf : public PdfBase
-    {
-        Poly6Pdf(RooRealVar &x, const std::string& label);
-        RooRealVar *a0;
-        RooRealVar *a1;
-        RooRealVar *a2;
-        RooRealVar *a3;
-        RooRealVar *a4;
-        RooRealVar *a5;
-        RooRealVar *a6;
-    };
-
-    Poly6Pdf::Poly6Pdf(RooRealVar &x, const std::string& l)
-    {
-        a0 = new RooRealVar(Form("a0%s", l.c_str()), Form("a0%s", l.c_str()), 0.0);
-        a1 = new RooRealVar(Form("a1%s", l.c_str()), Form("a1%s", l.c_str()), 0.0);
-        a2 = new RooRealVar(Form("a2%s", l.c_str()), Form("a2%s", l.c_str()), 0.0);
-        a3 = new RooRealVar(Form("a3%s", l.c_str()), Form("a3%s", l.c_str()), 0.0);
-        a4 = new RooRealVar(Form("a4%s", l.c_str()), Form("a4%s", l.c_str()), 0.0);
-        a5 = new RooRealVar(Form("a5%s", l.c_str()), Form("a5%s", l.c_str()), 0.0);
-        a6 = new RooRealVar(Form("a6%s", l.c_str()), Form("a6%s", l.c_str()), 0.0);
-
-        // Sum(an*m^n), n = 0, 6
-        string title = Form("background%s", l.c_str());
-        model = RooAbsPdfPtr(new RooPolynomial(title.c_str(), title.c_str(), x, RooArgList(*a0, *a1, *a2, *a3, *a4, *a5, *a6)));
-    }
-
-    // 8th order polynomial 
-    // ----------------------------------------------------------------- //
-
-    struct Poly8Pdf : public PdfBase
-    {
-        Poly8Pdf(RooRealVar &x, const std::string& label);
-        RooRealVar *a0;
-        RooRealVar *a1;
-        RooRealVar *a2;
-        RooRealVar *a3;
-        RooRealVar *a4;
-        RooRealVar *a5;
-        RooRealVar *a6;
-        RooRealVar *a7;
-        RooRealVar *a8;
-    };
-
-    // Sum(an*m^n), n = 0, 10 
-    Poly8Pdf::Poly8Pdf(RooRealVar &x, const std::string& l)
-    {
-        a0  = new RooRealVar(Form("a0%s" , l.c_str()), Form("a0%s" , l.c_str()), 0.0);
-        a1  = new RooRealVar(Form("a1%s" , l.c_str()), Form("a1%s" , l.c_str()), 0.0);
-        a2  = new RooRealVar(Form("a2%s" , l.c_str()), Form("a2%s" , l.c_str()), 0.0);
-        a3  = new RooRealVar(Form("a3%s" , l.c_str()), Form("a3%s" , l.c_str()), 0.0);
-        a4  = new RooRealVar(Form("a4%s" , l.c_str()), Form("a4%s" , l.c_str()), 0.0);
-        a5  = new RooRealVar(Form("a5%s" , l.c_str()), Form("a5%s" , l.c_str()), 0.0);
-        a6  = new RooRealVar(Form("a6%s" , l.c_str()), Form("a6%s" , l.c_str()), 0.0);
-        a7  = new RooRealVar(Form("a7%s" , l.c_str()), Form("a7%s" , l.c_str()), 0.0);
-        a8  = new RooRealVar(Form("a8%s" , l.c_str()), Form("a8%s" , l.c_str()), 0.0);
-
-        string title = Form("background%s", l.c_str());
-        model = RooAbsPdfPtr(new RooPolynomial(title.c_str(), title.c_str(), x, RooArgList(*a0, *a1, *a2, *a3, *a4, *a5, *a6, *a7, *a8)));
-    }
 
     // wrapper to get the PDFs
     // ----------------------------------------------------------------- //
 
-    PdfBase* CreateModelPdf(Model::value_type model, RooRealVar &x, const std::string& label = "", TH1* const hist_template = NULL)
+    void AddModelToWorkspace(Model::value_type model, RooWorkspace &w, const std::string& model_name)
     {
-        if (model == Model::MCTemplate && hist_template == NULL)
-        {
-            throw std::invalid_argument("[tnp::CreateModelPdf] Error: template histogram is NULL!");
-        }
+        // convenience
+        const std::string unique_label = lt::string_replace_first(model_name, "model_", "_").c_str(); 
+        char const * const ul = unique_label.c_str(); 
 
         switch (model)
         {
-            case Model::BreitWignerCB: return new BreitWignerCBPdf(x, label);                     break; 
-            case Model::MCTemplate:    return new MCTemplateConvGausPdf(x, hist_template, label); break; 
-            case Model::Exponential:   return new ExponentialPdf(x, label);                       break; 
-            case Model::Argus:         return new ArgusPdf(x, label);                             break; 
-            case Model::ErfExp:        return new ErfExpPdf(x, label);                            break; 
-            case Model::Chebychev:     return new ChebychevPdf(x, label);                         break; 
-            case Model::ChebyExp:      return new ChebyExpPdf(x, label);                          break; 
-            case Model::Linear:        return new LinearPdf(x, label);                            break; 
-            case Model::Poly2:         return new Poly2Pdf(x, label);                             break; 
-            case Model::Poly3:         return new Poly3Pdf(x, label);                             break; 
-            case Model::Poly6:         return new Poly6Pdf(x, label);                             break; 
-            case Model::Poly8:         return new Poly8Pdf(x, label);                             break; 
-            case Model::LinearExp:     return new LinearExpPdf(x, label);                         break; 
-            case Model::Poly2Exp:      return new Poly2ExpPdf(x, label);                          break; 
-            case Model::Poly3Exp:      return new Poly3ExpPdf(x, label);                          break; 
-            case Model::Poly4Exp:      return new Poly4ExpPdf(x, label);                          break; 
-            case Model::Poly8Exp:      return new Poly8ExpPdf(x, label);                          break; 
+            case Model::BreitWignerCB: 
+            {
+                // breitwigner
+                w.factory(Form("BreitWigner::bw%s(mass,mz%s[%f,80,100],gammaz%s[%f,0.1,10])", ul, ul, Mz, ul, GammaZ));
+
+                // crystal ball
+                w.factory(Form("RooCBShape::cb%s(mass,mean%s[0,-10,10],sigma%s[1,0.1,10],alpha%s[5,0,20],n%s[1,0,10])", ul, ul, ul, ul, ul));
+
+                // convolution
+                w.factory(Form("FCONV::%s(mass,bw%s,cb%s)", model_name.c_str(), ul, ul));
+                break;
+            }
+            case Model::MCTemplate:
+            {
+                // gaussian
+	         w.factory(Form("Gaussian::gaus%s(mass,mean%s[0,-3,3],sigma%s[0.1,0,5])", ul, ul, ul));
+
+                // template histogram
+                TH1* const h_template = dynamic_cast<TH1*>(w.obj(Form("h_template%s", ul)));
+                if (h_template == NULL)
+                {
+                    throw std::invalid_argument("[tnp::AddModelToWorkspace] Error: template histogram is NULL!");
+                }
+
+                // mc template
+                RooDataHist data_hist(Form("data_hist%s", ul), Form("data_hist%s", ul), RooArgSet(*w.var("mass")), h_template);
+                w.import(data_hist);
+                w.factory(Form("HistPdf::hist_pdf%s(mass, data_hist%s, 1)", ul, ul));
+
+                // convolution
+                w.factory(Form("FCONV::%s(mass,hist_pdf%s,gaus%s)", model_name.c_str(), ul, ul));
+                break;
+            }
+	    case Model::MCTemplateCB:
+            {
+                // crystal ball
+	      //                w.factory(Form("RooCBShape::cb%s(mass,mean%s[0,-10,10],sigma%s[1,0.1,10],alpha%s[5,0,20],n%s[1,0,10])", ul, ul, ul, ul, ul));
+                w.factory(Form("RooCBShape::cb%s(mass,mean[0,-3,3],sigma[0.1,0,5],alpha[5,0,20],n[1,0,20])", ul));
+
+                // template histogram
+                TH1* const h_template = dynamic_cast<TH1*>(w.obj(Form("h_template%s", ul)));
+                if (h_template == NULL)
+                {
+                    throw std::invalid_argument("[tnp::AddModelToWorkspace] Error: template histogram is NULL!");
+                }
+
+                // mc template
+                RooDataHist data_hist(Form("data_hist%s", ul), Form("data_hist%s", ul), RooArgSet(*w.var("mass")), h_template);
+                w.import(data_hist);
+                w.factory(Form("HistPdf::hist_pdf%s(mass, data_hist%s, 1)", ul, ul));
+
+                // convolution
+                w.factory(Form("FCONV::%s(mass,hist_pdf%s,cb%s)", model_name.c_str(), ul, ul));
+                break;
+            }
+            case Model::Exponential: 
+            {
+                w.factory(Form("Exponential::%s(mass,t%s[-0.1,-1.0,0.0])", model_name.c_str(), ul)); 
+                break;
+            }
+            case Model::Argus:
+            {
+                w.factory(Form("ArgusBG::%s(mass,m%s[-20],c%s[-100],p%s[-1])",  model_name.c_str(), ul, ul, ul));
+                break;
+            }
+            case Model::ErfExp:
+            {
+                w.factory(Form("RooCMSShape::%s(mass,alfa%s[50,5,200],beta%s[0.01,0,10],gamma%s[0.1,0,1.0],peak%s[%f,85,97])", model_name.c_str(), ul, ul, ul, ul, Mz));
+                w.var(Form("peak%s",ul))->setConstant(kTRUE);  
+                break;
+            }
+            case Model::Chebychev:
+            {
+                w.factory(Form("Chebychev::%s(mass,{a0%s[0,-10,10],a1%s[0,-10,10]})", model_name.c_str(), ul, ul));
+                break;
+            }
+            case Model::ChebyExp:
+            {
+                // chebychev polynomial
+                w.factory(Form("Chebychev::chebychev%s(mass,{a0%s[0,-10,10],a1%s[0,-10,10]})", ul, ul, ul));
+
+                // exponential
+                w.factory(Form("Exponential::exp%s(mass,t%s[-0.1,-1.0,0.0])", ul, ul)); 
+
+                // convolution
+                w.factory(Form("FCONV::%s(mass,chebychev%s,exp%s)", model_name.c_str(), ul, ul));
+                break;
+            }
+            case Model::Linear:
+            {
+                w.factory(Form("Polynomial::%s(mass,{a0%s[0],a1%s[0]})", model_name.c_str(), ul, ul));
+                break;
+            }
+            case Model::Poly2:
+            {
+                w.factory(Form("Polynomial::%s(mass,{a0%s[-0.02,0,-0.05],a1%s[0.000, -0.01, 0.01]},a2%s[0]})", model_name.c_str(), ul, ul, ul));
+                break;
+            }
+            case Model::Poly3:
+            {
+                w.factory(Form("Polynomial::%s(mass,{a0%s[0],a1%s[0],a2%s[0],a3%s[0]})", model_name.c_str(), ul, ul, ul, ul));
+                break;
+            }
+            case Model::Poly6:
+            {
+                w.factory(Form("Polynomial::%s(mass,{a0%s[0],a1%s[0],a2%s[0],a3%s[0],a4%s[0],a5%s[0],a6%s[0]})", model_name.c_str(), ul, ul, ul, ul, ul, ul, ul));
+                break;
+            }
+            case Model::Poly8:
+            {
+                w.factory(Form("Polynomial::%s(mass,{a0%s[0],a1%s[0],a2%s[0],a3%s[0],a4%s[0],a5%s[0],a6%s[0],a7%s[0],a8%s[0]})", model_name.c_str(), ul, ul, ul, ul, ul, ul, ul, ul, ul));
+                break;
+            }
             default:
-                throw std::invalid_argument("[tnp::CreateModelPdf] Error: model not supported");
+                throw std::invalid_argument("[tnp::AddModelToWorkspace] Error: model not supported");
         }
 
-        // return NULL pointer (should never get here)
-        return new PdfBase;
+        // done 
+        return;
     }
 
     // get Model::value_type from a string
@@ -605,6 +194,7 @@ namespace tnp
     {
         if(lt::string_lower(model_name) == "breitwignercb") {return Model::BreitWignerCB;}
         if(lt::string_lower(model_name) == "mctemplate"   ) {return Model::MCTemplate;   }
+        if(lt::string_lower(model_name) == "mctemplatecb" ) {return Model::MCTemplateCB; }
         if(lt::string_lower(model_name) == "exponential"  ) {return Model::Exponential;  }
         if(lt::string_lower(model_name) == "argus"        ) {return Model::Argus;        }
         if(lt::string_lower(model_name) == "erfexp"       ) {return Model::ErfExp;       }
@@ -615,11 +205,6 @@ namespace tnp
         if(lt::string_lower(model_name) == "poly3"        ) {return Model::Poly3;        }
         if(lt::string_lower(model_name) == "poly6"        ) {return Model::Poly6;        }
         if(lt::string_lower(model_name) == "poly8"        ) {return Model::Poly8;        }
-        if(lt::string_lower(model_name) == "linearexp"    ) {return Model::LinearExp;    }
-        if(lt::string_lower(model_name) == "poly2exp"     ) {return Model::Poly2Exp;     }
-        if(lt::string_lower(model_name) == "poly3exp"     ) {return Model::Poly3Exp;     }
-        if(lt::string_lower(model_name) == "poly4exp"     ) {return Model::Poly4Exp;     }
-        if(lt::string_lower(model_name) == "poly8exp"     ) {return Model::Poly8Exp;     }
 
         // if here, didn't find a match
         throw std::invalid_argument(Form("[tnp::GetModelFromString] Error: model %s not found", model_name.c_str()));
@@ -634,6 +219,7 @@ namespace tnp
             {
                 case Model::BreitWignerCB : return "BreitWignerCB";
                 case Model::MCTemplate    : return "MCTemplate";
+                case Model::MCTemplateCB  : return "MCTemplateCB";
                 case Model::Exponential   : return "Exponential";
                 case Model::Argus         : return "Argus";
                 case Model::ErfExp        : return "ErfExp";
@@ -644,11 +230,6 @@ namespace tnp
                 case Model::Poly3         : return "Poly3";
                 case Model::Poly6         : return "Poly6";
                 case Model::Poly8         : return "Poly8";
-                case Model::LinearExp     : return "LinearExp";
-                case Model::Poly2Exp      : return "Poly2Exp";
-                case Model::Poly3Exp      : return "Poly3Exp";
-                case Model::Poly4Exp      : return "Poly4Exp";
-                case Model::Poly8Exp      : return "Poly8Exp";
                 default:
                     throw std::invalid_argument("[tnp::GetStringFromModel] Error: model not found");
             }
@@ -699,8 +280,8 @@ namespace tnp
     Result::~Result()
     {
         // fixme: not working quite right
-        //delete cpass;
-        //delete cfail;
+//         delete cpass;
+//         delete cfail;
     }
 
     std::string Result::eff_str() const
@@ -724,7 +305,7 @@ namespace tnp
     }
 
 
-    // helper function to create a tex box
+    // helper function to create a text box
     TPaveText* CreateTextBox(double x1, double y1, double x2, double y2, const std::string& text, const Color_t color = kBlack)
     {
         TPaveText *text_box = new TPaveText(x1, y1, x2, y2, "NDC");
@@ -736,7 +317,7 @@ namespace tnp
         return text_box;
     }
 
-    // Peform the fit
+    // Perform the fit (with factor)
     Result PerformSimultaneousFit
     (
         const Model::value_type sig_pass_model, 
@@ -754,7 +335,14 @@ namespace tnp
         TH1* const h_fail_template
     )
     {
-        // test template hist's existence
+        // print the models used:
+        cout << "[tnp::PerformSumultaneousFit] Fitting using the following PDF models:" << endl;
+        cout << "sig pass model = " << tnp::GetStringFromModel(sig_pass_model) << endl; 
+        cout << "sig fail model = " << tnp::GetStringFromModel(sig_fail_model) << endl; 
+        cout << "bkg pass model = " << tnp::GetStringFromModel(bkg_pass_model) << endl; 
+        cout << "bkg fail model = " << tnp::GetStringFromModel(bkg_fail_model) << endl; 
+
+        // test template histogram's existence
         if (sig_pass_model == Model::MCTemplate && h_pass_template == NULL)
         {
             throw std::invalid_argument("[tnp::PerformSumultaneousFit] Error: pass template histogram is NULL!");
@@ -764,33 +352,64 @@ namespace tnp
             throw std::invalid_argument("[tnp::PerformSumultaneousFit] Error: fail template histogram is NULL!");
         }
 
-        // independent mass var
+        // build the RooWorkspace
+        // ----------------------------------------- // 
+
+        // workspace
+        const std::string w_name = lt::string_replace_all(h_pass->GetName(), "h_", "w_name_");
+        RooWorkspace w(w_name.c_str(), /*doCINTexport=*/false);
+
+        // add independent variable (mass)
         RooRealVar mass("mass", "mass", mass_low, mass_high, "GeV");
+        w.import(mass);
+
+        // signal model (need ptr for polymorphism to work -- references for convenience)
+//         const std::string sig_pass_model_name = lt::string_replace_all(h_pass->GetName(), "h_", "model_sig_"); 
+//         const std::string sig_fail_model_name = lt::string_replace_all(h_fail->GetName(), "h_", "model_sig_"); 
+//         const std::string bkg_pass_model_name = lt::string_replace_all(h_pass->GetName(), "h_", "model_bkg_"); 
+//         const std::string bkg_fail_model_name = lt::string_replace_all(h_fail->GetName(), "h_", "model_bkg_"); 
+        const std::string sig_pass_model_name = "model_sig_pass"; 
+        const std::string sig_fail_model_name = "model_sig_fail"; 
+        const std::string bkg_pass_model_name = "model_bkg_pass"; 
+        const std::string bkg_fail_model_name = "model_bkg_fail"; 
+
+        // add template hist
+        if (sig_pass_model == Model::MCTemplate || sig_pass_model == Model::MCTemplateCB)
+        {
+            const std::string h_pass_newname = lt::string_replace_first(sig_pass_model_name, "model_", "h_template_"); 
+            TH1* const h_pass_template_temp = dynamic_cast<TH1*>(h_pass_template->Clone(h_pass_newname.c_str()));
+            w.import(*h_pass_template_temp);
+            delete h_pass_template_temp;
+        }
+        if (sig_fail_model == Model::MCTemplate || sig_pass_model == Model::MCTemplateCB)
+        {
+            const std::string h_fail_newname = lt::string_replace_first(sig_fail_model_name, "model_", "h_template_"); 
+            TH1* const h_fail_template_temp = dynamic_cast<TH1*>(h_fail_template->Clone(h_fail_newname.c_str()));
+            w.import(*h_fail_template_temp);
+            delete h_fail_template_temp;
+        }
+
+        AddModelToWorkspace(sig_pass_model, w, sig_pass_model_name); 
+        AddModelToWorkspace(sig_fail_model, w, sig_fail_model_name); 
+        AddModelToWorkspace(bkg_pass_model, w, bkg_pass_model_name); 
+        AddModelToWorkspace(bkg_fail_model, w, bkg_fail_model_name); 
+        w.Print();
+        
+        // extract the PDF's from the workspace 
+        // ----------------------------------------- // 
+
+        RooAbsPdf& spass_model = *w.pdf(sig_pass_model_name.c_str());
+        RooAbsPdf& sfail_model = *w.pdf(sig_fail_model_name.c_str());
+        RooAbsPdf& bpass_model = *w.pdf(bkg_pass_model_name.c_str());
+        RooAbsPdf& bfail_model = *w.pdf(bkg_fail_model_name.c_str());
+
+        // do the simultaneous fit 
+        // ----------------------------------------- // 
 
         // Define categories
         RooCategory sample("sample","");
         sample.defineType("pass",1);
         sample.defineType("fail",2);
-
-        // signal model (need ptr for polymorphism to work -- references for convenience)
-        PdfBase* spass_model_ptr = CreateModelPdf(sig_pass_model, mass, lt::string_replace_all(h_pass->GetName(), "h_", "_sig_"), h_pass_template);
-        PdfBase* sfail_model_ptr = CreateModelPdf(sig_fail_model, mass, lt::string_replace_all(h_fail->GetName(), "h_", "_sig_"), h_fail_template);
-        RooAbsPdf& spass_model   = *(spass_model_ptr->model);
-        RooAbsPdf& sfail_model   = *(sfail_model_ptr->model);
-
-        // background model (need ptr for polymorphism to work -- references for convenience)
-        PdfBase* bpass_model_ptr = CreateModelPdf(bkg_pass_model, mass, lt::string_replace_all(h_pass->GetName(), "h_", "_bkg_"));
-        PdfBase* bfail_model_ptr = CreateModelPdf(bkg_fail_model, mass, lt::string_replace_all(h_fail->GetName(), "h_", "_bkg_"));
-        RooAbsPdf& bpass_model   = *(bpass_model_ptr->model);
-        RooAbsPdf& bfail_model   = *(bfail_model_ptr->model);
-
-        // print the models used:
-        cout << "Fitting using the following PDF models:" << endl;
-        cout << "sig pass model = " << tnp::GetStringFromModel(sig_pass_model) << endl; 
-        cout << "sig fail model = " << tnp::GetStringFromModel(sig_fail_model) << endl; 
-        cout << "bkg pass model = " << tnp::GetStringFromModel(bkg_pass_model) << endl; 
-        cout << "bkg fail model = " << tnp::GetStringFromModel(bkg_fail_model) << endl; 
-        
 
         // count maximums
         double nsig_max      = h_pass->Integral() + h_fail->Integral();
@@ -826,33 +445,33 @@ namespace tnp
         total_pdf.addPdf(model_fail, "fail");
 
         // do the fit
-        RooFitResult *roo_fit_result = total_pdf.fitTo(data_comb, RooFit::Extended(), RooFit::Strategy(1), RooFit::Save());
+        RooFitResult& roo_fit_result = *total_pdf.fitTo(data_comb, RooFit::Extended(), RooFit::Strategy(1), RooFit::Save());
 
         // integrate on a subrange
         mass.setRange("zwindow", mass_low, mass_high);
-        RooAbsReal* int_nsig_pass = esig_pass.createIntegral (mass, RooFit::NormSet(mass), RooFit::Range("zwindow"));
-        RooAbsReal* int_nbkg_pass = ebkg_pass.createIntegral (mass, RooFit::NormSet(mass), RooFit::Range("zwindow"));
-        RooAbsReal* int_ntot_pass = model_pass.createIntegral(mass, RooFit::NormSet(mass), RooFit::Range("zwindow"));
-        RooAbsReal* int_nsig_fail = esig_fail.createIntegral (mass, RooFit::NormSet(mass), RooFit::Range("zwindow"));
-        RooAbsReal* int_nbkg_fail = ebkg_fail.createIntegral (mass, RooFit::NormSet(mass), RooFit::Range("zwindow"));
-        RooAbsReal* int_ntot_fail = model_fail.createIntegral(mass, RooFit::NormSet(mass), RooFit::Range("zwindow"));
+        RooAbsReal& int_nsig_pass = *esig_pass.createIntegral (mass, RooFit::NormSet(mass), RooFit::Range("zwindow"));
+        RooAbsReal& int_nbkg_pass = *ebkg_pass.createIntegral (mass, RooFit::NormSet(mass), RooFit::Range("zwindow"));
+        RooAbsReal& int_ntot_pass = *model_pass.createIntegral(mass, RooFit::NormSet(mass), RooFit::Range("zwindow"));
+        RooAbsReal& int_nsig_fail = *esig_fail.createIntegral (mass, RooFit::NormSet(mass), RooFit::Range("zwindow"));
+        RooAbsReal& int_nbkg_fail = *ebkg_fail.createIntegral (mass, RooFit::NormSet(mass), RooFit::Range("zwindow"));
+        RooAbsReal& int_ntot_fail = *model_fail.createIntegral(mass, RooFit::NormSet(mass), RooFit::Range("zwindow"));
 
         // conventience varariables for the full fit counts
-        Result::value_t npass_sig = {nsig_pass.getVal(), nsig_pass.getPropagatedError(*roo_fit_result)};
-        Result::value_t npass_bkg = {nbkg_pass.getVal(), nbkg_pass.getPropagatedError(*roo_fit_result)};
-        Result::value_t npass_tot = {ntot_pass.getVal(), ntot_pass.getPropagatedError(*roo_fit_result)};
-        Result::value_t nfail_sig = {nsig_fail.getVal(), nsig_fail.getPropagatedError(*roo_fit_result)};
-        Result::value_t nfail_bkg = {nbkg_fail.getVal(), nbkg_fail.getPropagatedError(*roo_fit_result)};
-        Result::value_t nfail_tot = {ntot_fail.getVal(), ntot_fail.getPropagatedError(*roo_fit_result)};
-        Result::value_t data_eff  = {eff.getVal()      , eff.getPropagatedError(*roo_fit_result)      };
+        Result::value_t npass_sig = {nsig_pass.getVal(), nsig_pass.getPropagatedError(roo_fit_result)};
+        Result::value_t npass_bkg = {nbkg_pass.getVal(), nbkg_pass.getPropagatedError(roo_fit_result)};
+        Result::value_t npass_tot = {ntot_pass.getVal(), ntot_pass.getPropagatedError(roo_fit_result)};
+        Result::value_t nfail_sig = {nsig_fail.getVal(), nsig_fail.getPropagatedError(roo_fit_result)};
+        Result::value_t nfail_bkg = {nbkg_fail.getVal(), nbkg_fail.getPropagatedError(roo_fit_result)};
+        Result::value_t nfail_tot = {ntot_fail.getVal(), ntot_fail.getPropagatedError(roo_fit_result)};
+        Result::value_t data_eff  = {eff.getVal()      , eff.getPropagatedError(roo_fit_result)      };
 
         // the value integrated on the subrange
-        Result::value_t int_npass_sig = {int_nsig_pass->getVal() * npass_sig.value, int_nsig_pass->getVal() * npass_sig.error};
-        Result::value_t int_npass_bkg = {int_nbkg_pass->getVal() * npass_bkg.value, int_nbkg_pass->getVal() * npass_bkg.error};
-        Result::value_t int_npass_tot = {int_ntot_pass->getVal() * npass_tot.value, int_ntot_pass->getVal() * npass_tot.error};
-        Result::value_t int_nfail_sig = {int_nsig_fail->getVal() * nfail_sig.value, int_nsig_fail->getVal() * nfail_sig.error};
-        Result::value_t int_nfail_bkg = {int_nbkg_fail->getVal() * nfail_bkg.value, int_nbkg_fail->getVal() * nfail_bkg.error};
-        Result::value_t int_nfail_tot = {int_ntot_fail->getVal() * nfail_tot.value, int_ntot_fail->getVal() * nfail_tot.error};
+        Result::value_t int_npass_sig = {int_nsig_pass.getVal() * npass_sig.value, int_nsig_pass.getVal() * npass_sig.error};
+        Result::value_t int_npass_bkg = {int_nbkg_pass.getVal() * npass_bkg.value, int_nbkg_pass.getVal() * npass_bkg.error};
+        Result::value_t int_npass_tot = {int_ntot_pass.getVal() * npass_tot.value, int_ntot_pass.getVal() * npass_tot.error};
+        Result::value_t int_nfail_sig = {int_nsig_fail.getVal() * nfail_sig.value, int_nsig_fail.getVal() * nfail_sig.error};
+        Result::value_t int_nfail_bkg = {int_nbkg_fail.getVal() * nfail_bkg.value, int_nbkg_fail.getVal() * nfail_bkg.error};
+        Result::value_t int_nfail_tot = {int_ntot_fail.getVal() * nfail_tot.value, int_ntot_fail.getVal() * nfail_tot.error};
 
         // the new efficiency
         Result::value_t num = int_npass_sig;
@@ -874,6 +493,8 @@ namespace tnp
  
         // passing plot
         simple_result.cpass->cd(); 
+        simple_result.cpass->SetName(lt::string_replace_all(h_pass->GetName(), "h_", "canvas_").c_str());
+        simple_result.cpass->SetTitle(simple_result.cpass->GetName());
         RooPlot *mframe_pass = mass.frame(RooFit::Bins(static_cast<int>(fabs(mass_high-mass_low)/2.0)));
         data_pass.plotOn(mframe_pass, RooFit::MarkerStyle(kFullCircle), RooFit::MarkerSize(0.8), RooFit::DrawOption("ZP"));
         model_pass.plotOn(mframe_pass);
@@ -893,6 +514,8 @@ namespace tnp
 
         // failing plot
         simple_result.cfail->cd(); 
+        simple_result.cfail->SetName(lt::string_replace_all(h_fail->GetName(), "h_", "canvas_").c_str());
+        simple_result.cfail->SetTitle(simple_result.cfail->GetName());
         RooPlot *mframe_fail = mass.frame(RooFit::Bins(static_cast<int>(fabs(mass_high-mass_low)/mass_bin_width)));
         data_fail.plotOn(mframe_fail, RooFit::MarkerStyle(kFullCircle), RooFit::MarkerSize(0.8), RooFit::DrawOption("ZP"));
         model_fail.plotOn(mframe_fail);
@@ -936,15 +559,14 @@ namespace tnp
                       ( "total_fail"  , int_nfail_tot.value, int_nfail_tot.error)
                       ( "eff"         , int_data_eff.value , int_data_eff.error );
         t2.print();
-
+ 
         // done 
         return simple_result;
     }
 
-    // Peform the fit
+    // Perform a simple count 
     Result PerformSimpleCount
     (
-        //const Model::value_type model, 
         TH1* const h_pass, 
         TH1* const h_fail,
         const float mass_low,

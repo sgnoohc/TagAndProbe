@@ -60,8 +60,11 @@ tnp_parameters = cms.PSet(
 	## note: for eta and phi, no negative bins means use |eta| and |phi|, respectively
 	pt_bins   = cms.vdouble(10, 15, 20, 30, 40, 50, 200),
 	eta_bins  = cms.vdouble(0, 1.1, 2.5),
-	phi_bins  = cms.vdouble(0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.15),
-	nvtx_bins = cms.vdouble(0, 5, 10, 15, 20, 25, 30, 35, 40),
+#	phi_bins  = cms.vdouble(0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.15),
+#	nvtx_bins = cms.vdouble(0, 5, 10, 15, 20, 25, 30, 35, 40),
+        phi_bins  = cms.vdouble(),
+        nvtx_bins  = cms.vdouble(),
+
 	
 	## selection (from Measurements.h/cc) 
 	numerator   = cms.string("MuTightWPNum"  ),
@@ -70,16 +73,16 @@ tnp_parameters = cms.PSet(
 	## Parameters for the fitting 
 	## --------------------------------------------------------- #
 
-	## models for pt bins 
-	pt_models = cms.vstring( 
-	#          sig pass,        sig fail,      bkg pass,      bkg fail
-		"BreitWignerCB", "BreitWignerCB", "Exponential", "Exponential", # pt0
-		"BreitWignerCB", "BreitWignerCB", "Exponential", "ErfExp"     , # pt1
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "ErfExp"     , # pt2
-		"MCTemplate"   , "MCTemplate"   , "ErfExp"     , "Chebychev"  , # pt3
-		"MCTemplate"   , "MCTemplate"   , "Chebychev"  , "Chebychev"  , # pt4
-		"MCTemplate"   , "MCTemplate"   , "Chebychev"  , "Chebychev"  , # pt5
-	),
+#	## models for pt bins 
+#	pt_models = cms.vstring( 
+#	#          sig pass,        sig fail,      bkg pass,      bkg fail
+#		"BreitWignerCB", "BreitWignerCB", "Exponential", "Exponential", # pt0
+#		"BreitWignerCB", "BreitWignerCB", "Exponential", "ErfExp"     , # pt1
+#		"MCTemplate"   , "MCTemplate"   , "Exponential", "ErfExp"     , # pt2
+#		"MCTemplate"   , "MCTemplate"   , "ErfExp"     , "Chebychev"  , # pt3
+#		"MCTemplate"   , "MCTemplate"   , "Chebychev"  , "Chebychev"  , # pt4
+#		"MCTemplate"   , "MCTemplate"   , "Chebychev"  , "Chebychev"  , # pt5
+#	),
 	
 	## models for eta bins 
 	eta_models = cms.vstring( 
@@ -125,7 +128,7 @@ tnp_parameters = cms.PSet(
 		"MCTemplate"   , "MCTemplate"   , "ErfExp"     , "Exponential", # eta0, pt2
 		"MCTemplate"   , "MCTemplate"   , "Poly3"      , "Exponential"  # eta1, pt2 
 	,                                                                                     
-		"MCTemplate"   , "MCTemplate"   , "ErfExp"     , "Poly3Exp"   , # eta0, pt3
+		"MCTemplate"   , "MCTemplate"   , "ErfExp"     , "Poly3"      , # eta0, pt3
 		"MCTemplate"   , "MCTemplate"   , "Poly3"      , "Poly3"        # eta1, pt3
 	,                                                                                     
 		"MCTemplate"   , "MCTemplate"   , "Chebychev"  , "Chebychev"  , # eta0, pt4

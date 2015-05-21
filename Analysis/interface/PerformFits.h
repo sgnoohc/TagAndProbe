@@ -14,6 +14,7 @@ namespace tnp
         {
             BreitWignerCB, // Breit-Wigner convolved with Crystal Ball function
             MCTemplate,    // MC Template, need to provide histogram 
+            MCTemplateCB,    // MC Template, need to provide histogram 
             Exponential,   // Exponential 
             Argus,         // Argus function (http://en.wikipedia.org/wiki/ARGUS_distribution)
             ErfExp,        // Error function convolved with Exponential
@@ -22,11 +23,6 @@ namespace tnp
             Poly3,         // 3rd order polynomial
             Poly6,         // 6th order polynomial
             Poly8,         // 8th order polynomial
-            LinearExp,     // Linear convolved with exponential
-            Poly2Exp,      // 2nd order polynomial convolved with exponential
-            Poly3Exp,      // 3rd order polynomial convolved with exponential
-            Poly4Exp,      // 4th order polynomial convolved with exponential
-            Poly8Exp,      // 8th order polynomial convolved with exponential
             Chebychev,     // Chebychev polynomial 
             ChebyExp,      // Chebychev polynomial convolved with exponential
             static_size
@@ -83,7 +79,7 @@ namespace tnp
 
     // Get the model
     
-    // Peform simultaneous fit
+    // Perform simultaneous fit
     Result PerformSimultaneousFit
     (
         const Model::value_type sig_pass_model, 
@@ -101,7 +97,7 @@ namespace tnp
         TH1* const h_fail_template = NULL
     );
 
-    // Peform smple count (no background fitting/subtraction) 
+    // Perform simple count (no background fitting/subtraction) 
     Result PerformSimpleCount
     (
         TH1* const h_pass, 
