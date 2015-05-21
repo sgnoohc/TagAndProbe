@@ -60,6 +60,7 @@ namespace lepton_tree {
 	const ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > &jet_close_lep() { return lepton_tree_obj.jet_close_lep(); }
 	const float &ptratio() { return lepton_tree_obj.ptratio(); }
 	const int &tag_charge() { return lepton_tree_obj.tag_charge(); }
+	const bool &tag_HLTLeadingLeg() { return lepton_tree_obj.tag_HLTLeadingLeg(); }
 	const float &dilep_mass() { return lepton_tree_obj.dilep_mass(); }
 	const float &sigmaIEtaIEta_full5x5() { return lepton_tree_obj.sigmaIEtaIEta_full5x5(); }
 	const float &etaSC() { return lepton_tree_obj.etaSC(); }

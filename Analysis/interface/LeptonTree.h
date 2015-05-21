@@ -194,6 +194,9 @@ protected:
 	int	tag_charge_;
 	TBranch *tag_charge_branch;
 	bool tag_charge_isLoaded;
+	bool	tag_HLTLeadingLeg_;
+	TBranch *tag_HLTLeadingLeg_branch;
+	bool tag_HLTLeadingLeg_isLoaded;
 	float	dilep_mass_;
 	TBranch *dilep_mass_branch;
 	bool dilep_mass_isLoaded;
@@ -555,6 +558,11 @@ void Init(TTree *tree) {
 		tag_charge_branch = tree->GetBranch("tag_charge");
 		if (tag_charge_branch) {tag_charge_branch->SetAddress(&tag_charge_);}
 	}
+	tag_HLTLeadingLeg_branch = 0;
+	if (tree->GetBranch("tag_HLTLeadingLeg") != 0) {
+		tag_HLTLeadingLeg_branch = tree->GetBranch("tag_HLTLeadingLeg");
+		if (tag_HLTLeadingLeg_branch) {tag_HLTLeadingLeg_branch->SetAddress(&tag_HLTLeadingLeg_);}
+	}
 	dilep_mass_branch = 0;
 	if (tree->GetBranch("dilep_mass") != 0) {
 		dilep_mass_branch = tree->GetBranch("dilep_mass");
@@ -725,6 +733,7 @@ void GetEntry(unsigned int idx)
 		jet_close_lep_isLoaded = false;
 		ptratio_isLoaded = false;
 		tag_charge_isLoaded = false;
+		tag_HLTLeadingLeg_isLoaded = false;
 		dilep_mass_isLoaded = false;
 		sigmaIEtaIEta_full5x5_isLoaded = false;
 		etaSC_isLoaded = false;
@@ -810,6 +819,7 @@ void LoadAllBranches()
 	if (jet_close_lep_branch != 0) jet_close_lep();
 	if (ptratio_branch != 0) ptratio();
 	if (tag_charge_branch != 0) tag_charge();
+	if (tag_HLTLeadingLeg_branch != 0) tag_HLTLeadingLeg();
 	if (dilep_mass_branch != 0) dilep_mass();
 	if (sigmaIEtaIEta_full5x5_branch != 0) sigmaIEtaIEta_full5x5();
 	if (etaSC_branch != 0) etaSC();
@@ -1600,6 +1610,19 @@ void LoadAllBranches()
 		}
 		return tag_charge_;
 	}
+	bool &	tag_HLTLeadingLeg()
+	{
+		if (not tag_HLTLeadingLeg_isLoaded) {
+			if (tag_HLTLeadingLeg_branch != 0) {
+				tag_HLTLeadingLeg_branch->GetEntry(index);
+			} else { 
+				printf("branch tag_HLTLeadingLeg_branch does not exist!\n");
+				exit(1);
+			}
+			tag_HLTLeadingLeg_isLoaded = true;
+		}
+		return tag_HLTLeadingLeg_;
+	}
 	float &dilep_mass()
 	{
 		if (not dilep_mass_isLoaded) {
@@ -1960,6 +1983,7 @@ namespace lepton_tree {
 	const ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<float> > &jet_close_lep();
 	const float &ptratio();
 	const int &tag_charge();
+	const bool &tag_HLTLeadingLeg();
 	const float &dilep_mass();
 	const float &sigmaIEtaIEta_full5x5();
 	const float &etaSC();
