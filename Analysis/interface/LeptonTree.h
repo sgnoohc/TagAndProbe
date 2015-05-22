@@ -203,6 +203,9 @@ protected:
 	float	sigmaIEtaIEta_full5x5_;
 	TBranch *sigmaIEtaIEta_full5x5_branch;
 	bool sigmaIEtaIEta_full5x5_isLoaded;
+	float	sigmaIEtaIEta_;
+	TBranch *sigmaIEtaIEta_branch;
+	bool sigmaIEtaIEta_isLoaded;
 	float	etaSC_;
 	TBranch *etaSC_branch;
 	bool etaSC_isLoaded;
@@ -239,6 +242,18 @@ protected:
 	bool	threeChargeAgree_;
 	TBranch *threeChargeAgree_branch;
 	bool threeChargeAgree_isLoaded;
+	float	mva_;
+	TBranch *mva_branch;
+	bool mva_isLoaded;
+	float	tkIso_;
+	TBranch *tkIso_branch;
+	bool tkIso_isLoaded;
+	float	ecalIso_;
+	TBranch *ecalIso_branch;
+	bool ecalIso_isLoaded;
+	float	hcalIso_;
+	TBranch *hcalIso_branch;
+	bool hcalIso_isLoaded;
 	int	pid_PFMuon_;
 	TBranch *pid_PFMuon_branch;
 	bool pid_PFMuon_isLoaded;
@@ -573,6 +588,11 @@ void Init(TTree *tree) {
 		sigmaIEtaIEta_full5x5_branch = tree->GetBranch("sigmaIEtaIEta_full5x5");
 		if (sigmaIEtaIEta_full5x5_branch) {sigmaIEtaIEta_full5x5_branch->SetAddress(&sigmaIEtaIEta_full5x5_);}
 	}
+	sigmaIEtaIEta_branch = 0;
+	if (tree->GetBranch("sigmaIEtaIEta") != 0) {
+		sigmaIEtaIEta_branch = tree->GetBranch("sigmaIEtaIEta");
+		if (sigmaIEtaIEta_branch) {sigmaIEtaIEta_branch->SetAddress(&sigmaIEtaIEta_);}
+	}
 	etaSC_branch = 0;
 	if (tree->GetBranch("etaSC") != 0) {
 		etaSC_branch = tree->GetBranch("etaSC");
@@ -632,6 +652,26 @@ void Init(TTree *tree) {
 	if (tree->GetBranch("threeChargeAgree") != 0) {
 		threeChargeAgree_branch = tree->GetBranch("threeChargeAgree");
 		if (threeChargeAgree_branch) {threeChargeAgree_branch->SetAddress(&threeChargeAgree_);}
+	}
+	mva_branch = 0;
+	if (tree->GetBranch("mva") != 0) {
+		mva_branch = tree->GetBranch("mva");
+		if (mva_branch) {mva_branch->SetAddress(&mva_);}
+	}
+	tkIso_branch = 0;
+	if (tree->GetBranch("tkIso") != 0) {
+		tkIso_branch = tree->GetBranch("tkIso");
+		if (tkIso_branch) {tkIso_branch->SetAddress(&tkIso_);}
+	}
+	ecalIso_branch = 0;
+	if (tree->GetBranch("ecalIso") != 0) {
+		ecalIso_branch = tree->GetBranch("ecalIso");
+		if (ecalIso_branch) {ecalIso_branch->SetAddress(&ecalIso_);}
+	}
+	hcalIso_branch = 0;
+	if (tree->GetBranch("hcalIso") != 0) {
+		hcalIso_branch = tree->GetBranch("hcalIso");
+		if (hcalIso_branch) {hcalIso_branch->SetAddress(&hcalIso_);}
 	}
 	pid_PFMuon_branch = 0;
 	if (tree->GetBranch("pid_PFMuon") != 0) {
@@ -736,6 +776,7 @@ void GetEntry(unsigned int idx)
 		tag_HLTLeadingLeg_isLoaded = false;
 		dilep_mass_isLoaded = false;
 		sigmaIEtaIEta_full5x5_isLoaded = false;
+		sigmaIEtaIEta_isLoaded = false;
 		etaSC_isLoaded = false;
 		dEtaIn_isLoaded = false;
 		dPhiIn_isLoaded = false;
@@ -748,6 +789,10 @@ void GetEntry(unsigned int idx)
 		sccharge_isLoaded = false;
 		ckf_charge_isLoaded = false;
 		threeChargeAgree_isLoaded = false;
+		mva_isLoaded = false;
+		tkIso_isLoaded = false;
+		ecalIso_isLoaded = false;
+		hcalIso_isLoaded = false;
 		pid_PFMuon_isLoaded = false;
 		gfit_chi2_isLoaded = false;
 		gfit_ndof_isLoaded = false;
@@ -822,6 +867,7 @@ void LoadAllBranches()
 	if (tag_HLTLeadingLeg_branch != 0) tag_HLTLeadingLeg();
 	if (dilep_mass_branch != 0) dilep_mass();
 	if (sigmaIEtaIEta_full5x5_branch != 0) sigmaIEtaIEta_full5x5();
+	if (sigmaIEtaIEta_branch != 0) sigmaIEtaIEta();
 	if (etaSC_branch != 0) etaSC();
 	if (dEtaIn_branch != 0) dEtaIn();
 	if (dPhiIn_branch != 0) dPhiIn();
@@ -834,6 +880,10 @@ void LoadAllBranches()
 	if (sccharge_branch != 0) sccharge();
 	if (ckf_charge_branch != 0) ckf_charge();
 	if (threeChargeAgree_branch != 0) threeChargeAgree();
+	if (mva_branch != 0) mva();
+	if (tkIso_branch != 0) tkIso();
+	if (ecalIso_branch != 0) ecalIso();
+	if (hcalIso_branch != 0) hcalIso();
 	if (pid_PFMuon_branch != 0) pid_PFMuon();
 	if (gfit_chi2_branch != 0) gfit_chi2();
 	if (gfit_ndof_branch != 0) gfit_ndof();
@@ -1649,6 +1699,19 @@ void LoadAllBranches()
 		}
 		return sigmaIEtaIEta_full5x5_;
 	}
+	float &sigmaIEtaIEta()
+	{
+		if (not sigmaIEtaIEta_isLoaded) {
+			if (sigmaIEtaIEta_branch != 0) {
+				sigmaIEtaIEta_branch->GetEntry(index);
+			} else { 
+				printf("branch sigmaIEtaIEta_branch does not exist!\n");
+				exit(1);
+			}
+			sigmaIEtaIEta_isLoaded = true;
+		}
+		return sigmaIEtaIEta_;
+	}
 	float &etaSC()
 	{
 		if (not etaSC_isLoaded) {
@@ -1804,6 +1867,58 @@ void LoadAllBranches()
 			threeChargeAgree_isLoaded = true;
 		}
 		return threeChargeAgree_;
+	}
+	float &mva()
+	{
+		if (not mva_isLoaded) {
+			if (mva_branch != 0) {
+				mva_branch->GetEntry(index);
+			} else { 
+				printf("branch mva_branch does not exist!\n");
+				exit(1);
+			}
+			mva_isLoaded = true;
+		}
+		return mva_;
+	}
+	float &tkIso()
+	{
+		if (not tkIso_isLoaded) {
+			if (tkIso_branch != 0) {
+				tkIso_branch->GetEntry(index);
+			} else { 
+				printf("branch tkIso_branch does not exist!\n");
+				exit(1);
+			}
+			tkIso_isLoaded = true;
+		}
+		return tkIso_;
+	}
+	float &ecalIso()
+	{
+		if (not ecalIso_isLoaded) {
+			if (ecalIso_branch != 0) {
+				ecalIso_branch->GetEntry(index);
+			} else { 
+				printf("branch ecalIso_branch does not exist!\n");
+				exit(1);
+			}
+			ecalIso_isLoaded = true;
+		}
+		return ecalIso_;
+	}
+	float &hcalIso()
+	{
+		if (not hcalIso_isLoaded) {
+			if (hcalIso_branch != 0) {
+				hcalIso_branch->GetEntry(index);
+			} else { 
+				printf("branch hcalIso_branch does not exist!\n");
+				exit(1);
+			}
+			hcalIso_isLoaded = true;
+		}
+		return hcalIso_;
 	}
 	int &pid_PFMuon()
 	{
@@ -1986,6 +2101,7 @@ namespace lepton_tree {
 	const bool &tag_HLTLeadingLeg();
 	const float &dilep_mass();
 	const float &sigmaIEtaIEta_full5x5();
+	const float &sigmaIEtaIEta();
 	const float &etaSC();
 	const float &dEtaIn();
 	const float &dPhiIn();
@@ -1998,6 +2114,10 @@ namespace lepton_tree {
 	const int &sccharge();
 	const int &ckf_charge();
 	const bool &threeChargeAgree();
+	const float &mva();
+	const float &tkIso();
+	const float &ecalIso();
+	const float &hcalIso();
 	const int &pid_PFMuon();
 	const float &gfit_chi2();
 	const float &gfit_ndof();

@@ -63,6 +63,7 @@ namespace lepton_tree {
 	const bool &tag_HLTLeadingLeg() { return lepton_tree_obj.tag_HLTLeadingLeg(); }
 	const float &dilep_mass() { return lepton_tree_obj.dilep_mass(); }
 	const float &sigmaIEtaIEta_full5x5() { return lepton_tree_obj.sigmaIEtaIEta_full5x5(); }
+	const float &sigmaIEtaIEta() { return lepton_tree_obj.sigmaIEtaIEta(); }
 	const float &etaSC() { return lepton_tree_obj.etaSC(); }
 	const float &dEtaIn() { return lepton_tree_obj.dEtaIn(); }
 	const float &dPhiIn() { return lepton_tree_obj.dPhiIn(); }
@@ -75,6 +76,10 @@ namespace lepton_tree {
 	const int &sccharge() { return lepton_tree_obj.sccharge(); }
 	const int &ckf_charge() { return lepton_tree_obj.ckf_charge(); }
 	const bool &threeChargeAgree() { return lepton_tree_obj.threeChargeAgree(); }
+	const float &mva() { return lepton_tree_obj.mva(); }
+	const float &tkIso() { return lepton_tree_obj.tkIso(); }
+	const float &ecalIso() { return lepton_tree_obj.ecalIso(); }
+	const float &hcalIso() { return lepton_tree_obj.hcalIso(); }
 	const int &pid_PFMuon() { return lepton_tree_obj.pid_PFMuon(); }
 	const float &gfit_chi2() { return lepton_tree_obj.gfit_chi2(); }
 	const float &gfit_ndof() { return lepton_tree_obj.gfit_ndof(); }

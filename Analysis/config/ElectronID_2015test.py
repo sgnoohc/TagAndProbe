@@ -30,7 +30,7 @@ tnp_parameters = cms.PSet(
 	lepton_type = cms.string("electron"),
 
 	## output label to give it a unique name
-	output_label = cms.string("ElectronID_EGammaMediumWP"),
+	output_label = cms.string("ElectronID_EGammaMediumWPunbiased"),
  
 	## suffix to print the plots (before the fit)
 	## blank means do not print
