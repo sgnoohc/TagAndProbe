@@ -245,6 +245,23 @@ int MassPlotLooper::Analyze(long long entry)
         const bool is_data = m_is_data;
         const bool is_mc   = (not is_data);
 
+	// check flavo(u)r
+	if (is_mu && fabs(id()) != 13) {
+	  if (m_verbose) {cout << "Not a muon!" << endl;}
+	  return 0;
+	}
+	if (is_el && fabs(id()) != 11) {
+	  if (m_verbose) {cout << "Not an electron!" << endl;}
+	  return 0;
+	}
+
+
+	bool foundTag = (tag_charge() != 0); // This means our probe lives in an event with a good tag of same flavor
+	if (!foundTag)  {
+	  if (m_verbose) {cout << "Did not find a tag" << endl;}
+	  return 0;
+	}
+
         // passes the probe denominator 
         if (not tnp::PassesSelection(m_lepton_type, m_den, is_data))
         {
@@ -252,26 +269,9 @@ int MassPlotLooper::Analyze(long long entry)
             return 0;
         }
 
-	bool foundTag = (tag_charge() != 0); // This means we our probe lives in an event with a good tag of same flavor
-        // Z/onia --> ee
-        if (is_el)
-        {
-	  if (!foundTag)  {
-	    if (m_verbose) {cout << "Did not pass Z/onia --> ee" << endl;}
-	    return 0;
-	  }
-        }
-        // Z/onia --> mm
-        if (is_mu)
-        {
-	  if (!foundTag)  {
-	    if (m_verbose) {cout << "Did not pass Z/onia --> mm" << endl;}
-	    return 0;
-	  }
-        }
-
+  
         // require OS leptons
-        if( (tag_charge() * charge()) > 0) // GZ FIX Need to add mu_charge to LeptonTree
+        if( !is_mu && (tag_charge() * charge()) > 0) // GZ only requiring this for electrons
         {
             if (m_verbose) {cout << "Did not pass OS requirement" << endl;}
             return 0;
@@ -285,12 +285,12 @@ int MassPlotLooper::Analyze(long long entry)
             return 0;
         }
 
-        // MC reqruied DeltaR(reco lepton, status 1 gen level lepton) < 0.2
-        //GZif (is_mc && gen_drs1() > 0.2)
-        //GZ{
-        //GZ    if (m_verbose) {cout << "Did not DeltaR(lep, s1) < 0.2 requirement" << endl;}
-        //GZ    return 0;
-        //GZ}
+        // MC reqruied (also correct charge)
+        if (is_mc && motherID() != 1)
+        {
+            if (m_verbose) {cout << "Did not pass gen-matching requirement" << endl;}
+            return 0;
+        }
 
         // check pt boundaries
         const bool has_pt_bins = m_pt_bins.size() >= 2;

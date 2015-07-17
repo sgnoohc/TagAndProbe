@@ -30,7 +30,7 @@ tnp_parameters = cms.PSet(
 	lepton_type = cms.string("electron"),
 
 	## output label to give it a unique name
-	output_label = cms.string("ElectronID_EGammaMediumWPunbiased"),
+	output_label = cms.string("ElectronID_EGammaMediumWP2015"),
  
 	## suffix to print the plots (before the fit)
 	## blank means do not print
@@ -53,9 +53,9 @@ tnp_parameters = cms.PSet(
 	mass_bin_width = cms.double(2.0),   # GeV
 	
 	# datasets to run on
-	#datasets = cms.VPSet(dy_full, single_el),
-        #datasets = cms.VPSet(dy_test),
-        datasets = cms.VPSet(dy_test, double_el_test),
+	datasets = cms.VPSet(dy_full, single_el),
+        #datasets = cms.VPSet(single_el),
+        #datasets = cms.VPSet(dy_test, double_el_test),
 
 	## bins for the observables
 	## supported pt, eta, phi, and # vertices
@@ -222,7 +222,7 @@ tnp_parameters.mc_template_file = cms.string("%s/plots/%s/%s/%s_%s/%s.root" % (a
                                                                                tnp_parameters.lepton_type.value(),
                                                                                tnp_parameters.denominator.value(), 
                                                                                tnp_parameters.numerator.value(), 
-                                                                               dy_test.name.value()))
+                                                                               dy_full.name.value()))
 ## ------------------------------------------------------------- #
 ## process to make the plots
 ## will make a set of plots for each element of the cms.VPSet

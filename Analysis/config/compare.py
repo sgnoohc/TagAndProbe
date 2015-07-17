@@ -31,14 +31,14 @@ el_id = cms.PSet(
 	output_label = cms.string("compare"),
 
 	## path to the efficiency results to compare 
-	eff_results_path = cms.string(analysis_path+"/plots/ElectronID_EGammaMediumWPunbiased/electron/EGammaMediumWPDenBoth_EGammaMediumWPNum"),
+	eff_results_path = cms.string(analysis_path+"/plots/ElectronID_EGammaMediumWP2015/electron/EGammaMediumWPDenBoth_EGammaMediumWPNum"),
 
 	## first result to compare
-	#dataset1 = single_el,
-        dataset1 = double_el_test,
+	dataset1 = single_el,
+        #dataset1 = double_el,
 
 	## second result to compare
-	dataset2 = dy_test,
+	dataset2 = dy_full,
 
 	## suffix to print the plots (before the fit)
 	## blank means do not print
