@@ -65,29 +65,18 @@ namespace tnp
         if (lepton_type == Lepton::Electron)
         {
             // cut values and variables
-//            const float el_is_barrel   = fabs(etaSC()) < 1.4442;
-//            const float el_is_endcap   = fabs(etaSC()) > 1.566;
-//            const float el_is_crack    = not (el_is_barrel or el_is_endcap);
-            const bool el_is_barrel   = fabs(etaSC()) < 1.479;
-            const bool el_is_endcap   = !el_is_barrel;
+	    //const bool el_is_barrel   = fabs(etaSC()) < 1.479;
+            //const bool el_is_endcap   = !el_is_barrel;
             const bool el_is_crack    = false;
             const float el_tag_pt      = tag_p4().pt(); 
-            const float el_tag_pt_cut  = 25.0;
+            const float el_tag_pt_cut  = 30.0;
 
             // cut decisions 
             const bool el_passes_pt       = (el_tag_pt > el_tag_pt_cut);
-            const bool el_passes_trig_tag = evt_isRealData() ? tag_HLT_Ele27_eta2p1_WPLoose_Gsf() : true; //true; //GZ need update
-            const bool el_passes_id_iso   = passes_SS_tight_v3(); 
-            const bool el_passes_id       = passes_SS_tight_noiso_v3(); 
+            const bool el_passes_trig_tag = evt_isRealData() ? tag_HLT_Ele27_eta2p1_WPLoose_Gsf() > 0: true; //true; //GZ need update
+            const bool el_passes_id_iso   = passes_HAD_veto_v3(); 
+            const bool el_passes_id       = passes_HAD_veto_noiso_v3(); 
 	    // necessary when comparing MC with 2012 ZElectron skim, where probe is biassed
-	    const bool el_passes_ZElectronskimID = ( tkIso()/p4().pt() < 0.2 && ecalIso()/p4().pt() < 0.3 && hcalIso()/p4().pt() < 0.3 &&
-						     p4().pt() > 10. && 
-						     exp_innerlayers() <=1 && hOverE() < 0.15 && fabs(dEtaIn())<0.01 &&
-						     ( 
-						      (el_is_barrel && sigmaIEtaIEta() < 0.012 && fabs(dPhiIn()) < 0.7 ) ||
-						      (el_is_endcap && sigmaIEtaIEta() < 0.033 && fabs(dPhiIn()) < 0.8 ) 
-						       )
-						     );
 						    
 
             // EGamma Medium WP (2012)
@@ -101,7 +90,6 @@ namespace tnp
                 if (not el_passes_pt)       {return false;}
                 if (not el_passes_trig_tag) {return false;}
                 if (not el_passes_id)       {return false;}
-		if (not el_passes_ZElectronskimID) {return false;}
             }
 	    //GZ 
             //GZ // ID
@@ -119,7 +107,6 @@ namespace tnp
                 if (el_is_crack)            {return false;}
                 if (not el_passes_pt)       {return false;}
                 if (not el_passes_trig_tag) {return false;}
-		//if (not el_passes_ZElectronskimID) {return false;}
             }
 
             // Numerator
@@ -130,7 +117,6 @@ namespace tnp
                 if (not el_passes_trig_tag)  {return false;}
                 if (not el_passes_id)        {return false;}
                 if (not el_passes_id_iso)    {return false;}
-		//if (not el_passes_ZElectronskimID) {return false;}
             }
 
         }

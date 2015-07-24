@@ -13,6 +13,7 @@ locDir=$CMSSW_BASE/src/TagAndProbe/Analysis/plots/$locName/electron/EGammaMedium
 wwwDir=~/www/public_html/$wwwName/
 mkdir -p $wwwDir/MC
 mkdir -p $wwwDir/Data
+rm $wwwDir/MC/* $wwwDir/Data/* $wwwDir/*.png
 
 cp $locDir/compare/index.php $wwwDir/
 cp $locDir/compare/index.php $wwwDir/Data
@@ -27,6 +28,7 @@ cd ~/www/public_html/
 rm webtest.zip
 zip -r webtest.zip $wwwName/*
 scp webtest.zip $USER@lxplus.cern.ch:~/www/public_html/
+ssh $USER@lxplus.cern.ch "cd  www/public_html/; unzip webtest.zip;"
 cd -
 
 
