@@ -101,18 +101,29 @@ TCanvas* CreateScaleFactorPlot2D
     const std::string& title,
     const std::string& ds1_label,
     const std::string& ds2_label,
-    const std::string& option = ""
+    const std::string& option = "",
+    const bool doLogxy = false
 )
 {
-    const std::string canvas_title = lt::string_replace_all(h_sf->GetName(), "h_", "p_");
+    std::string canvas_title = lt::string_replace_all(h_sf->GetName(), "h_", "p_");
+    if (ds2_label == "") { // Usually to draw efficiency in Data or in MC only, not a ratio
+      canvas_title += "_";
+      canvas_title += ds1_label;
+    }
     TCanvas* c = new TCanvas(canvas_title.c_str(), canvas_title.c_str(), 800, 600);
     c->SetGrid();
     if (lt::string_contains(option, "colz"))
     {
         c->SetRightMargin(0.15);
     }
+    if (doLogxy)
+    {
+        c->SetLogx();
+	c->SetLogy();
+    }
 
     h_sf->GetZaxis()->SetRangeUser(0.7, 1.1);
+    if (ds2_label == "") h_sf->GetZaxis()->SetRangeUser(0.5, 1.);
     h_sf->SetTitle(title.c_str());
     h_sf->SetTitle(title.c_str());
     h_sf->SetLineColor(kBlack);
@@ -138,7 +149,7 @@ try
     AutoLibraryLoader::enable();
 
     // global style
-    gStyle->SetPaintTextFormat("1.3");
+    gStyle->SetPaintTextFormat("2.3f");
 
     // -------------------------------------------------------------------------------- //
     // parse the inputs
@@ -224,7 +235,7 @@ try
             const std::string& eff_hist_name = eff_names.at(i);    
             const std::string& sf_hist_name  = lt::string_replace_all(eff_hist_name, "eff", "sf");
             const std::string& sf_hist_title = lt::string_replace_all(hc1[eff_hist_name]->GetTitle(), "Efficiency", "Scale Factor");
-            hc_sf.Add(rt::DivideHists(hc1[eff_hist_name], hc2[eff_hist_name], sf_hist_name, sf_hist_title)); 
+            hc_sf.Add(rt::DivideHists(hc1[eff_hist_name], hc2[eff_hist_name], sf_hist_name, sf_hist_title, "B")); 
         }
 
         // -------------------------------------------------------------------------------- //
@@ -267,6 +278,15 @@ try
             compare_plots.push_back(CreateEfficienyPlot1D(hc1["h_eff_phi"], hc2["h_eff_phi"], hc_sf["h_sf_phi"], "Efficiency vs #phi;#phi; Efficiency", dataset1.m_title, dataset2.m_title));
         }
 
+        // 1D: eff(activity)
+        if (std::find(eff_names.begin(), eff_names.end(), std::string("h_eff_activity")) != eff_names.end())
+        {
+            dataset1_eff_tables.push_back(rt::CreateTableFromHist(hc1  ["h_eff_activity"], Form("%s Efficiency vs Activity", dataset1.m_title.c_str()), "Activity", "", "", "", "1.2", "1.2", "1.0", false));
+            dataset2_eff_tables.push_back(rt::CreateTableFromHist(hc2  ["h_eff_activity"], Form("%s Efficiency vs Activity", dataset2.m_title.c_str()), "Activity", "", "", "", "1.2", "1.2", "1.0", false));
+            scale_factor_tables.push_back(rt::CreateTableFromHist(hc_sf["h_sf_activity" ], "Scale Factor vs Activity", "Activity", "", "", "", "1.2", "1.2", "1.0", false));
+            compare_plots.push_back(CreateEfficienyPlot1D(hc1["h_eff_activity"], hc2["h_eff_activity"], hc_sf["h_sf_activity"], "Efficiency vs Activity; Activity; Efficiency", dataset1.m_title, dataset2.m_title));
+        }
+
         // 1D: eff(nvtx)
         if (std::find(eff_names.begin(), eff_names.end(), std::string("h_eff_nvtx")) != eff_names.end())
         {
@@ -302,6 +322,35 @@ try
             dataset2_eff_tables.push_back(rt::CreateTableFromHist(hc2  ["h_eff_eta_vs_phi"], Form("%s Efficiency vs $\\eta$ and $\\phi$", dataset2.m_title.c_str()), "$\\eta$", "$\\phi$", "", "", "1.2", "1.2", "1.2", true));
             scale_factor_tables.push_back(rt::CreateTableFromHist(hc_sf["h_sf_eta_vs_phi" ], "Scale Factor vs $\\eta$ and $\\phi$", "$\\eta$", "$\\phi$", "", "", "1.2", "1.2", "1.2", true));
             compare_plots.push_back(CreateScaleFactorPlot2D(hc_sf["h_sf_eta_vs_phi"], "Scale Factor vs #eta and #phi;#phi;#eta;Efficiency", dataset1.m_title, dataset2.m_title, "colz"));
+        }
+
+        // 2D: eff(pt, activity)
+        if (std::find(eff_names.begin(), eff_names.end(), std::string("h_eff_pt_vs_activity")) != eff_names.end())
+        {
+            dataset1_eff_tables.push_back(rt::CreateTableFromHist(hc1  ["h_eff_pt_vs_activity"], Form("%s Efficiency vs $p_{T}$ and $\\activity$", dataset1.m_title.c_str()), "$p_{T}$", "$\\activity$", "", "", "1.2", "1.0", "1.2", true));
+            dataset2_eff_tables.push_back(rt::CreateTableFromHist(hc2  ["h_eff_pt_vs_activity"], Form("%s Efficiency vs $p_{T}$ and $\\activity$", dataset2.m_title.c_str()), "$p_{T}$", "$\\activity$", "", "", "1.2", "1.0", "1.2", true));
+            scale_factor_tables.push_back(rt::CreateTableFromHist(hc_sf["h_sf_pt_vs_activity" ], "Scale Factor vs $p_{T}$ and $\\activity$", "$p_{T}$", "$\\activity$", "", "", "1.2", "1.0", "1.2", true));
+            compare_plots.push_back(CreateScaleFactorPlot2D(hc_sf["h_sf_pt_vs_activity"], "Scale Factor vs p_{T} and #activity;#activity;p_{T} (GeV);Scale Factor", dataset1.m_title, dataset2.m_title, "colz textE", true));
+            compare_plots.push_back(CreateScaleFactorPlot2D(hc1["h_eff_pt_vs_activity"], "Efficiency vs p_{T} and #activity;#activity;p_{T} (GeV);Efficiency", "Data", "", "colz textE", true));
+            compare_plots.push_back(CreateScaleFactorPlot2D(hc2["h_eff_pt_vs_activity"], "Efficiency vs p_{T} and #activity;#activity;p_{T} (GeV);Efficiency", "MC", "", "colz textE", true));
+	    // also compare plots per pt region
+	    for (int i = 1; i <= hc1["h_eff_pt_vs_activity"]->GetNbinsX(); i++ ) {
+	      float begin = hc1  ["h_eff_pt_vs_activity"]->GetXaxis()->GetBinLowEdge(i);
+	      float end   = hc1  ["h_eff_pt_vs_activity"]->GetXaxis()->GetBinUpEdge(i);
+	      TH1 * proj1 = rt::MakeProjectionPlot( ((TH2*) hc1  ["h_eff_pt_vs_activity"]), "y", Form("h_eff_pt_activity_%.2f_%.2f", begin, end), "h1_eff_pt_activity", begin, end);
+	      TH1 * proj2 = rt::MakeProjectionPlot( ((TH2*) hc2  ["h_eff_pt_vs_activity"]), "y", Form("h2_eff_pt_activity_%.2f_%.2f", begin, end), "h2_eff_pt_activity", begin, end);
+	      TH1 * projSF= rt::MakeProjectionPlot( ((TH2*) hc_sf["h_sf_pt_vs_activity" ]), "y", Form("h_sf_pt_activity_%.2f_%.2f", begin, end), "h_sf_pt_activity"  , begin, end);	      
+	      compare_plots.push_back(CreateEfficienyPlot1D(proj1, proj2, projSF, Form("Efficiency vs p_{T} (\\activity: %.2f - %.2f);p_{T} (GeV); Efficiency", begin, end), dataset1.m_title, dataset2.m_title));
+	    }
+	    for (int i = 1; i <= hc1["h_eff_pt_vs_activity"]->GetNbinsY(); i++ ) {
+	      float begin = hc1  ["h_eff_pt_vs_activity"]->GetYaxis()->GetBinLowEdge(i);
+	      float end   = hc1  ["h_eff_pt_vs_activity"]->GetYaxis()->GetBinUpEdge(i);
+	      TH1 * proj1 = rt::MakeProjectionPlot( ((TH2*) hc1  ["h_eff_pt_vs_activity"]), "x", Form("h_eff_pt_activity_%.2f_%.2f", begin, end), "h1_eff_pt_activity", begin, end);
+	      TH1 * proj2 = rt::MakeProjectionPlot( ((TH2*) hc2  ["h_eff_pt_vs_activity"]), "x", Form("h2_eff_pt_activity_%.2f_%.2f", begin, end), "h2_eff_pt_activity", begin, end);
+	      TH1 * projSF= rt::MakeProjectionPlot( ((TH2*) hc_sf["h_sf_pt_vs_activity" ]), "x", Form("h_sf_pt_activity_%.2f_%.2f", begin, end), "h_sf_pt_activity"  , begin, end);	      
+	      compare_plots.push_back(CreateEfficienyPlot1D(proj1, proj2, projSF, Form("Efficiency vs activity (\\p_{T}: %.2f - %.2f);activity; Efficiency", begin, end), dataset1.m_title, dataset2.m_title));
+	    }
+
         }
 
         // -------------------------------------------------------------------------------- //

@@ -50,6 +50,7 @@ class MassPlotLooper
             const std::vector<double> pt_bins,
             const std::vector<double> eta_bins,
             const std::vector<double> phi_bins,
+            const std::vector<double> activity_bins,
             const std::vector<double> nvtx_bins,
             const bool is_data,
             const std::string& pileup_hist_file, 
@@ -84,6 +85,7 @@ class MassPlotLooper
         std::vector<double> m_pt_bins;
         std::vector<double> m_eta_bins;
         std::vector<double> m_phi_bins;
+        std::vector<double> m_activity_bins;
         std::vector<double> m_nvtx_bins;
         bool m_is_data;
         std::string m_suffix;
@@ -106,6 +108,7 @@ MassPlotLooper::MassPlotLooper
     const std::vector<double> pt_bins,
     const std::vector<double> eta_bins,
     const std::vector<double> phi_bins,
+    const std::vector<double> activity_bins,
     const std::vector<double> nvtx_bins,
     const bool is_data,
     const std::string& pileup_hist_file, 
@@ -123,6 +126,7 @@ MassPlotLooper::MassPlotLooper
     , m_pt_bins(pt_bins)
     , m_eta_bins(eta_bins)
     , m_phi_bins(phi_bins)
+    , m_activity_bins(activity_bins)
     , m_nvtx_bins(nvtx_bins)
     , m_is_data(is_data)
     , m_suffix(suffix)
@@ -176,6 +180,17 @@ void MassPlotLooper::BookHists()
         }
     }
 
+    // book activity histogram
+    if (m_activity_bins.size() >= 2)
+    {
+        for (size_t activity_bin = 0; activity_bin != m_activity_bins.size()-1; activity_bin++)
+        {
+            const std::string bin_title = Form("%1.2f < Activity < %1.2f", m_activity_bins[activity_bin], m_activity_bins[activity_bin+1]);
+            hc.Add(new TH1F(Form("h_pass_activity%lu", activity_bin), Form("Passing probes (%s);tag & probe mass (GeV);Events / %1.1f (GeV)", bin_title.c_str(), m_mass_bin_width), num_mass_bins, m_mass_low, m_mass_high));
+            hc.Add(new TH1F(Form("h_fail_activity%lu", activity_bin), Form("Failing probes (%s);tag & probe mass (GeV);Events / %1.1f (GeV)", bin_title.c_str(), m_mass_bin_width), num_mass_bins, m_mass_low, m_mass_high));
+        }
+    }
+
     // book # vertices histogram
     if (m_nvtx_bins.size() >= 2)
     {
@@ -211,6 +226,20 @@ void MassPlotLooper::BookHists()
                 const std::string bin_title = Form("%1.2f < %s < %1.2f, %1.2f < %s < %1.2f", m_eta_bins[eta_bin], eta_title.c_str(), m_eta_bins[eta_bin+1], m_phi_bins[phi_bin], phi_title.c_str(), m_phi_bins[phi_bin+1]);
                 hc.Add(new TH1F(Form("h_pass_eta%lu_vs_phi%lu", eta_bin, phi_bin), Form("Passing probes (%s);tag & probe mass (GeV);Events / %1.1f (GeV)", bin_title.c_str(), m_mass_bin_width), num_mass_bins, m_mass_low, m_mass_high));
                 hc.Add(new TH1F(Form("h_fail_eta%lu_vs_phi%lu", eta_bin, phi_bin), Form("Failing probes (%s);tag & probe mass (GeV);Events / %1.1f (GeV)", bin_title.c_str(), m_mass_bin_width), num_mass_bins, m_mass_low, m_mass_high));
+            }
+        }
+    }
+
+    // book pt vs activity histograms 
+    if (m_pt_bins.size() >= 2 and m_activity_bins.size() >= 2)
+    {
+        for (size_t pt_bin = 0; pt_bin != m_pt_bins.size()-1; pt_bin++)
+        {
+            for (size_t activity_bin = 0; activity_bin != m_activity_bins.size()-1; activity_bin++)
+            {
+                const std::string bin_title = Form("%1.2f < p_{T} < %1.2f, %1.2f < Activity < %1.2f", m_pt_bins[pt_bin], m_pt_bins[pt_bin+1], m_activity_bins[activity_bin], m_activity_bins[activity_bin+1]);
+                hc.Add(new TH1F(Form("h_pass_pt%lu_vs_activity%lu", pt_bin, activity_bin), Form("Passing probes (%s);tag & probe mass (GeV);Events / %1.1f (GeV)", bin_title.c_str(), m_mass_bin_width), num_mass_bins, m_mass_low, m_mass_high));
+                hc.Add(new TH1F(Form("h_fail_pt%lu_vs_activity%lu", pt_bin, activity_bin), Form("Failing probes (%s);tag & probe mass (GeV);Events / %1.1f (GeV)", bin_title.c_str(), m_mass_bin_width), num_mass_bins, m_mass_low, m_mass_high));
             }
         }
     }
@@ -327,6 +356,18 @@ int MassPlotLooper::Analyze(long long entry)
             return 0;
         }
 
+        // check activity boundaries
+        const bool has_activity_bins = m_activity_bins.size() >= 2;
+        const float activity_min     = (not has_activity_bins ? 999999.0  : m_activity_bins.front());
+        const float activity_max     = (not has_activity_bins ? -999999.0 : m_activity_bins.back() );
+	// overflow and underflow
+	const float probe_activity   = annulus04() < activity_min ? activity_min : (annulus04() > activity_max ? activity_max : annulus04());
+        if (has_activity_bins and not (activity_min < probe_activity && probe_activity < activity_max))
+        {
+            if (m_verbose) {cout << "outside activity bins" << endl;}
+            return 0;
+        }
+
         // check the nvtxs boundaries
         const bool has_nvtx_bins = m_nvtx_bins.size() >= 2;
         const float nvtxs        = nvtx();
@@ -342,11 +383,13 @@ int MassPlotLooper::Analyze(long long entry)
         unsigned int pt_bin   = (has_pt_bins   ? rt::find_bin(probe_pt , m_pt_bins  ) : -999999);
         unsigned int eta_bin  = (has_eta_bins  ? rt::find_bin(probe_eta, m_eta_bins ) : -999999);
         unsigned int phi_bin  = (has_phi_bins  ? rt::find_bin(probe_phi, m_phi_bins ) : -999999);
+        unsigned int activity_bin  = (has_activity_bins  ? rt::find_bin(probe_activity, m_activity_bins ) : -999999);
         unsigned int nvtx_bin = (has_nvtx_bins ? rt::find_bin(nvtxs    , m_nvtx_bins) : -999999);
 
         if (m_verbose and has_pt_bins  ) {cout << Form("pt %f  , pt_bin %u"  , probe_pt , pt_bin  ) << endl;}
         if (m_verbose and has_eta_bins ) {cout << Form("eta %f , eta_bin %u" , probe_eta, eta_bin ) << endl;}
         if (m_verbose and has_phi_bins ) {cout << Form("phi %f , phi %u"     , probe_phi, phi_bin ) << endl;}
+        if (m_verbose and has_activity_bins ) {cout << Form("activity %f , activity %u"     , probe_activity, activity_bin ) << endl;}
         if (m_verbose and has_nvtx_bins) {cout << Form("nvtx %f, nvtx_bin %u", nvtxs    , nvtx_bin) << endl;}
 
         // PU re-weight
@@ -366,9 +409,11 @@ int MassPlotLooper::Analyze(long long entry)
             if (has_pt_bins                  ) {hc[Form("h_pass_pt%u", pt_bin)                    ]->Fill(mass, weight);}
             if (has_eta_bins                 ) {hc[Form("h_pass_eta%u", eta_bin)                  ]->Fill(mass, weight);}
             if (has_phi_bins                 ) {hc[Form("h_pass_phi%u", phi_bin)                  ]->Fill(mass, weight);}
+            if (has_activity_bins            ) {hc[Form("h_pass_activity%u", activity_bin)        ]->Fill(mass, weight);}
             if (has_nvtx_bins                ) {hc[Form("h_pass_nvtx%u", nvtx_bin)                ]->Fill(mass, weight);}
             if (has_pt_bins and has_eta_bins ) {hc[Form("h_pass_pt%u_vs_eta%u", pt_bin, eta_bin)  ]->Fill(mass, weight);}
             if (has_eta_bins and has_phi_bins) {hc[Form("h_pass_eta%u_vs_phi%u", eta_bin, phi_bin)]->Fill(mass, weight);}
+            if (has_pt_bins and has_activity_bins ) {hc[Form("h_pass_pt%u_vs_activity%u", pt_bin, activity_bin)  ]->Fill(mass, weight);}
         }
         // fails the probe numerator 
         else
@@ -379,9 +424,11 @@ int MassPlotLooper::Analyze(long long entry)
             if (has_pt_bins                  ) {hc[Form("h_fail_pt%u", pt_bin)                    ]->Fill(mass, weight);}
             if (has_eta_bins                 ) {hc[Form("h_fail_eta%u", eta_bin)                  ]->Fill(mass, weight);}
             if (has_phi_bins                 ) {hc[Form("h_fail_phi%u", phi_bin)                  ]->Fill(mass, weight);}
+            if (has_activity_bins            ) {hc[Form("h_fail_activity%u", activity_bin)        ]->Fill(mass, weight);}
             if (has_nvtx_bins                ) {hc[Form("h_fail_nvtx%u", nvtx_bin)                ]->Fill(mass, weight);}
             if (has_pt_bins and has_eta_bins ) {hc[Form("h_fail_pt%u_vs_eta%u", pt_bin, eta_bin)  ]->Fill(mass, weight);}
             if (has_eta_bins and has_phi_bins) {hc[Form("h_fail_eta%u_vs_phi%u", eta_bin, phi_bin)]->Fill(mass, weight);}
+            if (has_pt_bins and has_activity_bins ) {hc[Form("h_fail_pt%u_vs_activity%u", pt_bin, activity_bin)  ]->Fill(mass, weight);}
         }
 
         // done
@@ -710,6 +757,7 @@ try
     const std::vector<double> pt_bins         = tnp_cfg.getParameter<std::vector<double> >("pt_bins");
     const std::vector<double> eta_bins        = tnp_cfg.getParameter<std::vector<double> >("eta_bins");
     const std::vector<double> phi_bins        = tnp_cfg.getParameter<std::vector<double> >("phi_bins");
+    const std::vector<double> activity_bins   = tnp_cfg.getParameter<std::vector<double> >("activity_bins");
     const std::vector<double> nvtx_bins       = tnp_cfg.getParameter<std::vector<double> >("nvtx_bins");
     const std::vector<tnp::Dataset> datasets  = tnp::GetDatasetsFromVPSet(tnp_cfg.getParameter<std::vector<edm::ParameterSet> >("datasets"));
 
@@ -764,6 +812,7 @@ try
                 pt_bins,
                 eta_bins,
                 phi_bins,
+                activity_bins,
                 nvtx_bins,
                 dataset.m_is_data,
                 pileup_hist_file,

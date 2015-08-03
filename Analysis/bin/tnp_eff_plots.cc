@@ -185,6 +185,7 @@ try
     const std::vector<double> pt_bins   = tnp_cfg.getParameter<std::vector<double> >("pt_bins"  );
     const std::vector<double> eta_bins  = tnp_cfg.getParameter<std::vector<double> >("eta_bins" );
     const std::vector<double> phi_bins  = tnp_cfg.getParameter<std::vector<double> >("phi_bins" );
+    const std::vector<double> activity_bins  = tnp_cfg.getParameter<std::vector<double> >("activity_bins" );
     const std::vector<double> nvtx_bins = tnp_cfg.getParameter<std::vector<double> >("nvtx_bins");
 //     const unsigned int num_pt_bins      = pt_bins.size()-1;
 //     const unsigned int num_eta_bins     = eta_bins.size()-1;
@@ -296,12 +297,14 @@ try
         const bin_info_t pt_bin_info  ("pt"  , "p_{T}"                                                            , "(GeV)", 2, pt_bins  );
         const bin_info_t eta_bin_info ("eta" , (not eta_bins.empty() and eta_bins.front() < 0 ? "#eta" : "|#eta|"), ""     , 3, eta_bins );
         const bin_info_t phi_bin_info ("phi" , (not phi_bins.empty() and phi_bins.front() < 0 ? "#phi" : "|#phi|"), ""     , 3, phi_bins );
+        const bin_info_t activity_bin_info ("activity" , "activity"                                               , ""     , 3, activity_bins );
         const bin_info_t nvtx_bin_info("nvtx", "# of vertices"                                                    , ""     , 2, nvtx_bins);
 
         std::vector<bin_info_t> bin_infos;
         if (not pt_bins.empty()  ) {bin_infos.push_back(pt_bin_info  );}
         if (not eta_bins.empty() ) {bin_infos.push_back(eta_bin_info );}
         if (not phi_bins.empty() ) {bin_infos.push_back(phi_bin_info );}
+        if (not activity_bins.empty() ) {bin_infos.push_back(activity_bin_info );}
         if (not nvtx_bins.empty()) {bin_infos.push_back(nvtx_bin_info);}
 
         // create 1D bin efficiency plots
@@ -434,6 +437,7 @@ try
         std::vector<bin_info_pair_t> bin_info_pairs;
         if (not pt_bins.empty()  and not eta_bins.empty()) {bin_info_pairs.push_back(bin_info_pair_t(eta_bin_info, pt_bin_info ));}
         if (not eta_bins.empty() and not phi_bins.empty()) {bin_info_pairs.push_back(bin_info_pair_t(phi_bin_info, eta_bin_info));}
+        if (not pt_bins.empty()  and not activity_bins.empty()) {bin_info_pairs.push_back(bin_info_pair_t(activity_bin_info, pt_bin_info ));}
 
         // create 2D bin efficiency plots
         // ------------------------------------------------------ //
