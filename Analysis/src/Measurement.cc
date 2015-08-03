@@ -73,14 +73,15 @@ namespace tnp
             // cut values and variables
 	    const bool el_is_barrel   = fabs(etaSC()) < 1.479;
             //const bool el_is_endcap   = fabs(etaSC()) > 1.566 && fabs(etaSC()) < 2.5;
-            const bool el_is_crack    = fabs(etaSC()) < 1.566 && fabs(etaSC()) > 1.442;
+            //const bool el_is_crack    = fabs(etaSC()) < 1.566 && fabs(etaSC()) > 1.442;
             const float el_tag_pt      = tag_p4().pt(); 
             const float el_tag_pt_cut  = 30.0;
 
             // cut decisions 
             const bool el_passes_pt       = (el_tag_pt > el_tag_pt_cut);
             const bool el_passes_trig_tag = evt_isRealData() ? tag_HLT_Ele27_eta2p1_WPLoose_Gsf() > 0: true; //true; //GZ need update
-	    const bool el_GsfElectron_den = ( !el_is_crack && el_passes_pt && el_passes_trig_tag );
+	    //	    const bool el_GsfElectron_den = ( !el_is_crack && el_passes_pt && el_passes_trig_tag );
+	    const bool el_GsfElectron_den = ( el_passes_pt && el_passes_trig_tag );
 
 	    // implement by hand STOP_medium_v2
 	    bool el_passes_STOP_medium_v2_noiso = true;
