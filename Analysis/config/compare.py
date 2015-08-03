@@ -31,7 +31,7 @@ el_id = cms.PSet(
 	output_label = cms.string("compare"),
 
 	## path to the efficiency results to compare 
-	eff_results_path = cms.string(analysis_path+"/plots/ElectronID_EGammaHADvetoV3_2015/electron/EGammaMediumWPDenBoth_EGammaMediumWPNum"),
+	eff_results_path = cms.string(analysis_path+"/plots/ElectronID_EGammaMediumPOGIso/electron/EGammaGsfElectron_EGammaMediumPOGIso"),
 
 	## first result to compare
 	dataset1 = single_el,

@@ -30,7 +30,7 @@ tnp_parameters = cms.PSet(
 	lepton_type = cms.string("electron"),
 
 	## output label to give it a unique name
-	output_label = cms.string("ElectronID_EGammaHADvetoV3_2015"),
+	output_label = cms.string("ElectronID_EGammaMediumPOGIso"),
  
 	## suffix to print the plots (before the fit)
 	## blank means do not print
@@ -61,7 +61,7 @@ tnp_parameters = cms.PSet(
 	## supported pt, eta, phi, and # vertices
 	## note: for eta and phi, no negative bins means use |eta| and |phi|, respectively
 #	pt_bins   = cms.vdouble(10, 15, 20, 30, 40, 50, 200),
-	pt_bins   = cms.vdouble(10, 20, 30, 40, 50, 200),
+	pt_bins   = cms.vdouble(20, 25, 35, 50, 80, 200),
 #	eta_bins  = cms.vdouble(0, 0.8, 1.4442, 1.566, 2.0, 2.5),
 	eta_bins  = cms.vdouble(0, 1.4442, 1.566, 2.5),
 #	phi_bins  = cms.vdouble(0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.15),
@@ -69,9 +69,14 @@ tnp_parameters = cms.PSet(
 #	nvtx_bins = cms.vdouble(0, 5, 10, 15, 20, 25, 30, 35, 40),
 	nvtx_bins = cms.vdouble(),
 
+
+        ## W/Z measurement bins
+        #pt_bins   = cms.vdouble(25, 40, 55, 200),
+        #eta_bins  = cms.vdouble(-2.5, -2, -1.566, -1.442, -1, -0.5, 0, 0.5, 1, 1.4442, 1.566, 2, 2.5),
+
 	## selection (from Measurements.h/cc) 
-	numerator   = cms.string("EGammaMediumWPNum"  ),
-	denominator = cms.string("EGammaMediumWPDenBoth"),
+	numerator   = cms.string("EGammaMediumPOGIso"  ),
+	denominator = cms.string("EGammaGsfElectron"),
 
 	## Parameters for the fitting 
 	## --------------------------------------------------------- #
@@ -80,35 +85,16 @@ tnp_parameters = cms.PSet(
 	## --------------------------------------------------------- #
 
 	## models for pt bins 
-
-#	pt_models = cms.vstring( 
-#	#          sig pass,        sig fail,      bkg pass,      bkg fail
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt0
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt1
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt2
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt3
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt4
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt5
-#	),
-
 	pt_models = cms.vstring( 
 	#          sig pass,        sig fail,      bkg pass,      bkg fail
 		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt1
 		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt2
 		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt3
-		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt4
-		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt5
+		#"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt4
+		#"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt5
 	),
 	
 	## models for eta bins 
-#	eta_models = cms.vstring( 
-#	#          sig pass,        sig fail,      bkg pass,      bkg fail
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential", # eta0
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential", # eta1
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential", # eta2  
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential", # eta3
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential", # eta4
-#	),
 	eta_models = cms.vstring( 
 	#          sig pass,        sig fail,      bkg pass,      bkg fail
 		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential", # eta2  
@@ -142,49 +128,6 @@ tnp_parameters = cms.PSet(
 		"MCTemplate"   , "BreitWignerCB", "Chebychev"  , "Chebychev"  , # nvtx7
 	),
 	
-#	pt_vs_eta_models = cms.vstring( # Possibly eta vs pt instead of pt vs eta. need to check
-#	#          sig pass,        sig fail,      bkg pass,      bkg fail
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta0, pt0
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta1, pt0
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta2, pt0 # crack electrons (1.4442 < |eta| < 1.566)
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta3, pt0
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential"  # eta4, pt0
-#	,
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta0, pt1
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta1, pt1
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta2, pt1 # crack electrons (1.4442 < |eta| < 1.566)
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta3, pt1
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential"  # eta4, pt1
-#	,
-##		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "ErfExp", # eta0, pt2
-##		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "ErfExp", # eta1, pt2 
-##		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "ErfExp", # eta2, pt2 # crack electrons (1.4442 < |eta| < 1.566)
-##		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "ErfExp", # eta3, pt2
-##		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "ErfExp"  # eta4, pt2
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta0, pt2
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta1, pt2 
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta2, pt2 # crack electrons (1.4442 < |eta| < 1.566)
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta3, pt2
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential"  # eta4, pt2
-#	,
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta0, pt3
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta1, pt3
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta2, pt3 # crack electrons (1.4442 < |eta| < 1.566)
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta3, pt3
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential"  # eta4, pt3
-#	,
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta0, pt4
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta1, pt4
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta2, pt4 # crack electrons (1.4442 < |eta| < 1.566)
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta3, pt4
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential"  # eta4, pt4
-#	,
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta0, pt5
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta1, pt5
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta2, pt5 # crack electrons (1.4442 < |eta| < 1.566)
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential", # eta3, pt5
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential"  # eta4, pt5
-#	),
 
 	pt_vs_eta_models = cms.vstring( # Possibly eta vs pt instead of pt vs eta. need to check
 	#          sig pass,        sig fail,      bkg pass,      bkg fail
@@ -193,62 +136,21 @@ tnp_parameters = cms.PSet(
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential"
-
 	),
 	
-	## models for eta vs phi bins 
-	eta_vs_phi_models = cms.vstring( 
-	#          sig pass,        sig fail,      bkg pass,      bkg fail
-		"BreitWignerCB", "BreitWignerCB", "Exponential", "Exponential", # phi0, eta0
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential", # phi1, eta0
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential", # phi2, eta0
-		"BreitWignerCB", "BreitWignerCB", "Exponential", "Exponential", # phi3, eta0
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential", # phi4, eta0
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential", # phi5, eta0
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential"  # phi6, eta0
-	, 
-		"BreitWignerCB", "BreitWignerCB", "Exponential", "Exponential", # phi0, eta1
-		"BreitWignerCB", "BreitWignerCB", "Exponential", "Exponential", # phi1, eta1
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential", # phi2, eta1
-		"BreitWignerCB", "BreitWignerCB", "Exponential", "Exponential", # phi3, eta1
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential", # phi4, eta1
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential", # phi5, eta1
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential"  # phi6, eta0
-	,
-		"MCTemplate"   , "MCTemplate"   , "Poly3"      , "Poly3"      , # phi0, eta2 # crack electrons (1.4442 < |eta| < 1.566)
-		"MCTemplate"   , "MCTemplate"   , "Poly3"      , "Poly3"      , # phi1, eta2 # crack electrons (1.4442 < |eta| < 1.566)
-		"MCTemplate"   , "MCTemplate"   , "ErfExp"     , "ErfExp"     , # phi2, eta2 # crack electrons (1.4442 < |eta| < 1.566)
-		"MCTemplate"   , "MCTemplate"   , "ErfExp"     , "ErfExp"     , # phi3, eta2 # crack electrons (1.4442 < |eta| < 1.566)
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential", # phi4, eta2 # crack electrons (1.4442 < |eta| < 1.566)
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential", # phi5, eta2 # crack electrons (1.4442 < |eta| < 1.566)
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential"  # phi6, eta2 # crack electrons (1.4442 < |eta| < 1.566)
-	,
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential", # phi0, eta3
-		"MCTemplate"   , "MCTemplate"   , "Poly3"      , "Exponential", # phi1, eta3
-		"MCTemplate"   , "MCTemplate"   , "ErfExp"     , "ErfExp"     , # phi2, eta3
-		"MCTemplate"   , "MCTemplate"   , "ErfExp"     , "ErfExp"     , # phi3, eta3
-		"MCTemplate"   , "MCTemplate"   , "ErfExp"     , "ErfExp"     , # phi4, eta3
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential", # phi5, eta3
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential"  # phi6, eta3
-	,
-		"MCTemplate"   , "MCTemplate"   , "Chebychev"  , "Chebychev"  , # phi0, eta4
-		"MCTemplate"   , "MCTemplate"   , "Chebychev"  , "Chebychev"  , # phi1, eta4
-		"MCTemplate"   , "MCTemplate"   , "Chebychev"  , "Chebychev"  , # phi2, eta4
-		"MCTemplate"   , "MCTemplate"   , "Chebychev"  , "Chebychev"  , # phi3, eta4
-		"MCTemplate"   , "MCTemplate"   , "Chebychev"  , "Chebychev"  , # phi4, eta4
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential", # phi5, eta4
-		"MCTemplate"   , "MCTemplate"   , "Exponential", "Exponential"  # phi6, eta4
-	),
+
 )
 
 ## ------------------------------------------------------------- #

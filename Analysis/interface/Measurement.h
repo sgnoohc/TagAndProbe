@@ -21,11 +21,13 @@ namespace tnp
     {
         enum value_type 
         {
-            // EGamma POG medium working point
-            EGammaMediumWPDenID,
-            EGammaMediumWPDenIso,
-            EGammaMediumWPDenBoth,
-            EGammaMediumWPNum,
+            EGammaGsfElectron,
+	    EGammaMediumPOG,
+	    EGammaMediumPOGIso,
+	    EGammaMediumSTOP,
+	    EGammaMediumSTOPIso,
+	    EGammaVetoHAD,
+	    EGammaVetoHADIso,
 
             // Muon POG tight working point
             MuTightWPDenID,
