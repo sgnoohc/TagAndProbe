@@ -90,8 +90,8 @@ tnp_parameters = cms.PSet(
 		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt1
 		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt2
 		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt3
-		#"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt4
-		#"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt5
+		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt4
+		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt5
 	),
 	
 	## models for eta bins 
