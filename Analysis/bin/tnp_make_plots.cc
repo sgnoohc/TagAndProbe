@@ -237,9 +237,9 @@ void MassPlotLooper::BookHists()
         {
             for (size_t activity_bin = 0; activity_bin != m_activity_bins.size()-1; activity_bin++)
             {
-                const std::string bin_title = Form("%1.2f < p_{T} < %1.2f, %1.2f < Activity < %1.2f", m_pt_bins[pt_bin], m_pt_bins[pt_bin+1], m_activity_bins[activity_bin], m_activity_bins[activity_bin+1]);
-                hc.Add(new TH1F(Form("h_pass_pt%lu_vs_activity%lu", pt_bin, activity_bin), Form("Passing probes (%s);tag & probe mass (GeV);Events / %1.1f (GeV)", bin_title.c_str(), m_mass_bin_width), num_mass_bins, m_mass_low, m_mass_high));
-                hc.Add(new TH1F(Form("h_fail_pt%lu_vs_activity%lu", pt_bin, activity_bin), Form("Failing probes (%s);tag & probe mass (GeV);Events / %1.1f (GeV)", bin_title.c_str(), m_mass_bin_width), num_mass_bins, m_mass_low, m_mass_high));
+                const std::string bin_title = Form("%1.2f < Activity < %1.2f, %1.2f < p_{T} < %1.2f", m_activity_bins[activity_bin], m_activity_bins[activity_bin+1], m_pt_bins[pt_bin], m_pt_bins[pt_bin+1]);
+                hc.Add(new TH1F(Form("h_pass_activity%lu_vs_pt%lu", activity_bin, pt_bin), Form("Passing probes (%s);tag & probe mass (GeV);Events / %1.1f (GeV)", bin_title.c_str(), m_mass_bin_width), num_mass_bins, m_mass_low, m_mass_high));
+                hc.Add(new TH1F(Form("h_fail_activity%lu_vs_pt%lu", activity_bin, pt_bin), Form("Failing probes (%s);tag & probe mass (GeV);Events / %1.1f (GeV)", bin_title.c_str(), m_mass_bin_width), num_mass_bins, m_mass_low, m_mass_high));
             }
         }
     }
@@ -413,7 +413,7 @@ int MassPlotLooper::Analyze(long long entry)
             if (has_nvtx_bins                ) {hc[Form("h_pass_nvtx%u", nvtx_bin)                ]->Fill(mass, weight);}
             if (has_pt_bins and has_eta_bins ) {hc[Form("h_pass_pt%u_vs_eta%u", pt_bin, eta_bin)  ]->Fill(mass, weight);}
             if (has_eta_bins and has_phi_bins) {hc[Form("h_pass_eta%u_vs_phi%u", eta_bin, phi_bin)]->Fill(mass, weight);}
-            if (has_pt_bins and has_activity_bins ) {hc[Form("h_pass_pt%u_vs_activity%u", pt_bin, activity_bin)  ]->Fill(mass, weight);}
+            if (has_pt_bins and has_activity_bins ) {hc[Form("h_pass_activity%u_vs_pt%u", pt_bin, activity_bin)  ]->Fill(mass, weight);}
         }
         // fails the probe numerator 
         else
@@ -428,7 +428,7 @@ int MassPlotLooper::Analyze(long long entry)
             if (has_nvtx_bins                ) {hc[Form("h_fail_nvtx%u", nvtx_bin)                ]->Fill(mass, weight);}
             if (has_pt_bins and has_eta_bins ) {hc[Form("h_fail_pt%u_vs_eta%u", pt_bin, eta_bin)  ]->Fill(mass, weight);}
             if (has_eta_bins and has_phi_bins) {hc[Form("h_fail_eta%u_vs_phi%u", eta_bin, phi_bin)]->Fill(mass, weight);}
-            if (has_pt_bins and has_activity_bins ) {hc[Form("h_fail_pt%u_vs_activity%u", pt_bin, activity_bin)  ]->Fill(mass, weight);}
+            if (has_pt_bins and has_activity_bins ) {hc[Form("h_fail_activity%u_vs_pt%u", pt_bin, activity_bin)  ]->Fill(mass, weight);}
         }
 
         // done

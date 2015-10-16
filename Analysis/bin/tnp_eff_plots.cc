@@ -437,7 +437,7 @@ try
         std::vector<bin_info_pair_t> bin_info_pairs;
         if (not pt_bins.empty()  and not eta_bins.empty()) {bin_info_pairs.push_back(bin_info_pair_t(eta_bin_info, pt_bin_info ));}
         if (not eta_bins.empty() and not phi_bins.empty()) {bin_info_pairs.push_back(bin_info_pair_t(phi_bin_info, eta_bin_info));}
-        if (not pt_bins.empty()  and not activity_bins.empty()) {bin_info_pairs.push_back(bin_info_pair_t(activity_bin_info, pt_bin_info ));}
+        if (not pt_bins.empty()  and not activity_bins.empty()) {bin_info_pairs.push_back(bin_info_pair_t(pt_bin_info, activity_bin_info ));}
 
         // create 2D bin efficiency plots
         // ------------------------------------------------------ //
