@@ -23,11 +23,22 @@ namespace tnp
         {
             EGammaGsfElectron,
 	    EGammaMediumPOG,
+	    EGammaMediumPOGnoDEta,
+	    EGammaMediumPOGnoIP,
+	    EGammaMediumPOGnoDPhi,
+	    EGammaMediumPOGnoSieie,
+	    EGammaMediumPOGnoConv,
 	    EGammaMediumPOGIso,
 	    EGammaMediumSTOP,
 	    EGammaMediumSTOPIso,
 	    EGammaVetoHAD,
 	    EGammaVetoHADIso,
+	    EGammaTightSS,
+	    EGammaTightSSIso,
+	    EGammaTightSSMVA,
+	    EGammaTightSSMVA3ch,
+	    EGammaTightSSMVA3chIP,
+	    EGammaTightSSMVA3chIPconv,
 
             // Muon POG tight working point
             MuTightWPDenID,
