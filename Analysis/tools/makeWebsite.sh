@@ -19,7 +19,7 @@ cp $locDir/compare/index.php $wwwDir/
 cp $locDir/compare/index.php $wwwDir/Data
 cp $locDir/compare/index.php $wwwDir/MC
 cp $locDir/compare/p_eff_* $wwwDir/
-cp $locDir/compare/p_sf*.png $wwwDir/
+cp $locDir/compare/p_sf* $wwwDir/
 cp $locDir/compare/eff_tables.txt $wwwDir/
    
 cp $locDir/data_*_el_eff/png/p_*vs* $wwwDir/Data
