@@ -51,6 +51,8 @@ namespace tnp
         if (lt::string_lower(sel_name) == lt::string_lower("MuTightWPDenIso"      )) {return Selection::MuTightWPDenIso;      } 
         if (lt::string_lower(sel_name) == lt::string_lower("MuTightWPDenBoth"     )) {return Selection::MuTightWPDenBoth;     } 
         if (lt::string_lower(sel_name) == lt::string_lower("MuTightWPNum"         )) {return Selection::MuTightWPNum;         } 
+        if (lt::string_lower(sel_name) == lt::string_lower("MuPFDen"              )) {return Selection::MuPFDen;              } 
+        if (lt::string_lower(sel_name) == lt::string_lower("MuPFChIso"            )) {return Selection::MuPFChIso;            } 
         throw std::invalid_argument("[tnp::GetSelectionFromString]: ERROR - invalid value!"); 
     }
 
@@ -78,6 +80,8 @@ namespace tnp
         if (sel_type == Selection::MuTightWPDenIso      ) return "MuTightWPDenIso";
         if (sel_type == Selection::MuTightWPDenBoth     ) return "MuTightWPDenBoth";
         if (sel_type == Selection::MuTightWPNum         ) return "MuTightWPNum";
+        if (sel_type == Selection::MuPFDen              ) return "MuPFDen";
+        if (sel_type == Selection::MuPFChIso            ) return "MuPFChIso";
         throw std::invalid_argument("[tnp::GetStringFromSelection]: ERROR - invalid value!"); 
     }
 
@@ -252,14 +256,14 @@ namespace tnp
             const float mu_tag_pt      = tag_p4().pt();
             const float mu_iso         = miniiso();
             const float mu_iso_pog_cut = 0.15;  
-            const float mu_tag_pt_cut  = 30.0;
+            const float mu_tag_pt_cut  = 25.0;
 
             // cut decisions 
             const bool mu_passes_pt       = (mu_tag_pt > mu_tag_pt_cut);
-            const bool mu_passes_trig_tag = true; //GZ need update
+            const bool mu_passes_trig_tag = (tag_HLT_IsoMu20() > 0) || (tag_HLT_IsoTkMu20() > 0); 
             const bool mu_passes_pog_iso  = (mu_iso < mu_iso_pog_cut); 
             const bool mu_passes_pog_id   = passes_SS_tight_noiso_v3(); 
-
+            const bool mu_passes_PFChIso  = (RelIso03() < 0.2); 
             // Muon POG Selections (2012)
             // From: https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId
             // --------------------------------------------------------------------------- //
@@ -295,7 +299,17 @@ namespace tnp
                 if (not mu_passes_pog_id)   {return false;}
                 if (not mu_passes_pog_iso)  {return false;}
             }
-
+	    if (selection == Selection::MuPFDen)
+	    {
+                if (not mu_passes_pt)       {return false;}
+                if (not mu_passes_trig_tag) {return false;}	      
+	    }
+	    if (selection == Selection::MuPFChIso)
+	    {
+                if (not mu_passes_pt)       {return false;}
+                if (not mu_passes_trig_tag) {return false;}	     
+                if (not mu_passes_PFChIso)  {return false;}	      
+	    }
             
         }
 

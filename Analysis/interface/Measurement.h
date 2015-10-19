@@ -45,7 +45,9 @@ namespace tnp
             MuTightWPDenIso,
             MuTightWPDenBoth,
             MuTightWPNum,
-
+	    MuPFDen,
+	    MuPFChIso,
+	    
             static_size
         };
     };

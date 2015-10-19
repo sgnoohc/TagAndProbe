@@ -275,11 +275,11 @@ int MassPlotLooper::Analyze(long long entry)
         const bool is_mc   = (not is_data);
 
 	// check flavo(u)r
-	if (is_mu && fabs(id()) != 13) {
+	if (is_mu && fabs(id()) != 13 && fabs(id()) != 1013) {
 	  if (m_verbose) {cout << "Not a muon!" << endl;}
 	  return 0;
 	}
-	if (is_el && fabs(id()) != 11) {
+	if (is_el && fabs(id()) != 11 && fabs(id()) != 1011) {
 	  if (m_verbose) {cout << "Not an electron!" << endl;}
 	  return 0;
 	}
@@ -315,7 +315,7 @@ int MassPlotLooper::Analyze(long long entry)
         }
 
         // MC reqruied (also correct charge)
-        if (is_mc && motherID() != 1)
+        if (is_mc && motherID() != 1 && p4().pt()>10. )
         {
             if (m_verbose) {cout << "Did not pass gen-matching requirement" << endl;}
             return 0;
@@ -337,7 +337,7 @@ int MassPlotLooper::Analyze(long long entry)
         const float eta_min     = (not has_eta_bins ? 999999.0  : m_eta_bins.front());
         const float eta_max     = (not has_eta_bins ? -999999.0 : m_eta_bins.back() );
         const float use_abs_eta = (eta_min >= 0);
-	const float probe_eta   = use_abs_eta ? fabs(is_el ? etaSC() : p4().eta()) : (is_el ? etaSC() : p4().eta());
+	const float probe_eta   = use_abs_eta ? fabs(is_el && p4().pt()>10. ? etaSC() : p4().eta()) : (is_el && p4().pt()>10.? etaSC() : p4().eta());
         if (has_eta_bins and not (eta_min < probe_eta && probe_eta < eta_max))
         {
             if (m_verbose) {cout << "outside eta bins" << endl;}
