@@ -314,8 +314,8 @@ int MassPlotLooper::Analyze(long long entry)
             return 0;
         }
 
-        // MC reqruied (also correct charge)
-        if (is_mc && motherID() != 1 && p4().pt()>10. )
+        // MC reqruied (also correct charge) (also no tau)
+        if (is_mc && (motherID() != 1 || abs(tag_mc_motherid()) == 15) )
         {
             if (m_verbose) {cout << "Did not pass gen-matching requirement" << endl;}
             return 0;

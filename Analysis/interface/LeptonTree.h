@@ -323,7 +323,7 @@ protected:
 	bool	passes_POG_tightID_;
 	TBranch *passes_POG_tightID_branch;
 	bool passes_POG_tightID_isLoaded;
-	bool	passes_isTightElectronPOGspring15_;
+	bool    passes_isTightElectronPOGspring15_;
 	TBranch *passes_isTightElectronPOGspring15_branch;
 	bool passes_isTightElectronPOGspring15_isLoaded;
 	float	ip3d_;
@@ -398,6 +398,9 @@ protected:
 	int	tag_charge_;
 	TBranch *tag_charge_branch;
 	bool tag_charge_isLoaded;
+	int	tag_mc_motherid_;
+	TBranch *tag_mc_motherid_branch;
+	bool tag_mc_motherid_isLoaded;
 	float	tag_eSeed_;
 	TBranch *tag_eSeed_branch;
 	bool tag_eSeed_isLoaded;
@@ -1416,8 +1419,8 @@ void Init(TTree *tree) {
 	}
 	passes_isTightElectronPOGspring15_branch = 0;
 	if (tree->GetBranch("passes_isTightElectronPOGspring15") != 0) {
-		passes_isTightElectronPOGspring15_branch = tree->GetBranch("passes_isTightElectronPOGspring15");
-		if (passes_isTightElectronPOGspring15_branch) {passes_isTightElectronPOGspring15_branch->SetAddress(&passes_isTightElectronPOGspring15_);}
+	        passes_isTightElectronPOGspring15_branch = tree->GetBranch("passes_isTightElectronPOGspring15");
+	        if (passes_isTightElectronPOGspring15_branch) {passes_isTightElectronPOGspring15_branch->SetAddress(&passes_isTightElectronPOGspring15_);}
 	}
 	ip3d_branch = 0;
 	if (tree->GetBranch("ip3d") != 0) {
@@ -1533,6 +1536,11 @@ void Init(TTree *tree) {
 	if (tree->GetBranch("tag_charge") != 0) {
 		tag_charge_branch = tree->GetBranch("tag_charge");
 		if (tag_charge_branch) {tag_charge_branch->SetAddress(&tag_charge_);}
+	}
+	tag_mc_motherid_branch = 0;
+	if (tree->GetBranch("tag_mc_motherid") != 0) {
+		tag_mc_motherid_branch = tree->GetBranch("tag_mc_motherid");
+		if (tag_mc_motherid_branch) {tag_mc_motherid_branch->SetAddress(&tag_mc_motherid_);}
 	}
 	tag_eSeed_branch = 0;
 	if (tree->GetBranch("tag_eSeed") != 0) {
@@ -2497,6 +2505,7 @@ void GetEntry(unsigned int idx)
 		jet_close_L2L3_isLoaded = false;
 		ptratio_isLoaded = false;
 		tag_charge_isLoaded = false;
+		tag_mc_motherid_isLoaded = false;
 		tag_eSeed_isLoaded = false;
 		tag_eSCraw_isLoaded = false;
 		tag_HLTLeadingLeg_isLoaded = false;
@@ -2795,6 +2804,7 @@ void LoadAllBranches()
 	if (jet_close_L2L3_branch != 0) jet_close_L2L3();
 	if (ptratio_branch != 0) ptratio();
 	if (tag_charge_branch != 0) tag_charge();
+	if (tag_mc_motherid_branch != 0) tag_mc_motherid();
 	if (tag_eSeed_branch != 0) tag_eSeed();
 	if (tag_eSCraw_branch != 0) tag_eSCraw();
 	if (tag_HLTLeadingLeg_branch != 0) tag_HLTLeadingLeg();
@@ -4289,18 +4299,18 @@ void LoadAllBranches()
 		}
 		return passes_POG_tightID_;
 	}
-	bool &	passes_isTightElectronPOGspring15()
+	bool &  passes_isTightElectronPOGspring15()
 	{
-		if (not passes_isTightElectronPOGspring15_isLoaded) {
-			if (passes_isTightElectronPOGspring15_branch != 0) {
-				passes_isTightElectronPOGspring15_branch->GetEntry(index);
-			} else { 
-				printf("branch passes_isTightElectronPOGspring15_branch does not exist!\n");
-				exit(1);
-			}
-			passes_isTightElectronPOGspring15_isLoaded = true;
-		}
-		return passes_isTightElectronPOGspring15_;
+	        if (not passes_isTightElectronPOGspring15_isLoaded) {
+	                if (passes_isTightElectronPOGspring15_branch != 0) {
+	                        passes_isTightElectronPOGspring15_branch->GetEntry(index);
+	                } else { 
+	                        printf("branch passes_isTightElectronPOGspring15_branch does not exist!\n");
+	                        exit(1);
+	                }
+	                passes_isTightElectronPOGspring15_isLoaded = true;
+	        }
+	        return passes_isTightElectronPOGspring15_;
 	}
 	float &ip3d()
 	{
@@ -4613,6 +4623,19 @@ void LoadAllBranches()
 			tag_charge_isLoaded = true;
 		}
 		return tag_charge_;
+	}
+	int &tag_mc_motherid()
+	{
+		if (not tag_mc_motherid_isLoaded) {
+			if (tag_mc_motherid_branch != 0) {
+				tag_mc_motherid_branch->GetEntry(index);
+			} else { 
+				printf("branch tag_mc_motherid_branch does not exist!\n");
+				exit(1);
+			}
+			tag_mc_motherid_isLoaded = true;
+		}
+		return tag_mc_motherid_;
 	}
 	float &tag_eSeed()
 	{
@@ -6927,6 +6950,7 @@ namespace lepton_tree {
 	const float &jet_close_L2L3();
 	const float &ptratio();
 	const int &tag_charge();
+	const int &tag_mc_motherid();
 	const float &tag_eSeed();
 	const float &tag_eSCraw();
 	const bool &tag_HLTLeadingLeg();

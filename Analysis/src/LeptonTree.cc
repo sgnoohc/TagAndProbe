@@ -128,6 +128,7 @@ namespace lepton_tree {
 	const float &jet_close_L2L3() { return lepton_tree_obj.jet_close_L2L3(); }
 	const float &ptratio() { return lepton_tree_obj.ptratio(); }
 	const int &tag_charge() { return lepton_tree_obj.tag_charge(); }
+	const int &tag_mc_motherid() { return lepton_tree_obj.tag_mc_motherid(); }
 	const float &tag_eSeed() { return lepton_tree_obj.tag_eSeed(); }
 	const float &tag_eSCraw() { return lepton_tree_obj.tag_eSCraw(); }
 	const bool &tag_HLTLeadingLeg() { return lepton_tree_obj.tag_HLTLeadingLeg(); }
