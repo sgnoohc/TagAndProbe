@@ -17,7 +17,7 @@ To also have the LeptonBabyMaker available
 
    git clone git@github.com:cmstas/LeptonBabyMaker.git
    cd LeptonBabyMaker
-   git checkout cmssw74x
+   git checkout master
    . setupCORE.sh
    cd ../
 
