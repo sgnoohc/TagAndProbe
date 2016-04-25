@@ -30,6 +30,8 @@ namespace tnp
     Selection::value_type GetSelectionFromString(const std::string& sel_name)
     {
         if (lt::string_lower(sel_name) == lt::string_lower("EGammaGsfElectron"    )) {return Selection::EGammaGsfElectron;    } 
+        if (lt::string_lower(sel_name) == lt::string_lower("EGammaPFElectron"     )) {return Selection::EGammaPFElectron;     } 
+        if (lt::string_lower(sel_name) == lt::string_lower("EGammaPFElectronChIso")) {return Selection::EGammaPFElectronChIso;} 
         if (lt::string_lower(sel_name) == lt::string_lower("EGammaMediumPOG"      )) {return Selection::EGammaMediumPOG;      } 
         if (lt::string_lower(sel_name) == lt::string_lower("EGammaMediumPOGnoDEta")) {return Selection::EGammaMediumPOGnoDEta;} 
         if (lt::string_lower(sel_name) == lt::string_lower("EGammaMediumPOGnoIP"  )) {return Selection::EGammaMediumPOGnoIP;  } 
@@ -59,6 +61,8 @@ namespace tnp
     std::string GetStringFromSelection(const Selection::value_type sel_type)
     {
         if (sel_type == Selection::EGammaGsfElectron    ) return "EGammaGsfElectron";
+        if (sel_type == Selection::EGammaPFElectron     ) return "EGammaPFElectron";
+        if (sel_type == Selection::EGammaPFElectronChIso) return "EGammaPFElectronChIso";
         if (sel_type == Selection::EGammaMediumPOG      ) return "EGammaMediumPOG";
         if (sel_type == Selection::EGammaMediumPOGnoDEta) return "EGammaMediumPOGnoDEta";
         if (sel_type == Selection::EGammaMediumPOGnoIP  ) return "EGammaMediumPOGnoIP";
@@ -104,10 +108,13 @@ namespace tnp
             const float el_tag_pt_cut  = 30.0;
 
             // cut decisions 
-            const bool el_passes_pt       = (el_tag_pt > el_tag_pt_cut);
-            const bool el_passes_trig_tag = evt_isRealData() ? tag_HLT_Ele27_eta2p1_WPLoose_Gsf() > 0: true; //true; //GZ need update
+            const bool el_passes_tag_pt    = (el_tag_pt > el_tag_pt_cut);
+            const bool el_passes_tag_eta   = (fabs(tag_p4().eta()) < 2.1); 
+            const bool el_passes_tag_trig  = evt_isRealData() ? tag_HLT_Ele22_eta2p1_WPLoose_Gsf() > 0: true; //true; //GZ need update
 	    //	    const bool el_GsfElectron_den = ( !el_is_crack && el_passes_pt && el_passes_trig_tag );
-	    const bool el_GsfElectron_den = ( el_passes_pt && el_passes_trig_tag );
+	    const bool el_GsfElectron_den = ( el_passes_tag_pt && el_passes_tag_trig && el_passes_tag_eta );
+	    const bool el_PFElectron_den  = (isPF() && fabs(dZ()) < 0.1); // additional requirement included in denominator definition. 
+	    const bool el_passes_chIso = (AbsTrkIso() / p4().pt() < 0.2);
 
 	    // implement by hand STOP_medium_v2
 	    bool passSieie = true, passDeta = true, passDphi = true, passHoverE = true, passOemoop = true, passIP = true, passConv = true, passIso = true;
@@ -167,6 +174,15 @@ namespace tnp
 	    
 	    if (selection == Selection::EGammaGsfElectron    ) {
                 if (not el_GsfElectron_den)       {return false;}
+	    }
+	    if (selection == Selection::EGammaPFElectron     ) {
+                if (not el_GsfElectron_den)       {return false;}
+                if (not el_PFElectron_den)        {return false;}
+	    }
+	    if (selection == Selection::EGammaPFElectronChIso) {
+	      if (not el_GsfElectron_den)         {return false;}
+	      if (not el_PFElectron_den)          {return false;}
+	      if (not el_passes_chIso)            {return false;}
 	    }
 	    if (selection == Selection::EGammaMediumPOG      ) {
                 if (not el_GsfElectron_den)       {return false;}
@@ -256,14 +272,15 @@ namespace tnp
             const float mu_tag_pt      = tag_p4().pt();
             const float mu_iso         = miniiso();
             const float mu_iso_pog_cut = 0.15;  
-            const float mu_tag_pt_cut  = 25.0;
+            const float mu_tag_pt_cut  = 20.0;
 
             // cut decisions 
             const bool mu_passes_pt       = (mu_tag_pt > mu_tag_pt_cut);
             const bool mu_passes_trig_tag = (tag_HLT_IsoMu20() > 0) || (tag_HLT_IsoTkMu20() > 0); 
             const bool mu_passes_pog_iso  = (mu_iso < mu_iso_pog_cut); 
             const bool mu_passes_pog_id   = passes_SS_tight_noiso_v3(); 
-            const bool mu_passes_PFChIso  = (RelIso03() < 0.2); 
+            const bool mu_passes_PFChIso  = (AbsTrkIso() / p4().pt() < 0.2); //RelIso03() < 0.2; //
+            const bool mu_passes_PF       = isPF(); 
             // Muon POG Selections (2012)
             // From: https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId
             // --------------------------------------------------------------------------- //
@@ -302,11 +319,13 @@ namespace tnp
 	    if (selection == Selection::MuPFDen)
 	    {
                 if (not mu_passes_pt)       {return false;}
+                if (not mu_passes_PF)       {return false;}
                 if (not mu_passes_trig_tag) {return false;}	      
 	    }
 	    if (selection == Selection::MuPFChIso)
 	    {
                 if (not mu_passes_pt)       {return false;}
+                if (not mu_passes_PF)       {return false;}
                 if (not mu_passes_trig_tag) {return false;}	     
                 if (not mu_passes_PFChIso)  {return false;}	      
 	    }

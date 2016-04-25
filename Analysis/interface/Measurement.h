@@ -22,6 +22,8 @@ namespace tnp
         enum value_type 
         {
             EGammaGsfElectron,
+            EGammaPFElectron,
+            EGammaPFElectronChIso,
 	    EGammaMediumPOG,
 	    EGammaMediumPOGnoDEta,
 	    EGammaMediumPOGnoIP,
