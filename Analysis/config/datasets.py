@@ -13,11 +13,12 @@ sys.path.append(analysis_path + "/config")
 ## ------------------------------------------------------------------------------------------------------------------- #
 
 ## path to the lepton trees
-lepton_tree_tag  = "v0.09" 
+lepton_tree_tag  = "v1.03TP" 
 lepton_tree_path = "/nfs-7/userdata/leptonTree/" + lepton_tree_tag 
 
 ## good run list
-run_list = cms.string(analysis_path + "/json/Cert_246908-251883_13TeV_PromptReco_Collisions15_JSON.txt")
+#run_list = cms.string(analysis_path + "/json/Cert_246908-258159_13TeV_PromptReco_Collisions15_25ns_JSON_v3_snt.txt")
+run_list = cms.string("")
 
 ## DY fullsim
 dy_test = cms.PSet(
@@ -32,7 +33,7 @@ dy_test = cms.PSet(
 dy_full = cms.PSet(
 	name     = cms.string("dy_full"),
 	title    = cms.string("DY fullsim"),
-	files    = cms.vstring([lepton_tree_path+'/DY-50ns.root']),
+	files    = cms.vstring([lepton_tree_path+'/DY_25ns.root']),
 	is_data  = cms.bool(False),
 	run_list = cms.string('')
 )
@@ -57,8 +58,8 @@ double_mu = cms.PSet(
 
 single_mu = cms.PSet(
 	name     = cms.string("data_single_mu"),
-	title    = cms.string("SingleMu_Run2012"),
-	files    = cms.vstring([lepton_tree_path+'/SingleMu_Run2012*/*.root']),
+	title    = cms.string("SingleMu_Run2015"),
+	files    = cms.vstring([lepton_tree_path+'/2015DSingleMuon*.root']),
 	is_data  = cms.bool(True),
 	run_list = run_list 
 )
@@ -67,7 +68,8 @@ single_mu = cms.PSet(
 single_el = cms.PSet(
 	name     = cms.string("data_single_el"),
 	title    = cms.string("SingleElectron_Run2015"),
-	files    = cms.vstring([lepton_tree_path+'/SingleElectronAll.root']),
+#	files    = cms.vstring([lepton_tree_path+'/2015DSingleEl*.root']),
+	files    = cms.vstring([lepton_tree_path+'/2015DSingleElV4_mergeDec7.root']),
 	is_data  = cms.bool(True),
 	run_list = run_list 
 )
