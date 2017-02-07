@@ -31,14 +31,21 @@ el_id = cms.PSet(
 	output_label = cms.string("compare"),
 
 	## path to the efficiency results to compare 
-	eff_results_path = cms.string(analysis_path+"/plots/ElectronID_EGammaVetoHADIso_Activity/electron/EGammaGsfElectron_EGammaVetoHADIso"),
+
+	eff_results_path = cms.string(analysis_path+"/plots/ElectronID_stop2016veto/electron/EGammaGsfElectron_EGammaMediumSTOPIso"),
+#	eff_results_path = cms.string(analysis_path+"/plots/ElectronID_stop2016/electron/EGammaGsfElectron_EGammaMediumSTOP"),
+#	eff_results_path = cms.string(analysis_path+"/plots/ElectronID_stop2016/electron/EGammaGsfElectron_EGammaMediumPOGnoConv"),
+#	eff_results_path = cms.string(analysis_path+"/plots/ElectronID_wh2016/electron/EGammaMediumSTOP_EGammaMediumSTOPIso"),
+
 
 	## first result to compare
-	dataset1 = single_el,
+#	dataset1 = single_el,
+	dataset1 = single_el_2016,
         #dataset1 = double_el,
 
 	## second result to compare
-	dataset2 = dy_full,
+	dataset2 = dy_full_80X,
+#	dataset2 = dy_madgraph,
 
 	## suffix to print the plots (before the fit)
 	## blank means do not print
@@ -56,7 +63,10 @@ mu_id = cms.PSet(
 	output_label = cms.string("compare"),
 
 	## path to the efficiency results to compare 
-	eff_results_path = cms.string(analysis_path+"/plots/MuID_MuTightWP/muon/MuTightWPDenID_MuTightWPNum"),
+#	eff_results_path = cms.string(analysis_path+"/plots/MuonID_Activity/muon/MuPFDen_MuPFChIso"),
+#	eff_results_path = cms.string(analysis_path+"/plots/MuonID_Soft3/muon/MuTightWPDenBoth_MuSoftIso"),
+	eff_results_path = cms.string(analysis_path+"/plots/MuonID_Soft9Jun16/muon/MuTightWPDenBoth_MuSoftIso"),
+#	eff_results_path = cms.string(analysis_path+"/plots/MuonID_Soft9Jun16_70to110/muon/MuTightWPDenBoth_MuSoftIso"),
 
 	## first result to compare
 	dataset1 = single_mu,
@@ -67,9 +77,10 @@ mu_id = cms.PSet(
 	## suffix to print the plots (before the fit)
 	## blank means do not print
 	## available options are: eps, png, pdf
-	suffix = cms.string("png"), 
+	suffix = cms.string("pdf"), 
 )
 
 # a vector of all the comparison PSets --> will do them all.
 #process.tnp_compare = cms.VPSet(el_id, mu_id)
 process.tnp_compare = cms.VPSet(el_id)
+#process.tnp_compare = cms.VPSet(mu_id)

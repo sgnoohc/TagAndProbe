@@ -30,7 +30,7 @@ tnp_parameters = cms.PSet(
 	lepton_type = cms.string("electron"),
 
 	## output label to give it a unique name
-	output_label = cms.string("ElectronID_EGammaTightSS_3chIPconvOnMVA_4x5"),
+	output_label = cms.string("ElectronID_test"),
  
 	## suffix to print the plots (before the fit)
 	## blank means do not print
@@ -77,9 +77,9 @@ tnp_parameters = cms.PSet(
         #eta_bins  = cms.vdouble(-2.5, -2, -1.566, -1.442, -1, -0.5, 0, 0.5, 1, 1.4442, 1.566, 2, 2.5),
 
 	## selection (from Measurements.h/cc) 
-	numerator   = cms.string("EGammaTightSSMVA3chIPconv"  ),
-#	denominator = cms.string("EGammaGsfElectron"),
-	denominator = cms.string("EGammaTightSSMVA"),
+	numerator   = cms.string("EGammaMediumSTOPIso"),
+	denominator = cms.string("EGammaGsfElectron"),
+#	denominator = cms.string("EGammaTightSSMVA"),
 
 	## Parameters for the fitting 
 	## --------------------------------------------------------- #

@@ -23,6 +23,7 @@ cp $locDir/compare/p_sf* $wwwDir/
 cp $locDir/compare/eff_tables.txt $wwwDir/
    
 cp $locDir/data_*_el_eff/png/p_*vs* $wwwDir/Data
+cp $locDir/data_*_mu_eff/png/p_*vs* $wwwDir/Data
 cp $locDir/dy_*_eff/png/p_*vs* $wwwDir/MC
 
 cd ~/www/public_html/
