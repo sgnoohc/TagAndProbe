@@ -34,7 +34,8 @@
 #include "RooWorkspace.h"
 
 // CMSSW
-#include "PhysicsTools/TagAndProbe/interface/RooCMSShape.h"
+//#include "PhysicsTools/TagAndProbe/interface/RooCMSShape.h"
+#include "TagAndProbe/Analysis/interface/RooCMSShape.h"
 
 // Tools
 #include "AnalysisTools/RootTools/interface/RootTools.h"
