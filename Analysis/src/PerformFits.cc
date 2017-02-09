@@ -58,11 +58,16 @@ namespace tnp
     // wrapper to get the PDFs
     // ----------------------------------------------------------------- //
 
-    void AddModelToWorkspace(Model::value_type model, RooWorkspace &w, const std::string& model_name)
+    void AddModelToWorkspace(Model::value_type model, RooWorkspace &w, const std::string& model_name, const std::string& a_bin_label, const std::string& b_bin_label)
     {
         // convenience
         const std::string unique_label = lt::string_replace_first(model_name, "model_", "_").c_str(); 
         char const * const ul = unique_label.c_str(); 
+
+        const std::string unique_label2 = lt::string_replace_first(unique_label, "_fail", "_pass").c_str(); 
+        char const * const ul2 = unique_label2.c_str(); 
+	
+	cout<<ul<<" , "<<ul2<<endl;
 
         switch (model)
         {
@@ -71,9 +76,72 @@ namespace tnp
                 // breitwigner
                 w.factory(Form("BreitWigner::bw%s(mass,mz%s[%f,80,100],gammaz%s[%f,0.1,10])", ul, ul, Mz, ul, GammaZ));
 
-                // crystal ball
-                w.factory(Form("RooCBShape::cb%s(mass,mean%s[0,-10,10],sigma%s[1,0.1,10],alpha%s[5,0,20],n%s[1,0,10])", ul, ul, ul, ul, ul));
+                // crystal ball standard
+		w.factory(Form("RooCBShape::cb%s(mass,mean%s[0,-10,10],sigma%s[1,0.1,10],alpha%s[5,0,20],n%s[1,0,10])", ul, ul, ul, ul, ul));
+		
+		// correlated alternatives
+		//This works but the 10-20 GeV is too constrainted
+		//                w.factory(Form("RooCBShape::cb%s(mass,mean%s[0,-10,10],sigma%s[1,0.1,10],alpha%s[5,0,20],n%s[1,0,10])", ul, ul2, ul2, ul2, ul2));
+                //w.factory(Form("RooCBShape::cb%s(mass,mean%s[0,-10,10],sigma%s[1,0.1,10],alpha%s[5,0,20],n%s[1,0,10])", ul, ul2, ul2, ul2, ul2));
 
+                // convolution
+                w.factory(Form("FCONV::%s(mass,bw%s,cb%s)", model_name.c_str(), ul, ul));
+                break;
+            }
+            case Model::BreitWignerCBMCpar: 
+            {
+	      cout<<"BreitWignerCBMCpar"<<endl;
+	      cout<<"a_bin_label: "<<a_bin_label<<endl;
+	      cout<<"b_bin_label: "<<b_bin_label<<endl;
+	      TString astr = TString(a_bin_label);
+	      TString bstr = TString(b_bin_label);
+	      TString passfail = TString(unique_label);
+
+	      float a = 5;
+	      float aerr = 5;
+	      float n = 1;
+	      float nerr = 1;
+	      
+	      if (bstr.Contains("5 (GeV) < p_{T} < 10 (GeV)") ) {
+		if (passfail.Contains("pass") ) {
+		  if (astr.Contains("0 < |#eta| < 0.8"))        { a = 1.38; aerr = 0.1; n = 0.7; nerr = 0.1; }
+		  else if (astr.Contains("0.8 < |#eta| < 1.5")) { a = 0.67; aerr = 0.1; n = 2.2; nerr = 0.5; }
+		  else if (astr.Contains("1.5 < |#eta| < 2.5")) { a = 1.20; aerr = 0.2; n = 2.1; nerr = 0.6; }
+		  else cout<<"ERROR: could not find parameters for: "<<passfail<<" "<<a_bin_label<<" "<<b_bin_label<<endl;
+		}
+		else if (passfail.Contains("fail") ) {
+		  if (astr.Contains("0 < |#eta| < 0.8"))        { a = 1.38; aerr = 0.1; n = 0.37; nerr = 0.1; }
+		  else if (astr.Contains("0.8 < |#eta| < 1.5")) { a = 0.84; aerr = 0.1; n = 1.00; nerr = 0.2; }
+		  else if (astr.Contains("1.5 < |#eta| < 2.5")) { a = 0.97; aerr = 0.1; n = 1.40; nerr = 0.2; }
+		  else cout<<"ERROR: could not find parameters for: "<<passfail<<" "<<a_bin_label<<" "<<b_bin_label<<endl;
+		}
+		else cout<<"ERROR: could not find parameters for: "<<passfail<<" "<<a_bin_label<<" "<<b_bin_label<<endl;
+	      }
+	      else if (bstr.Contains("10 (GeV) < p_{T} < 20 (GeV)") ) {
+		if (passfail.Contains("pass") ) {
+		  if (astr.Contains("0 < |#eta| < 0.8"))        { a = 1.65; aerr = 0.05; n = 0.67; nerr = 0.03; }
+		  else if (astr.Contains("0.8 < |#eta| < 1.5")) { a = 1.45; aerr = 0.05; n = 1.13; nerr = 0.05; }
+		  else if (astr.Contains("1.5 < |#eta| < 2.5")) { a = 1.38; aerr = 0.05; n = 1.44; nerr = 0.05; }
+		  else cout<<"ERROR: could not find parameters for: "<<passfail<<" "<<a_bin_label<<" "<<b_bin_label<<endl;
+		}
+		else cout<<"ERROR: could not find parameters for: "<<passfail<<" "<<a_bin_label<<" "<<b_bin_label<<endl;
+		if (passfail.Contains("fail") ) {
+		  if (astr.Contains("0 < |#eta| < 0.8"))        { a = 1.80; aerr = 0.05; n = 0.16; nerr = 0.01; }
+		  else if (astr.Contains("0.8 < |#eta| < 1.5")) { a = 1.22; aerr = 0.05; n = 0.63; nerr = 0.05; }
+		  else if (astr.Contains("1.5 < |#eta| < 2.5")) { a = 1.29; aerr = 0.05; n = 0.60; nerr = 0.05; }
+		  else cout<<"ERROR: could not find parameters for: "<<passfail<<" "<<a_bin_label<<" "<<b_bin_label<<endl;
+		}
+		else cout<<"ERROR: could not find parameters for: "<<passfail<<" "<<a_bin_label<<" "<<b_bin_label<<endl;
+	      }
+
+
+                // breitwigner
+                w.factory(Form("BreitWigner::bw%s(mass,mz%s[%f,80,100],gammaz%s[%f,0.1,10])", ul, ul, Mz, ul, GammaZ));
+
+                // crystal ball standard
+		//w.factory(Form("RooCBShape::cb%s(mass,mean%s[0,-10,10],sigma%s[1,0.1,10],alpha%s[5,0,20],n%s[1,0,10])", ul, ul, ul, ul, ul));
+		w.factory(Form("RooCBShape::cb%s(mass,mean%s[0,-10,10],sigma%s[1,0.1,10],alpha%s[%f,%f,%f],n%s[%f,%f,%f])", ul, ul, ul, ul, a, a-aerr, a+aerr, ul, n, n-nerr, n+nerr));
+		
                 // convolution
                 w.factory(Form("FCONV::%s(mass,bw%s,cb%s)", model_name.c_str(), ul, ul));
                 break;
@@ -81,7 +149,8 @@ namespace tnp
             case Model::MCTemplate:
             {
                 // gaussian
-	         w.factory(Form("Gaussian::gaus%s(mass,mean%s[0,-3,3],sigma%s[0.1,0,5])", ul, ul, ul));
+	      w.factory(Form("Gaussian::gaus%s(mass,mean%s[0,-3,3],sigma%s[0.1,0,5])", ul, ul, ul));
+	      //w.factory(Form("Gaussian::gaus%s(mass,mean%s[0,-2.9,2.9],sigma%s[0.1,0,5])", ul, ul, ul));
 
                 // template histogram
                 TH1* const h_template = dynamic_cast<TH1*>(w.obj(Form("h_template%s", ul)));
@@ -102,8 +171,9 @@ namespace tnp
 	    case Model::MCTemplateCB:
             {
                 // crystal ball
-	      //                w.factory(Form("RooCBShape::cb%s(mass,mean%s[0,-10,10],sigma%s[1,0.1,10],alpha%s[5,0,20],n%s[1,0,10])", ul, ul, ul, ul, ul));
-                w.factory(Form("RooCBShape::cb%s(mass,mean[0,-3,3],sigma[0.1,0,5],alpha[5,0,20],n[1,0,20])", ul));
+	      //w.factory(Form("RooCBShape::cb%s(mass,mean%s[0,-10,10],sigma%s[1,0.1,10],alpha%s[5,0,20],n%s[1,0,10])", ul, ul, ul, ul, ul)); // Uncorrelate Pass and Fail
+	      w.factory(Form("RooCBShape::cb%s(mass,mean[0,-10,10],sigma[1,0.1,10],alpha%s[5,0,20],n%s[1,0,10])", ul, ul, ul)); // Correlate mean and sigma between Pass and Fail
+                //w.factory(Form("RooCBShape::cb%s(mass,mean[0,-3,3],sigma[0.1,0,5],alpha[5,0,20],n[1,0,20])", ul));
 
                 // template histogram
                 TH1* const h_template = dynamic_cast<TH1*>(w.obj(Form("h_template%s", ul)));
@@ -156,7 +226,8 @@ namespace tnp
             }
             case Model::Linear:
             {
-                w.factory(Form("Polynomial::%s(mass,{a0%s[0],a1%s[0]})", model_name.c_str(), ul, ul));
+	      //                w.factory(Form("Polynomial::%s(mass,{a0%s[0],a1%s[0]})", model_name.c_str(), ul, ul));
+                w.factory(Form("Polynomial::%s(mass,{a0%s[0.01, 0, 0.02],a1%s[0.01, 0, 0.02]})", model_name.c_str(), ul, ul));
                 break;
             }
             case Model::Poly2:
@@ -193,6 +264,7 @@ namespace tnp
     Model::value_type GetModelFromString(const std::string& model_name)
     {
         if(lt::string_lower(model_name) == "breitwignercb") {return Model::BreitWignerCB;}
+        if(lt::string_lower(model_name) == "breitwignercbmcpar") {return Model::BreitWignerCBMCpar;}
         if(lt::string_lower(model_name) == "mctemplate"   ) {return Model::MCTemplate;   }
         if(lt::string_lower(model_name) == "mctemplatecb" ) {return Model::MCTemplateCB; }
         if(lt::string_lower(model_name) == "exponential"  ) {return Model::Exponential;  }
@@ -218,6 +290,7 @@ namespace tnp
             switch(model)
             {
                 case Model::BreitWignerCB : return "BreitWignerCB";
+                case Model::BreitWignerCBMCpar : return "BreitWignerCBMCpar";
                 case Model::MCTemplate    : return "MCTemplate";
                 case Model::MCTemplateCB  : return "MCTemplateCB";
                 case Model::Exponential   : return "Exponential";
@@ -389,10 +462,10 @@ namespace tnp
             delete h_fail_template_temp;
         }
 
-        AddModelToWorkspace(sig_pass_model, w, sig_pass_model_name); 
-        AddModelToWorkspace(sig_fail_model, w, sig_fail_model_name); 
-        AddModelToWorkspace(bkg_pass_model, w, bkg_pass_model_name); 
-        AddModelToWorkspace(bkg_fail_model, w, bkg_fail_model_name); 
+        AddModelToWorkspace(sig_pass_model, w, sig_pass_model_name, a_bin_label, b_bin_label); 
+        AddModelToWorkspace(sig_fail_model, w, sig_fail_model_name, a_bin_label, b_bin_label); 
+        AddModelToWorkspace(bkg_pass_model, w, bkg_pass_model_name, a_bin_label, b_bin_label); 
+        AddModelToWorkspace(bkg_fail_model, w, bkg_fail_model_name, a_bin_label, b_bin_label); 
         w.Print();
         
         // extract the PDF's from the workspace 

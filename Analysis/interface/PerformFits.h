@@ -13,6 +13,7 @@ namespace tnp
         enum value_type
         {
             BreitWignerCB, // Breit-Wigner convolved with Crystal Ball function
+            BreitWignerCBMCpar, // Breit-Wigner convolved with Crystal Ball function
             MCTemplate,    // MC Template, need to provide histogram 
             MCTemplateCB,    // MC Template, need to provide histogram 
             Exponential,   // Exponential 

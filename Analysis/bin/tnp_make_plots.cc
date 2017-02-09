@@ -300,7 +300,9 @@ int MassPlotLooper::Analyze(long long entry)
 
   
         // require OS leptons
-        if( !is_mu && (tag_charge() * charge()) > 0) // GZ only requiring this for electrons
+	//        if( !is_mu && (tag_charge() * charge()) > 0) // GZ only requiring this for electrons
+	if( (!is_mu && (tag_charge() * charge()) > 0) ||
+	    (is_mu  &&  (tag_charge() * id() < 0) ) )// electrons and muons
         {
             if (m_verbose) {cout << "Did not pass OS requirement" << endl;}
             return 0;
@@ -361,8 +363,9 @@ int MassPlotLooper::Analyze(long long entry)
         const float activity_min     = (not has_activity_bins ? 999999.0  : m_activity_bins.front());
         const float activity_max     = (not has_activity_bins ? -999999.0 : m_activity_bins.back() );
 	// overflow and underflow
-	const float probe_activity   = annulus04() < activity_min ? activity_min : (annulus04() > activity_max ? activity_max : annulus04());
-        if (has_activity_bins and not (activity_min < probe_activity && probe_activity < activity_max))
+	//	const float probe_activity   = annulus04() < activity_min ? activity_min : (annulus04() > activity_max ? activity_max : annulus04());
+	const float probe_activity   = TrkAn04() < activity_min ? activity_min : (TrkAn04() > activity_max ? activity_max : TrkAn04());
+        if (has_activity_bins and not (activity_min <= probe_activity && probe_activity <= activity_max))
         {
             if (m_verbose) {cout << "outside activity bins" << endl;}
             return 0;
@@ -393,9 +396,9 @@ int MassPlotLooper::Analyze(long long entry)
         if (m_verbose and has_nvtx_bins) {cout << Form("nvtx %f, nvtx_bin %u", nvtxs    , nvtx_bin) << endl;}
 
         // PU re-weight
-        //const float weight = 1.0;
+        const float weight = 1.0;
         //const float weight = (is_mc ? (scale1fb() * h_pileup->GetBinContent(nvtxs+1)) : 1.0);
-	const float weight = (is_mc ? (scale1fb() ) : 1.0);
+	//const float weight = (is_mc ? (scale1fb() ) : 1.0);
 
         // Fill the histograms
         // ------------------------------------------------------------------------------------ //
@@ -413,7 +416,7 @@ int MassPlotLooper::Analyze(long long entry)
             if (has_nvtx_bins                ) {hc[Form("h_pass_nvtx%u", nvtx_bin)                ]->Fill(mass, weight);}
             if (has_pt_bins and has_eta_bins ) {hc[Form("h_pass_pt%u_vs_eta%u", pt_bin, eta_bin)  ]->Fill(mass, weight);}
             if (has_eta_bins and has_phi_bins) {hc[Form("h_pass_eta%u_vs_phi%u", eta_bin, phi_bin)]->Fill(mass, weight);}
-            if (has_pt_bins and has_activity_bins ) {hc[Form("h_pass_activity%u_vs_pt%u", pt_bin, activity_bin)  ]->Fill(mass, weight);}
+            if (has_pt_bins and has_activity_bins ) {hc[Form("h_pass_activity%u_vs_pt%u", activity_bin, pt_bin)  ]->Fill(mass, weight);}
         }
         // fails the probe numerator 
         else
@@ -428,7 +431,7 @@ int MassPlotLooper::Analyze(long long entry)
             if (has_nvtx_bins                ) {hc[Form("h_fail_nvtx%u", nvtx_bin)                ]->Fill(mass, weight);}
             if (has_pt_bins and has_eta_bins ) {hc[Form("h_fail_pt%u_vs_eta%u", pt_bin, eta_bin)  ]->Fill(mass, weight);}
             if (has_eta_bins and has_phi_bins) {hc[Form("h_fail_eta%u_vs_phi%u", eta_bin, phi_bin)]->Fill(mass, weight);}
-            if (has_pt_bins and has_activity_bins ) {hc[Form("h_fail_activity%u_vs_pt%u", pt_bin, activity_bin)  ]->Fill(mass, weight);}
+            if (has_pt_bins and has_activity_bins ) {hc[Form("h_fail_activity%u_vs_pt%u", activity_bin, pt_bin)  ]->Fill(mass, weight);}
         }
 
         // done

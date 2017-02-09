@@ -70,7 +70,8 @@ tnp_parameters = cms.PSet(
         phi_bins  = cms.vdouble(), 
 #	nvtx_bins = cms.vdouble(0, 5, 10, 15, 20, 25, 30, 35, 40),
 	nvtx_bins = cms.vdouble(),
-        activity_bins = cms.vdouble(0.005, 0.02, 0.2, 10.0), #first bin != 0 otherwise not drawn in log plot
+        activity_bins = cms.vdouble(),
+#        activity_bins = cms.vdouble(0.005, 0.02, 0.2, 10.0), #first bin != 0 otherwise not drawn in log plot
 
         ## W/Z measurement bins
         #pt_bins   = cms.vdouble(25, 40, 55, 200),

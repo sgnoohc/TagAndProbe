@@ -13,7 +13,9 @@ sys.path.append(analysis_path + "/config")
 ## ------------------------------------------------------------------------------------------------------------------- #
 
 ## path to the lepton trees
-lepton_tree_tag  = "v1.03TP" 
+#lepton_tree_tag  = "v1.07TP" 
+#lepton_tree_tag  = "v2.04TP"
+lepton_tree_tag  = "ReRecoDataMoriondMC_5PF_7Feb17"
 lepton_tree_path = "/nfs-7/userdata/leptonTree/" + lepton_tree_tag 
 
 ## good run list
@@ -30,10 +32,37 @@ dy_test = cms.PSet(
 )
 
 ## DY fullsim
+#dy_full = cms.PSet(
+#	name     = cms.string("dy_amcnlo"),
+#	title    = cms.string("DY amcnlo"),
+#	files    = cms.vstring([lepton_tree_path+'/DY_amcnlo.root']),
+#	is_data  = cms.bool(False),
+#	run_list = cms.string('')
+#)
+
 dy_full = cms.PSet(
 	name     = cms.string("dy_full"),
-	title    = cms.string("DY fullsim"),
-	files    = cms.vstring([lepton_tree_path+'/DY_25ns.root']),
+	title    = cms.string("DY full"),
+	files    = cms.vstring([lepton_tree_path+'/DY_madgraph.root']),
+	is_data  = cms.bool(False),
+	run_list = cms.string('')
+)
+
+
+# DY 80X
+dy_full_80X = cms.PSet(
+        name     = cms.string("dy_full_80X"),
+        title    = cms.string("DY madgraph"),
+        files    = cms.vstring([lepton_tree_path+'/DY_madgraph80X.root']),
+        is_data  = cms.bool(False),
+        run_list = cms.string('')
+)
+
+# DY fullsim
+dy_madgraph = cms.PSet(
+	name     = cms.string("dy_madgraph"),
+	title    = cms.string("DY madgraph"),
+	files    = cms.vstring([lepton_tree_path+'/DY_madgraph.root']),
 	is_data  = cms.bool(False),
 	run_list = cms.string('')
 )
@@ -58,8 +87,9 @@ double_mu = cms.PSet(
 
 single_mu = cms.PSet(
 	name     = cms.string("data_single_mu"),
-	title    = cms.string("SingleMu_Run2015"),
-	files    = cms.vstring([lepton_tree_path+'/2015DSingleMuon*.root']),
+	title    = cms.string("SingleMuon"),
+#	files    = cms.vstring([lepton_tree_path+'/2015DSingleMuonV4.root']),
+	files    = cms.vstring([lepton_tree_path+'/2016SingleMu*.root']),
 	is_data  = cms.bool(True),
 	run_list = run_list 
 )
@@ -67,9 +97,10 @@ single_mu = cms.PSet(
 ## electron triggered data 
 single_el = cms.PSet(
 	name     = cms.string("data_single_el"),
-	title    = cms.string("SingleElectron_Run2015"),
+	title    = cms.string("SingleElectron"),
 #	files    = cms.vstring([lepton_tree_path+'/2015DSingleEl*.root']),
-	files    = cms.vstring([lepton_tree_path+'/2015DSingleElV4_mergeDec7.root']),
+#	files    = cms.vstring([lepton_tree_path+'/2015DSingleElV4.root']),
+	files    = cms.vstring([lepton_tree_path+'/2016SingleEl*.root']),
 	is_data  = cms.bool(True),
 	run_list = run_list 
 )
@@ -81,3 +112,12 @@ double_el_test = cms.PSet(
 	run_list = run_list 
 )
 
+
+## electron triggered data                                                                                                                                                   
+single_el_2016 = cms.PSet(
+        name     = cms.string("data_single_el"),
+        title    = cms.string("SingleElectron_2016"),
+        files    = cms.vstring([lepton_tree_path+'/2016SingleEl.root']),
+        is_data  = cms.bool(True),
+        run_list = run_list
+)

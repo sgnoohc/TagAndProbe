@@ -10,6 +10,7 @@ using namespace std;
 #include "AnalysisTools/LanguageTools/interface/LanguageTools.h"
 #include "TagAndProbe/Analysis/interface/LeptonTree.h"
 #include "TagAndProbe/Analysis/interface/LeptonSelections.h"
+#include "TVector2.h"
 
 namespace tnp
 {
@@ -49,12 +50,16 @@ namespace tnp
         if (lt::string_lower(sel_name) == lt::string_lower("EGammaTightSSMVA3ch"  )) {return Selection::EGammaTightSSMVA3ch;  } 
         if (lt::string_lower(sel_name) == lt::string_lower("EGammaTightSSMVA3chIP")) {return Selection::EGammaTightSSMVA3chIP;} 
         if (lt::string_lower(sel_name) == lt::string_lower("EGammaTightSSMVA3chIPconv")) {return Selection::EGammaTightSSMVA3chIPconv;} 
+        if (lt::string_lower(sel_name) == lt::string_lower("EGammaSoftIso"        )) {return Selection::EGammaSoftIso;} 
+        if (lt::string_lower(sel_name) == lt::string_lower("EGammaSoftISOLike"    )) {return Selection::EGammaSoftISOLike;} 
+        if (lt::string_lower(sel_name) == lt::string_lower("EGammaSoftIDLike"     )) {return Selection::EGammaSoftIDLike;} 
         if (lt::string_lower(sel_name) == lt::string_lower("MuTightWPDenID"       )) {return Selection::MuTightWPDenID;       } 
         if (lt::string_lower(sel_name) == lt::string_lower("MuTightWPDenIso"      )) {return Selection::MuTightWPDenIso;      } 
         if (lt::string_lower(sel_name) == lt::string_lower("MuTightWPDenBoth"     )) {return Selection::MuTightWPDenBoth;     } 
         if (lt::string_lower(sel_name) == lt::string_lower("MuTightWPNum"         )) {return Selection::MuTightWPNum;         } 
         if (lt::string_lower(sel_name) == lt::string_lower("MuPFDen"              )) {return Selection::MuPFDen;              } 
         if (lt::string_lower(sel_name) == lt::string_lower("MuPFChIso"            )) {return Selection::MuPFChIso;            } 
+        if (lt::string_lower(sel_name) == lt::string_lower("MuSoftIso"            )) {return Selection::MuSoftIso;            } 
         throw std::invalid_argument("[tnp::GetSelectionFromString]: ERROR - invalid value!"); 
     }
 
@@ -80,12 +85,16 @@ namespace tnp
         if (sel_type == Selection::EGammaTightSSMVA3ch  ) return "EGammaTightSSMVA3ch";
         if (sel_type == Selection::EGammaTightSSMVA3chIP) return "EGammaTightSSMVA3chIP";
         if (sel_type == Selection::EGammaTightSSMVA3chIPconv) return "EGammaTightSSMVA3chIPconv";
+        if (sel_type == Selection::EGammaSoftIso        ) return "EGammaSoftIso";
+        if (sel_type == Selection::EGammaSoftISOLike    ) return "EGammaSoftISOLike";
+        if (sel_type == Selection::EGammaSoftIDLike     ) return "EGammaSoftIDLike";
         if (sel_type == Selection::MuTightWPDenID       ) return "MuTightWPDenID";
         if (sel_type == Selection::MuTightWPDenIso      ) return "MuTightWPDenIso";
         if (sel_type == Selection::MuTightWPDenBoth     ) return "MuTightWPDenBoth";
         if (sel_type == Selection::MuTightWPNum         ) return "MuTightWPNum";
         if (sel_type == Selection::MuPFDen              ) return "MuPFDen";
         if (sel_type == Selection::MuPFChIso            ) return "MuPFChIso";
+        if (sel_type == Selection::MuSoftIso            ) return "MuSoftIso";
         throw std::invalid_argument("[tnp::GetStringFromSelection]: ERROR - invalid value!"); 
     }
 
@@ -103,46 +112,107 @@ namespace tnp
             // cut values and variables
 	    const bool el_is_barrel   = fabs(etaSC()) < 1.479;
             //const bool el_is_endcap   = fabs(etaSC()) > 1.566 && fabs(etaSC()) < 2.5;
-            //const bool el_is_crack    = fabs(etaSC()) < 1.566 && fabs(etaSC()) > 1.442;
+            const bool el_is_crack    = fabs(etaSC()) < 1.566 && fabs(etaSC()) > 1.442;
             const float el_tag_pt      = tag_p4().pt(); 
             const float el_tag_pt_cut  = 30.0;
 
             // cut decisions 
             const bool el_passes_tag_pt    = (el_tag_pt > el_tag_pt_cut);
-            const bool el_passes_tag_eta   = (fabs(tag_p4().eta()) < 2.1); 
-            const bool el_passes_tag_trig  = evt_isRealData() ? tag_HLT_Ele22_eta2p1_WPLoose_Gsf() > 0: true; //true; //GZ need update
+            const bool el_passes_tag_eta   = (fabs(tag_p4().eta()) < 2.1);
+	    //            const bool el_passes_tag_trig  = evt_isRealData() ? tag_HLT_Ele22_eta2p1_WPLoose_Gsf() > 0: true; //true; //GZ need update
+            const bool el_passes_tag_trig  = evt_isRealData() ? tag_HLT_Ele27_eta2p1_WPTight_Gsf() > 0: true; //true; //GZ need update
 	    //	    const bool el_GsfElectron_den = ( !el_is_crack && el_passes_pt && el_passes_trig_tag );
 	    const bool el_GsfElectron_den = ( el_passes_tag_pt && el_passes_tag_trig && el_passes_tag_eta );
 	    const bool el_PFElectron_den  = (isPF() && fabs(dZ()) < 0.1); // additional requirement included in denominator definition. 
 	    const bool el_passes_chIso = (AbsTrkIso() / p4().pt() < 0.2);
+	    const bool el_passes_softISO = (RelIso03EA() < 0.2 && miniisoDB() < 0.1) ;
 
-	    // implement by hand STOP_medium_v2
+
 	    bool passSieie = true, passDeta = true, passDphi = true, passHoverE = true, passOemoop = true, passIP = true, passConv = true, passIso = true;
+
+	    // implement by hand isLooseElectronPOGspring15noIso_v1
+//	    if (el_is_barrel) {
+//	      if (sigmaIEtaIEta_full5x5()   >= 0.0103) passSieie = false;
+//	      if (fabs(dEtaIn()    )  >= 0.0105) passDeta = false;
+//	      if (fabs(dPhiIn()    )  >= 0.115) passDphi = false;
+//	      if (hOverE()            >= 0.104) passHoverE = false;
+//	      if (fabs( (1.0/ecalEnergy()     ) -  (eOverPIn()/ecalEnergy())) >= 0.102) passOemoop = false;
+//	      if (fabs(dxyPV())                       >= 0.0261) passIP = false;
+//	      if (fabs(dZ())                       >= 0.41) passIP = false;
+//	      if (exp_innerlayers()  > 2        ) passConv = false;
+//	      if (conv_vtx_flag()        ) passConv = false;
+//	      //if (RelIso03EA() > 0.107587) passIso = false;
+//	    }
+//	    else if ( fabs(etaSC()) < 2.5 ) {
+//	      if (sigmaIEtaIEta_full5x5()                   >= 0.0301) passSieie = false;
+//	      if (fabs(dEtaIn()                          )  >= 0.00814) passDeta = false;
+//	      if (fabs(dPhiIn()                          )  >= 0.182) passDphi = false;
+//	      if (hOverE()                                  >= 0.0897) passHoverE = false;
+//	      if (fabs( (1.0/ecalEnergy()) -(eOverPIn()/ecalEnergy())) >= 0.126) passOemoop = false;
+//	      if (fabs(dxyPV()      )                       >= 0.118) passIP = false;
+//	      if (fabs(dZ()       )                       >= 0.822) passIP = false;
+//	      if (exp_innerlayers()                         > 1        ) passConv = false;
+//	      if (conv_vtx_flag()                                      ) passConv = false;
+//	      //if (RelIso03EA() > 0.113254 ) passIso = false;
+//	    }
+
+
+///////////////// MEDIUM POG WITH MINIISO 0.1 FOR STOP /////////////////
+//	    if (el_is_barrel) {
+//	      if (sigmaIEtaIEta_full5x5()   >= 0.0101) passSieie = false;
+//	      if (fabs(dEtaIn()    )  >= 0.0103) passDeta = false;
+//	      if (fabs(dPhiIn()    )  >= 0.0336) passDphi = false;
+//	      if (hOverE()            >= 0.0876) passHoverE = false;
+//	      if (fabs( (1.0/ecalEnergy()     ) -  (eOverPIn()/ecalEnergy())) >= 0.0174) passOemoop = false;
+//	      if (fabs(dxyPV())                       >= 0.0118) passIP = false;
+//	      if (fabs(dZ())                       >= 0.373) passIP = false;
+//	      if (exp_innerlayers()  > 2        ) passConv = false;
+//	      if (conv_vtx_flag()        ) passConv = false;
+//	      //if (RelIso03EA() > 0.107587) passIso = false;
+//	      if (miniisoDB() > 0.1 ) passIso = false;
+//	    }
+//	    else if ( fabs(etaSC()) < 2.5 ) {
+//	      if (sigmaIEtaIEta_full5x5()                   >= 0.0283) passSieie = false;
+//	      if (fabs(dEtaIn()                          )  >= 0.00733) passDeta = false;
+//	      if (fabs(dPhiIn()                          )  >= 0.114) passDphi = false;
+//	      if (hOverE()                                  >= 0.0678) passHoverE = false;
+//	      if (fabs( (1.0/ecalEnergy()) -(eOverPIn()/ecalEnergy())) >= 0.0898) passOemoop = false;
+//	      if (fabs(dxyPV()      )                       >= 0.0739) passIP = false;
+//	      if (fabs(dZ()       )                       >= 0.602) passIP = false;
+//	      if (exp_innerlayers()                         > 1        ) passConv = false;
+//	      if (conv_vtx_flag()                                      ) passConv = false;
+//	      //if (RelIso03EA() > 0.113254 ) passIso = false;
+//	      if (miniisoDB() > 0.1 ) passIso = false;
+//	    }
+///////////////// VETO POG WITH MINIISO 0.2 FOR STOP //////////////////////
 	    if (el_is_barrel) {
-	      if (sigmaIEtaIEta_full5x5()   >= 0.009996) passSieie = false;
-	      if (fabs(dEtaIn()    )  >= 0.008925) passDeta = false;
-	      if (fabs(dPhiIn()    )  >= 0.035973) passDphi = false;
-	      if (hOverE()            >= 0.050537) passHoverE = false;
-	      if (fabs( (1.0/ecalEnergy()     ) -  (eOverPIn()/ecalEnergy())) >= 0.091942) passOemoop = false;
-	      if (fabs(dxyPV())                       >= 0.012235) passIP = false;
-	      if (fabs(dZ())                       >= 0.042020) passIP = false;
-	      if (exp_innerlayers()  > 1        ) passConv = false;
+	      if (sigmaIEtaIEta_full5x5()   >= 0.0114) passSieie = false;
+	      if (fabs(dEtaIn()    )  >= 0.0152) passDeta = false;
+	      if (fabs(dPhiIn()    )  >= 0.216) passDphi = false;
+	      if (hOverE()            >= 0.181) passHoverE = false;
+	      if (fabs( (1.0/ecalEnergy()     ) -  (eOverPIn()/ecalEnergy())) >= 0.207) passOemoop = false;
+	      if (fabs(dxyPV())                       >= 0.0564) passIP = false;
+	      if (fabs(dZ())                       >= 0.472) passIP = false;
+	      if (exp_innerlayers()  > 2        ) passConv = false;
 	      if (conv_vtx_flag()        ) passConv = false;
-	      if (RelIso03EA() > 0.107587) passIso = false;
+	      //if (RelIso03EA() > 0.107587) passIso = false;
+	      if (miniisoDB() > 0.2 ) passIso = false;
 	    }
 	    else if ( fabs(etaSC()) < 2.5 ) {
-	      if (sigmaIEtaIEta_full5x5()                   >= 0.030135) passSieie = false;
-	      if (fabs(dEtaIn()                          )  >= 0.007429) passDeta = false;
-	      if (fabs(dPhiIn()                          )  >= 0.067879) passDphi = false;
-	      if (hOverE()                                  >= 0.086782) passHoverE = false;
-	      if (fabs( (1.0/ecalEnergy()) -(eOverPIn()/ecalEnergy())) >= 0.100683) passOemoop = false;
-	      if (fabs(dxyPV()      )                       >= 0.036719) passIP = false;
-	      if (fabs(dZ()       )                       >= 0.138142) passIP = false;
-	      if (exp_innerlayers()                         > 1        ) passConv = false;
+	      if (sigmaIEtaIEta_full5x5()                   >= 0.0352) passSieie = false;
+	      if (fabs(dEtaIn()                          )  >= 0.0113) passDeta = false;
+	      if (fabs(dPhiIn()                          )  >= 0.237) passDphi = false;
+	      if (hOverE()                                  >= 0.116) passHoverE = false;
+	      if (fabs( (1.0/ecalEnergy()) -(eOverPIn()/ecalEnergy())) >= 0.174) passOemoop = false;
+	      if (fabs(dxyPV()      )                       >= 0.222) passIP = false;
+	      if (fabs(dZ()       )                       >= 0.921) passIP = false;
+	      if (exp_innerlayers()                         > 3        ) passConv = false;
 	      if (conv_vtx_flag()                                      ) passConv = false;
-	      if (RelIso03EA() > 0.113254 ) passIso = false;
+	      //if (RelIso03EA() > 0.113254 ) passIso = false;
+	      if (miniisoDB() > 0.2 ) passIso = false;
 	    }
-	    bool el_passes_STOP_medium_v2_noiso = (passSieie && passDeta && passDphi && passHoverE && passOemoop && passIP && passConv);
+
+	    bool el_passes_STOP_medium_v2_noiso = (passSieie && passDeta && passDphi && passHoverE && passOemoop && passIP && passConv && passIso);
 	    bool el_passes_STOP_medium_v2_noiso_noDEta  = (passSieie && passDphi && passHoverE && passOemoop && passIP && passConv);
 	    bool el_passes_STOP_medium_v2_noiso_noIP    = (passSieie && passDeta && passDphi && passHoverE && passOemoop && passConv);
 	    bool el_passes_STOP_medium_v2_noiso_noDPhi  = (passSieie && passDeta && passHoverE && passOemoop && passIP && passConv);
@@ -154,8 +224,14 @@ namespace tnp
 	    bool el_passes_STOP_medium_v2_noSieie = el_passes_STOP_medium_v2_noiso_noSieie && passIso;
 	    bool el_passes_STOP_medium_v2_noConv  = el_passes_STOP_medium_v2_noiso_noConv  && passIso;
 
-	    bool el_passes_STOP_medium_v2_iso =  el_passes_STOP_medium_v2_noiso && miniisoDB() < 0.1;
+	    //	    bool el_passes_STOP_medium_v2_iso =  el_passes_STOP_medium_v2_noiso && miniisoDB() < 0.1;
+	    bool el_passes_STOP_medium_v2_iso =  el_passes_STOP_medium_v2_noiso && miniisoDB() < 0.1 && RelIso03EA()*p4().pt() <5;
 	    bool el_passes_POG_mediumV2_iso = el_passes_STOP_medium_v2_noiso && passIso;
+
+	    bool el_passes_softID = (passSieie && passDeta && passDphi && passHoverE && passOemoop && passIP && passConv);
+
+	    bool el_passes_softIDlikeCuts = ( passDeta && passDphi && passOemoop && passIP && passConv);
+	    bool el_passes_softISOlikeCuts = ( passSieie && passHoverE && el_passes_softISO );
 
 	    float MVA = mva();
 	    bool el_passes_SS_tightMVA = false;
@@ -172,8 +248,18 @@ namespace tnp
 	    if (conv_vtx_flag()) el_passes_SS_conv = false;
 	    if (exp_innerlayers() > 0) el_passes_SS_conv = false;
 	    
+	    //float mtTag = sqrt( 2 * el_tag_pt * evt_pfmet() * (1-cos(TVector2::Phi_mpi_pi(tag_p4().phi()-evt_pfmetPhi()))) );
+	    //	    	    bool cleanSample = (mtTag < 45) && (abs(tag_p4().eta())<1.4) && (tag_charge()*id() > 0);
+	    //bool cleanSample = (mtTag < 45) && (tag_charge()*id() > 0);
+	    //bool cleanSample =  (tag_charge()*id() > 0);
+	    bool cleanSample =  tag_mva_25ns() > 0.9;
+
+	    // Basic cleaning: some MET to reject QCD, low MT to reject W
+
 	    if (selection == Selection::EGammaGsfElectron    ) {
                 if (not el_GsfElectron_den)       {return false;}
+		if (not cleanSample) {return false;}
+		if (el_is_crack) {return false;}
 	    }
 	    if (selection == Selection::EGammaPFElectron     ) {
                 if (not el_GsfElectron_den)       {return false;}
@@ -258,6 +344,27 @@ namespace tnp
                 if (not el_passes_SS_tightIP) {return false;}
                 if (not el_passes_SS_conv) {return false;}
 	    } 
+	    if (selection == Selection::EGammaSoftIso  ) {
+                if (not el_GsfElectron_den)       {return false;}
+		if (not cleanSample) {return false;}
+                if (el_is_crack) {return false;}
+                if (not el_passes_softID) {return false;}
+                if (not el_passes_softISO) {return false;}
+	    } 
+	    if (selection == Selection::EGammaSoftIDLike  ) {
+                if (not el_GsfElectron_den)       {return false;}
+		if (not cleanSample) {return false;}
+                if (el_is_crack) {return false;}
+                if (not el_passes_softIDlikeCuts) {return false;}
+	    } 
+	    if (selection == Selection::EGammaSoftISOLike  ) {
+                if (not el_GsfElectron_den)       {return false;}
+		if (not cleanSample) {return false;}
+                if (el_is_crack) {return false;}
+                if (not el_passes_softISOlikeCuts) {return false;}
+	    } 
+
+
 
 
         }
@@ -276,11 +383,16 @@ namespace tnp
 
             // cut decisions 
             const bool mu_passes_pt       = (mu_tag_pt > mu_tag_pt_cut);
-            const bool mu_passes_trig_tag = (tag_HLT_IsoMu20() > 0) || (tag_HLT_IsoTkMu20() > 0); 
+	    //const bool mu_passes_trig_tag = (tag_HLT_IsoMu20() > 0) || (tag_HLT_IsoTkMu20() > 0);
+            const bool mu_passes_trig_tag  = evt_isRealData() ? ((tag_HLT_IsoMu24() > 0) || (tag_HLT_IsoTkMu24() > 0)) > 0: true; //true; //GZ need update
             const bool mu_passes_pog_iso  = (mu_iso < mu_iso_pog_cut); 
             const bool mu_passes_pog_id   = passes_SS_tight_noiso_v3(); 
             const bool mu_passes_PFChIso  = (AbsTrkIso() / p4().pt() < 0.2); //RelIso03() < 0.2; //
             const bool mu_passes_PF       = isPF(); 
+
+	    const bool mu_passes_softISO = (RelIso03EA() < 0.2 && miniisoDB() < 0.1) ;
+	    const bool mu_passes_softIP  = (fabs(dxyPV()) < 0.02 && dZ() < 0.02) ;
+
             // Muon POG Selections (2012)
             // From: https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideMuonId
             // --------------------------------------------------------------------------- //
@@ -328,6 +440,13 @@ namespace tnp
                 if (not mu_passes_PF)       {return false;}
                 if (not mu_passes_trig_tag) {return false;}	     
                 if (not mu_passes_PFChIso)  {return false;}	      
+	    }
+	    if (selection == Selection::MuSoftIso)
+	    {
+                if (not mu_passes_pt)       {return false;}
+                if (not mu_passes_trig_tag) {return false;}	     
+                if (not mu_passes_softISO)  {return false;}	      
+                if (not mu_passes_softIP)   {return false;}	      
 	    }
             
         }

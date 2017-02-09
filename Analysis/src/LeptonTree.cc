@@ -7,10 +7,6 @@ namespace lepton_tree {
 	const float &evt_trackmetPhi() { return lepton_tree_obj.evt_trackmetPhi(); }
 	const float &evt_corrMET() { return lepton_tree_obj.evt_corrMET(); }
 	const float &evt_corrMETPhi() { return lepton_tree_obj.evt_corrMETPhi(); }
-	const float &evt_met3p0() { return lepton_tree_obj.evt_met3p0(); }
-	const float &evt_met3p0Phi() { return lepton_tree_obj.evt_met3p0Phi(); }
-	const float &evt_t1met3p0() { return lepton_tree_obj.evt_t1met3p0(); }
-	const float &evt_t1met3p0Phi() { return lepton_tree_obj.evt_t1met3p0Phi(); }
 	const float &evt_pfsumet() { return lepton_tree_obj.evt_pfsumet(); }
 	const float &evt_pfmetSig() { return lepton_tree_obj.evt_pfmetSig(); }
 	const int &evt_event() { return lepton_tree_obj.evt_event(); }
@@ -57,6 +53,7 @@ namespace lepton_tree {
 	const int &mc_id() { return lepton_tree_obj.mc_id(); }
 	const float &RelIso03() { return lepton_tree_obj.RelIso03(); }
 	const float &RelIso03EA() { return lepton_tree_obj.RelIso03EA(); }
+	const float &tag_RelIso03EA() { return lepton_tree_obj.tag_RelIso03EA(); }
 	const float &RelIso03DB() { return lepton_tree_obj.RelIso03DB(); }
 	const float &pfChargedHadronIso() { return lepton_tree_obj.pfChargedHadronIso(); }
 	const float &pfPhotonIso() { return lepton_tree_obj.pfPhotonIso(); }
@@ -87,14 +84,12 @@ namespace lepton_tree {
 	const bool &passes_SS_fo_looseMVA_noiso_v5() { return lepton_tree_obj.passes_SS_fo_looseMVA_noiso_v5(); }
 	const bool &passes_SS_veto_v5() { return lepton_tree_obj.passes_SS_veto_v5(); }
 	const bool &passes_SS_veto_noiso_v5() { return lepton_tree_obj.passes_SS_veto_noiso_v5(); }
-	const bool &passes_WW_medium_v1() { return lepton_tree_obj.passes_WW_medium_v1(); }
-	const bool &passes_WW_medium_noiso_v1() { return lepton_tree_obj.passes_WW_medium_noiso_v1(); }
-	const bool &passes_WW_fo_v1() { return lepton_tree_obj.passes_WW_fo_v1(); }
-	const bool &passes_WW_fo_noiso_v1() { return lepton_tree_obj.passes_WW_fo_noiso_v1(); }
-	const bool &passes_WW_fo_looseMVA_v1() { return lepton_tree_obj.passes_WW_fo_looseMVA_v1(); }
-	const bool &passes_WW_fo_looseMVA_noiso_v1() { return lepton_tree_obj.passes_WW_fo_looseMVA_noiso_v1(); }
-	const bool &passes_WW_veto_v1() { return lepton_tree_obj.passes_WW_veto_v1(); }
-	const bool &passes_WW_veto_noiso_v1() { return lepton_tree_obj.passes_WW_veto_noiso_v1(); }
+	const bool &passes_WW_medium_v2() { return lepton_tree_obj.passes_WW_medium_v2(); }
+	const bool &passes_WW_medium_noiso_v2() { return lepton_tree_obj.passes_WW_medium_noiso_v2(); }
+	const bool &passes_WW_fo_v2() { return lepton_tree_obj.passes_WW_fo_v2(); }
+	const bool &passes_WW_fo_noiso_v2() { return lepton_tree_obj.passes_WW_fo_noiso_v2(); }
+	const bool &passes_WW_veto_v2() { return lepton_tree_obj.passes_WW_veto_v2(); }
+	const bool &passes_WW_veto_noiso_v2() { return lepton_tree_obj.passes_WW_veto_noiso_v2(); }
 	const bool &passes_HAD_veto_v3() { return lepton_tree_obj.passes_HAD_veto_v3(); }
 	const bool &passes_HAD_veto_noiso_v3() { return lepton_tree_obj.passes_HAD_veto_noiso_v3(); }
 	const bool &passes_HAD_loose_v3() { return lepton_tree_obj.passes_HAD_loose_v3(); }
@@ -103,7 +98,6 @@ namespace lepton_tree {
 	const bool &passes_POG_looseID() { return lepton_tree_obj.passes_POG_looseID(); }
 	const bool &passes_POG_mediumID() { return lepton_tree_obj.passes_POG_mediumID(); }
 	const bool &passes_POG_tightID() { return lepton_tree_obj.passes_POG_tightID(); }
-	const bool &passes_isTightElectronPOGspring15() { return lepton_tree_obj.passes_isTightElectronPOGspring15(); }
 	const float &ip3d() { return lepton_tree_obj.ip3d(); }
 	const float &ip3derr() { return lepton_tree_obj.ip3derr(); }
 	const int &type() { return lepton_tree_obj.type(); }
@@ -114,6 +108,8 @@ namespace lepton_tree {
 	const float &miniisoDB() { return lepton_tree_obj.miniisoDB(); }
 	const float &reliso04() { return lepton_tree_obj.reliso04(); }
 	const float &annulus04() { return lepton_tree_obj.annulus04(); }
+	const float &AbsTrkIso() { return lepton_tree_obj.AbsTrkIso(); }
+	const float &TrkAn04() { return lepton_tree_obj.TrkAn04(); }
 	const float &iso03sumPt() { return lepton_tree_obj.iso03sumPt(); }
 	const float &iso03emEt() { return lepton_tree_obj.iso03emEt(); }
 	const float &iso03hadEt() { return lepton_tree_obj.iso03hadEt(); }
@@ -154,6 +150,7 @@ namespace lepton_tree {
 	const int &tag_HLT_Ele32_eta2p1_WPTight_Gsf() { return lepton_tree_obj.tag_HLT_Ele32_eta2p1_WPTight_Gsf(); }
 	const int &tag_HLT_Ele22_eta2p1_WPLoose_Gsf() { return lepton_tree_obj.tag_HLT_Ele22_eta2p1_WPLoose_Gsf(); }
 	const int &tag_HLT_Ele22_eta2p1_WPTight_Gsf() { return lepton_tree_obj.tag_HLT_Ele22_eta2p1_WPTight_Gsf(); }
+	const int &tag_HLT_Ele25_eta2p1_WPTight_Gsf() { return lepton_tree_obj.tag_HLT_Ele25_eta2p1_WPTight_Gsf(); }
 	const int &tag_HLT_Ele23_WPLoose_Gsf() { return lepton_tree_obj.tag_HLT_Ele23_WPLoose_Gsf(); }
 	const int &tag_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_LeadingLeg() { return lepton_tree_obj.tag_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_LeadingLeg(); }
 	const int &tag_HLT_Ele23_CaloIdL_TrackIdL_IsoVL() { return lepton_tree_obj.tag_HLT_Ele23_CaloIdL_TrackIdL_IsoVL(); }
@@ -176,8 +173,11 @@ namespace lepton_tree {
 	const int &tag_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg() { return lepton_tree_obj.tag_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg(); }
 	const int &tag_HLT_IsoMu20() { return lepton_tree_obj.tag_HLT_IsoMu20(); }
 	const int &tag_HLT_IsoTkMu20() { return lepton_tree_obj.tag_HLT_IsoTkMu20(); }
+	const int &tag_HLT_IsoTkMu20_eta2p1() { return lepton_tree_obj.tag_HLT_IsoTkMu20_eta2p1(); }
 	const int &tag_HLT_IsoMu24_eta2p1() { return lepton_tree_obj.tag_HLT_IsoMu24_eta2p1(); }
 	const int &tag_HLT_IsoTkMu24_eta2p1() { return lepton_tree_obj.tag_HLT_IsoTkMu24_eta2p1(); }
+	const int &tag_HLT_IsoMu24() { return lepton_tree_obj.tag_HLT_IsoMu24(); }
+	const int &tag_HLT_IsoTkMu24() { return lepton_tree_obj.tag_HLT_IsoTkMu24(); }
 	const int &tag_HLT_IsoMu27() { return lepton_tree_obj.tag_HLT_IsoMu27(); }
 	const int &tag_HLT_IsoTkMu27() { return lepton_tree_obj.tag_HLT_IsoTkMu27(); }
 	const int &tag_HLT_Mu8_TrkIsoVVL() { return lepton_tree_obj.tag_HLT_Mu8_TrkIsoVVL(); }
@@ -206,6 +206,7 @@ namespace lepton_tree {
 	const bool &threeChargeAgree() { return lepton_tree_obj.threeChargeAgree(); }
 	const float &mva() { return lepton_tree_obj.mva(); }
 	const float &mva_25ns() { return lepton_tree_obj.mva_25ns(); }
+	const float &tag_mva_25ns() { return lepton_tree_obj.tag_mva_25ns(); }
 	const float &ecalIso() { return lepton_tree_obj.ecalIso(); }
 	const float &hcalIso() { return lepton_tree_obj.hcalIso(); }
 	const float &ecalPFClusterIso() { return lepton_tree_obj.ecalPFClusterIso(); }
@@ -252,19 +253,25 @@ namespace lepton_tree {
 	const int &HLT_Mu10_CentralPFJet30_BTagCSV0p5PF() { return lepton_tree_obj.HLT_Mu10_CentralPFJet30_BTagCSV0p5PF(); }
 	const int &HLT_IsoMu20() { return lepton_tree_obj.HLT_IsoMu20(); }
 	const int &HLT_IsoTkMu20() { return lepton_tree_obj.HLT_IsoTkMu20(); }
+	const int &HLT_IsoTkMu20_eta2p1() { return lepton_tree_obj.HLT_IsoTkMu20_eta2p1(); }
 	const int &HLT_Mu10_CentralPFJet30_BTagCSV0p54PF() { return lepton_tree_obj.HLT_Mu10_CentralPFJet30_BTagCSV0p54PF(); }
 	const int &HLT_IsoMu24_eta2p1() { return lepton_tree_obj.HLT_IsoMu24_eta2p1(); }
 	const int &HLT_IsoTkMu24_eta2p1() { return lepton_tree_obj.HLT_IsoTkMu24_eta2p1(); }
+	const int &HLT_IsoMu24() { return lepton_tree_obj.HLT_IsoMu24(); }
+	const int &HLT_IsoTkMu24() { return lepton_tree_obj.HLT_IsoTkMu24(); }
 	const int &HLT_IsoMu27() { return lepton_tree_obj.HLT_IsoMu27(); }
 	const int &HLT_IsoTkMu27() { return lepton_tree_obj.HLT_IsoTkMu27(); }
 	const int &HLT_Mu45_eta2p1() { return lepton_tree_obj.HLT_Mu45_eta2p1(); }
 	const int &HLT_Mu50() { return lepton_tree_obj.HLT_Mu50(); }
 	const int &HLT_Ele8_CaloIdM_TrackIdM_PFJet30() { return lepton_tree_obj.HLT_Ele8_CaloIdM_TrackIdM_PFJet30(); }
 	const int &HLT_Ele12_CaloIdM_TrackIdM_PFJet30() { return lepton_tree_obj.HLT_Ele12_CaloIdM_TrackIdM_PFJet30(); }
+	const int &HLT_Ele17_CaloIdM_TrackIdM_PFJet30() { return lepton_tree_obj.HLT_Ele17_CaloIdM_TrackIdM_PFJet30(); }
 	const int &HLT_Ele18_CaloIdM_TrackIdM_PFJet30() { return lepton_tree_obj.HLT_Ele18_CaloIdM_TrackIdM_PFJet30(); }
 	const int &HLT_Ele23_CaloIdM_TrackIdM_PFJet30() { return lepton_tree_obj.HLT_Ele23_CaloIdM_TrackIdM_PFJet30(); }
 	const int &HLT_Ele33_CaloIdM_TrackIdM_PFJet30() { return lepton_tree_obj.HLT_Ele33_CaloIdM_TrackIdM_PFJet30(); }
+	const int &HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30() { return lepton_tree_obj.HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30(); }
 	const int &HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30() { return lepton_tree_obj.HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30(); }
+	const int &HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30() { return lepton_tree_obj.HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30(); }
 	const int &HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30() { return lepton_tree_obj.HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30(); }
 	const int &HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30() { return lepton_tree_obj.HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30(); }
 	const int &HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30() { return lepton_tree_obj.HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30(); }
@@ -279,6 +286,7 @@ namespace lepton_tree {
 	const int &HLT_Ele32_eta2p1_WPTight_Gsf() { return lepton_tree_obj.HLT_Ele32_eta2p1_WPTight_Gsf(); }
 	const int &HLT_Ele22_eta2p1_WPLoose_Gsf() { return lepton_tree_obj.HLT_Ele22_eta2p1_WPLoose_Gsf(); }
 	const int &HLT_Ele22_eta2p1_WPTight_Gsf() { return lepton_tree_obj.HLT_Ele22_eta2p1_WPTight_Gsf(); }
+	const int &HLT_Ele25_eta2p1_WPTight_Gsf() { return lepton_tree_obj.HLT_Ele25_eta2p1_WPTight_Gsf(); }
 	const int &HLT_Ele23_WPLoose_Gsf() { return lepton_tree_obj.HLT_Ele23_WPLoose_Gsf(); }
 	const int &HLT_Ele23_CaloIdL_TrackIdL_IsoVL() { return lepton_tree_obj.HLT_Ele23_CaloIdL_TrackIdL_IsoVL(); }
 	const int &HLT_Ele12_CaloIdL_TrackIdL_IsoVL() { return lepton_tree_obj.HLT_Ele12_CaloIdL_TrackIdL_IsoVL(); }

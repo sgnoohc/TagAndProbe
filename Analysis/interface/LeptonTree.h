@@ -35,18 +35,6 @@ protected:
 	float	evt_corrMETPhi_;
 	TBranch *evt_corrMETPhi_branch;
 	bool evt_corrMETPhi_isLoaded;
-	float	evt_met3p0_;
-	TBranch *evt_met3p0_branch;
-	bool evt_met3p0_isLoaded;
-	float	evt_met3p0Phi_;
-	TBranch *evt_met3p0Phi_branch;
-	bool evt_met3p0Phi_isLoaded;
-	float	evt_t1met3p0_;
-	TBranch *evt_t1met3p0_branch;
-	bool evt_t1met3p0_isLoaded;
-	float	evt_t1met3p0Phi_;
-	TBranch *evt_t1met3p0Phi_branch;
-	bool evt_t1met3p0Phi_isLoaded;
 	float	evt_pfsumet_;
 	TBranch *evt_pfsumet_branch;
 	bool evt_pfsumet_isLoaded;
@@ -185,6 +173,9 @@ protected:
 	float	RelIso03EA_;
 	TBranch *RelIso03EA_branch;
 	bool RelIso03EA_isLoaded;
+	float	tag_RelIso03EA_;
+	TBranch *tag_RelIso03EA_branch;
+	bool tag_RelIso03EA_isLoaded;
 	float	RelIso03DB_;
 	TBranch *RelIso03DB_branch;
 	bool RelIso03DB_isLoaded;
@@ -275,30 +266,24 @@ protected:
 	bool	passes_SS_veto_noiso_v5_;
 	TBranch *passes_SS_veto_noiso_v5_branch;
 	bool passes_SS_veto_noiso_v5_isLoaded;
-	bool	passes_WW_medium_v1_;
-	TBranch *passes_WW_medium_v1_branch;
-	bool passes_WW_medium_v1_isLoaded;
-	bool	passes_WW_medium_noiso_v1_;
-	TBranch *passes_WW_medium_noiso_v1_branch;
-	bool passes_WW_medium_noiso_v1_isLoaded;
-	bool	passes_WW_fo_v1_;
-	TBranch *passes_WW_fo_v1_branch;
-	bool passes_WW_fo_v1_isLoaded;
-	bool	passes_WW_fo_noiso_v1_;
-	TBranch *passes_WW_fo_noiso_v1_branch;
-	bool passes_WW_fo_noiso_v1_isLoaded;
-	bool	passes_WW_fo_looseMVA_v1_;
-	TBranch *passes_WW_fo_looseMVA_v1_branch;
-	bool passes_WW_fo_looseMVA_v1_isLoaded;
-	bool	passes_WW_fo_looseMVA_noiso_v1_;
-	TBranch *passes_WW_fo_looseMVA_noiso_v1_branch;
-	bool passes_WW_fo_looseMVA_noiso_v1_isLoaded;
-	bool	passes_WW_veto_v1_;
-	TBranch *passes_WW_veto_v1_branch;
-	bool passes_WW_veto_v1_isLoaded;
-	bool	passes_WW_veto_noiso_v1_;
-	TBranch *passes_WW_veto_noiso_v1_branch;
-	bool passes_WW_veto_noiso_v1_isLoaded;
+	bool	passes_WW_medium_v2_;
+	TBranch *passes_WW_medium_v2_branch;
+	bool passes_WW_medium_v2_isLoaded;
+	bool	passes_WW_medium_noiso_v2_;
+	TBranch *passes_WW_medium_noiso_v2_branch;
+	bool passes_WW_medium_noiso_v2_isLoaded;
+	bool	passes_WW_fo_v2_;
+	TBranch *passes_WW_fo_v2_branch;
+	bool passes_WW_fo_v2_isLoaded;
+	bool	passes_WW_fo_noiso_v2_;
+	TBranch *passes_WW_fo_noiso_v2_branch;
+	bool passes_WW_fo_noiso_v2_isLoaded;
+	bool	passes_WW_veto_v2_;
+	TBranch *passes_WW_veto_v2_branch;
+	bool passes_WW_veto_v2_isLoaded;
+	bool	passes_WW_veto_noiso_v2_;
+	TBranch *passes_WW_veto_noiso_v2_branch;
+	bool passes_WW_veto_noiso_v2_isLoaded;
 	bool	passes_HAD_veto_v3_;
 	TBranch *passes_HAD_veto_v3_branch;
 	bool passes_HAD_veto_v3_isLoaded;
@@ -323,9 +308,6 @@ protected:
 	bool	passes_POG_tightID_;
 	TBranch *passes_POG_tightID_branch;
 	bool passes_POG_tightID_isLoaded;
-	bool    passes_isTightElectronPOGspring15_;
-	TBranch *passes_isTightElectronPOGspring15_branch;
-	bool passes_isTightElectronPOGspring15_isLoaded;
 	float	ip3d_;
 	TBranch *ip3d_branch;
 	bool ip3d_isLoaded;
@@ -356,6 +338,12 @@ protected:
 	float	annulus04_;
 	TBranch *annulus04_branch;
 	bool annulus04_isLoaded;
+	float	AbsTrkIso_;
+	TBranch *AbsTrkIso_branch;
+	bool AbsTrkIso_isLoaded;
+	float	TrkAn04_;
+	TBranch *TrkAn04_branch;
+	bool TrkAn04_isLoaded;
 	float	iso03sumPt_;
 	TBranch *iso03sumPt_branch;
 	bool iso03sumPt_isLoaded;
@@ -476,6 +464,9 @@ protected:
 	int	tag_HLT_Ele22_eta2p1_WPTight_Gsf_;
 	TBranch *tag_HLT_Ele22_eta2p1_WPTight_Gsf_branch;
 	bool tag_HLT_Ele22_eta2p1_WPTight_Gsf_isLoaded;
+	int	tag_HLT_Ele25_eta2p1_WPTight_Gsf_;
+	TBranch *tag_HLT_Ele25_eta2p1_WPTight_Gsf_branch;
+	bool tag_HLT_Ele25_eta2p1_WPTight_Gsf_isLoaded;
 	int	tag_HLT_Ele23_WPLoose_Gsf_;
 	TBranch *tag_HLT_Ele23_WPLoose_Gsf_branch;
 	bool tag_HLT_Ele23_WPLoose_Gsf_isLoaded;
@@ -542,12 +533,21 @@ protected:
 	int	tag_HLT_IsoTkMu20_;
 	TBranch *tag_HLT_IsoTkMu20_branch;
 	bool tag_HLT_IsoTkMu20_isLoaded;
+	int	tag_HLT_IsoTkMu20_eta2p1_;
+	TBranch *tag_HLT_IsoTkMu20_eta2p1_branch;
+	bool tag_HLT_IsoTkMu20_eta2p1_isLoaded;
 	int	tag_HLT_IsoMu24_eta2p1_;
 	TBranch *tag_HLT_IsoMu24_eta2p1_branch;
 	bool tag_HLT_IsoMu24_eta2p1_isLoaded;
 	int	tag_HLT_IsoTkMu24_eta2p1_;
 	TBranch *tag_HLT_IsoTkMu24_eta2p1_branch;
 	bool tag_HLT_IsoTkMu24_eta2p1_isLoaded;
+	int	tag_HLT_IsoMu24_;
+	TBranch *tag_HLT_IsoMu24_branch;
+	bool tag_HLT_IsoMu24_isLoaded;
+	int	tag_HLT_IsoTkMu24_;
+	TBranch *tag_HLT_IsoTkMu24_branch;
+	bool tag_HLT_IsoTkMu24_isLoaded;
 	int	tag_HLT_IsoMu27_;
 	TBranch *tag_HLT_IsoMu27_branch;
 	bool tag_HLT_IsoMu27_isLoaded;
@@ -632,6 +632,9 @@ protected:
 	float	mva_25ns_;
 	TBranch *mva_25ns_branch;
 	bool mva_25ns_isLoaded;
+	float	tag_mva_25ns_;
+	TBranch *tag_mva_25ns_branch;
+	bool tag_mva_25ns_isLoaded;
 	float	ecalIso_;
 	TBranch *ecalIso_branch;
 	bool ecalIso_isLoaded;
@@ -770,6 +773,9 @@ protected:
 	int	HLT_IsoTkMu20_;
 	TBranch *HLT_IsoTkMu20_branch;
 	bool HLT_IsoTkMu20_isLoaded;
+	int	HLT_IsoTkMu20_eta2p1_;
+	TBranch *HLT_IsoTkMu20_eta2p1_branch;
+	bool HLT_IsoTkMu20_eta2p1_isLoaded;
 	int	HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_;
 	TBranch *HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_branch;
 	bool HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_isLoaded;
@@ -779,6 +785,12 @@ protected:
 	int	HLT_IsoTkMu24_eta2p1_;
 	TBranch *HLT_IsoTkMu24_eta2p1_branch;
 	bool HLT_IsoTkMu24_eta2p1_isLoaded;
+	int	HLT_IsoMu24_;
+	TBranch *HLT_IsoMu24_branch;
+	bool HLT_IsoMu24_isLoaded;
+	int	HLT_IsoTkMu24_;
+	TBranch *HLT_IsoTkMu24_branch;
+	bool HLT_IsoTkMu24_isLoaded;
 	int	HLT_IsoMu27_;
 	TBranch *HLT_IsoMu27_branch;
 	bool HLT_IsoMu27_isLoaded;
@@ -797,6 +809,9 @@ protected:
 	int	HLT_Ele12_CaloIdM_TrackIdM_PFJet30_;
 	TBranch *HLT_Ele12_CaloIdM_TrackIdM_PFJet30_branch;
 	bool HLT_Ele12_CaloIdM_TrackIdM_PFJet30_isLoaded;
+	int	HLT_Ele17_CaloIdM_TrackIdM_PFJet30_;
+	TBranch *HLT_Ele17_CaloIdM_TrackIdM_PFJet30_branch;
+	bool HLT_Ele17_CaloIdM_TrackIdM_PFJet30_isLoaded;
 	int	HLT_Ele18_CaloIdM_TrackIdM_PFJet30_;
 	TBranch *HLT_Ele18_CaloIdM_TrackIdM_PFJet30_branch;
 	bool HLT_Ele18_CaloIdM_TrackIdM_PFJet30_isLoaded;
@@ -806,9 +821,15 @@ protected:
 	int	HLT_Ele33_CaloIdM_TrackIdM_PFJet30_;
 	TBranch *HLT_Ele33_CaloIdM_TrackIdM_PFJet30_branch;
 	bool HLT_Ele33_CaloIdM_TrackIdM_PFJet30_isLoaded;
+	int	HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_;
+	TBranch *HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_branch;
+	bool HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_isLoaded;
 	int	HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_;
 	TBranch *HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_branch;
 	bool HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_isLoaded;
+	int	HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_;
+	TBranch *HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_branch;
+	bool HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_isLoaded;
 	int	HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_;
 	TBranch *HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_branch;
 	bool HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_isLoaded;
@@ -851,6 +872,9 @@ protected:
 	int	HLT_Ele22_eta2p1_WPTight_Gsf_;
 	TBranch *HLT_Ele22_eta2p1_WPTight_Gsf_branch;
 	bool HLT_Ele22_eta2p1_WPTight_Gsf_isLoaded;
+	int	HLT_Ele25_eta2p1_WPTight_Gsf_;
+	TBranch *HLT_Ele25_eta2p1_WPTight_Gsf_branch;
+	bool HLT_Ele25_eta2p1_WPTight_Gsf_isLoaded;
 	int	HLT_Ele23_WPLoose_Gsf_;
 	TBranch *HLT_Ele23_WPLoose_Gsf_branch;
 	bool HLT_Ele23_WPLoose_Gsf_isLoaded;
@@ -966,26 +990,6 @@ void Init(TTree *tree) {
 	if (tree->GetBranch("evt_corrMETPhi") != 0) {
 		evt_corrMETPhi_branch = tree->GetBranch("evt_corrMETPhi");
 		if (evt_corrMETPhi_branch) {evt_corrMETPhi_branch->SetAddress(&evt_corrMETPhi_);}
-	}
-	evt_met3p0_branch = 0;
-	if (tree->GetBranch("evt_met3p0") != 0) {
-		evt_met3p0_branch = tree->GetBranch("evt_met3p0");
-		if (evt_met3p0_branch) {evt_met3p0_branch->SetAddress(&evt_met3p0_);}
-	}
-	evt_met3p0Phi_branch = 0;
-	if (tree->GetBranch("evt_met3p0Phi") != 0) {
-		evt_met3p0Phi_branch = tree->GetBranch("evt_met3p0Phi");
-		if (evt_met3p0Phi_branch) {evt_met3p0Phi_branch->SetAddress(&evt_met3p0Phi_);}
-	}
-	evt_t1met3p0_branch = 0;
-	if (tree->GetBranch("evt_t1met3p0") != 0) {
-		evt_t1met3p0_branch = tree->GetBranch("evt_t1met3p0");
-		if (evt_t1met3p0_branch) {evt_t1met3p0_branch->SetAddress(&evt_t1met3p0_);}
-	}
-	evt_t1met3p0Phi_branch = 0;
-	if (tree->GetBranch("evt_t1met3p0Phi") != 0) {
-		evt_t1met3p0Phi_branch = tree->GetBranch("evt_t1met3p0Phi");
-		if (evt_t1met3p0Phi_branch) {evt_t1met3p0Phi_branch->SetAddress(&evt_t1met3p0Phi_);}
 	}
 	evt_pfsumet_branch = 0;
 	if (tree->GetBranch("evt_pfsumet") != 0) {
@@ -1187,6 +1191,11 @@ void Init(TTree *tree) {
 		RelIso03EA_branch = tree->GetBranch("RelIso03EA");
 		if (RelIso03EA_branch) {RelIso03EA_branch->SetAddress(&RelIso03EA_);}
 	}
+	tag_RelIso03EA_branch = 0;
+	if (tree->GetBranch("tag_RelIso03EA") != 0) {
+		tag_RelIso03EA_branch = tree->GetBranch("tag_RelIso03EA");
+		if (tag_RelIso03EA_branch) {tag_RelIso03EA_branch->SetAddress(&tag_RelIso03EA_);}
+	}
 	RelIso03DB_branch = 0;
 	if (tree->GetBranch("RelIso03DB") != 0) {
 		RelIso03DB_branch = tree->GetBranch("RelIso03DB");
@@ -1337,45 +1346,35 @@ void Init(TTree *tree) {
 		passes_SS_veto_noiso_v5_branch = tree->GetBranch("passes_SS_veto_noiso_v5");
 		if (passes_SS_veto_noiso_v5_branch) {passes_SS_veto_noiso_v5_branch->SetAddress(&passes_SS_veto_noiso_v5_);}
 	}
-	passes_WW_medium_v1_branch = 0;
-	if (tree->GetBranch("passes_WW_medium_v1") != 0) {
-		passes_WW_medium_v1_branch = tree->GetBranch("passes_WW_medium_v1");
-		if (passes_WW_medium_v1_branch) {passes_WW_medium_v1_branch->SetAddress(&passes_WW_medium_v1_);}
+	passes_WW_medium_v2_branch = 0;
+	if (tree->GetBranch("passes_WW_medium_v2") != 0) {
+		passes_WW_medium_v2_branch = tree->GetBranch("passes_WW_medium_v2");
+		if (passes_WW_medium_v2_branch) {passes_WW_medium_v2_branch->SetAddress(&passes_WW_medium_v2_);}
 	}
-	passes_WW_medium_noiso_v1_branch = 0;
-	if (tree->GetBranch("passes_WW_medium_noiso_v1") != 0) {
-		passes_WW_medium_noiso_v1_branch = tree->GetBranch("passes_WW_medium_noiso_v1");
-		if (passes_WW_medium_noiso_v1_branch) {passes_WW_medium_noiso_v1_branch->SetAddress(&passes_WW_medium_noiso_v1_);}
+	passes_WW_medium_noiso_v2_branch = 0;
+	if (tree->GetBranch("passes_WW_medium_noiso_v2") != 0) {
+		passes_WW_medium_noiso_v2_branch = tree->GetBranch("passes_WW_medium_noiso_v2");
+		if (passes_WW_medium_noiso_v2_branch) {passes_WW_medium_noiso_v2_branch->SetAddress(&passes_WW_medium_noiso_v2_);}
 	}
-	passes_WW_fo_v1_branch = 0;
-	if (tree->GetBranch("passes_WW_fo_v1") != 0) {
-		passes_WW_fo_v1_branch = tree->GetBranch("passes_WW_fo_v1");
-		if (passes_WW_fo_v1_branch) {passes_WW_fo_v1_branch->SetAddress(&passes_WW_fo_v1_);}
+	passes_WW_fo_v2_branch = 0;
+	if (tree->GetBranch("passes_WW_fo_v2") != 0) {
+		passes_WW_fo_v2_branch = tree->GetBranch("passes_WW_fo_v2");
+		if (passes_WW_fo_v2_branch) {passes_WW_fo_v2_branch->SetAddress(&passes_WW_fo_v2_);}
 	}
-	passes_WW_fo_noiso_v1_branch = 0;
-	if (tree->GetBranch("passes_WW_fo_noiso_v1") != 0) {
-		passes_WW_fo_noiso_v1_branch = tree->GetBranch("passes_WW_fo_noiso_v1");
-		if (passes_WW_fo_noiso_v1_branch) {passes_WW_fo_noiso_v1_branch->SetAddress(&passes_WW_fo_noiso_v1_);}
+	passes_WW_fo_noiso_v2_branch = 0;
+	if (tree->GetBranch("passes_WW_fo_noiso_v2") != 0) {
+		passes_WW_fo_noiso_v2_branch = tree->GetBranch("passes_WW_fo_noiso_v2");
+		if (passes_WW_fo_noiso_v2_branch) {passes_WW_fo_noiso_v2_branch->SetAddress(&passes_WW_fo_noiso_v2_);}
 	}
-	passes_WW_fo_looseMVA_v1_branch = 0;
-	if (tree->GetBranch("passes_WW_fo_looseMVA_v1") != 0) {
-		passes_WW_fo_looseMVA_v1_branch = tree->GetBranch("passes_WW_fo_looseMVA_v1");
-		if (passes_WW_fo_looseMVA_v1_branch) {passes_WW_fo_looseMVA_v1_branch->SetAddress(&passes_WW_fo_looseMVA_v1_);}
+	passes_WW_veto_v2_branch = 0;
+	if (tree->GetBranch("passes_WW_veto_v2") != 0) {
+		passes_WW_veto_v2_branch = tree->GetBranch("passes_WW_veto_v2");
+		if (passes_WW_veto_v2_branch) {passes_WW_veto_v2_branch->SetAddress(&passes_WW_veto_v2_);}
 	}
-	passes_WW_fo_looseMVA_noiso_v1_branch = 0;
-	if (tree->GetBranch("passes_WW_fo_looseMVA_noiso_v1") != 0) {
-		passes_WW_fo_looseMVA_noiso_v1_branch = tree->GetBranch("passes_WW_fo_looseMVA_noiso_v1");
-		if (passes_WW_fo_looseMVA_noiso_v1_branch) {passes_WW_fo_looseMVA_noiso_v1_branch->SetAddress(&passes_WW_fo_looseMVA_noiso_v1_);}
-	}
-	passes_WW_veto_v1_branch = 0;
-	if (tree->GetBranch("passes_WW_veto_v1") != 0) {
-		passes_WW_veto_v1_branch = tree->GetBranch("passes_WW_veto_v1");
-		if (passes_WW_veto_v1_branch) {passes_WW_veto_v1_branch->SetAddress(&passes_WW_veto_v1_);}
-	}
-	passes_WW_veto_noiso_v1_branch = 0;
-	if (tree->GetBranch("passes_WW_veto_noiso_v1") != 0) {
-		passes_WW_veto_noiso_v1_branch = tree->GetBranch("passes_WW_veto_noiso_v1");
-		if (passes_WW_veto_noiso_v1_branch) {passes_WW_veto_noiso_v1_branch->SetAddress(&passes_WW_veto_noiso_v1_);}
+	passes_WW_veto_noiso_v2_branch = 0;
+	if (tree->GetBranch("passes_WW_veto_noiso_v2") != 0) {
+		passes_WW_veto_noiso_v2_branch = tree->GetBranch("passes_WW_veto_noiso_v2");
+		if (passes_WW_veto_noiso_v2_branch) {passes_WW_veto_noiso_v2_branch->SetAddress(&passes_WW_veto_noiso_v2_);}
 	}
 	passes_HAD_veto_v3_branch = 0;
 	if (tree->GetBranch("passes_HAD_veto_v3") != 0) {
@@ -1416,11 +1415,6 @@ void Init(TTree *tree) {
 	if (tree->GetBranch("passes_POG_tightID") != 0) {
 		passes_POG_tightID_branch = tree->GetBranch("passes_POG_tightID");
 		if (passes_POG_tightID_branch) {passes_POG_tightID_branch->SetAddress(&passes_POG_tightID_);}
-	}
-	passes_isTightElectronPOGspring15_branch = 0;
-	if (tree->GetBranch("passes_isTightElectronPOGspring15") != 0) {
-	        passes_isTightElectronPOGspring15_branch = tree->GetBranch("passes_isTightElectronPOGspring15");
-	        if (passes_isTightElectronPOGspring15_branch) {passes_isTightElectronPOGspring15_branch->SetAddress(&passes_isTightElectronPOGspring15_);}
 	}
 	ip3d_branch = 0;
 	if (tree->GetBranch("ip3d") != 0) {
@@ -1471,6 +1465,16 @@ void Init(TTree *tree) {
 	if (tree->GetBranch("annulus04") != 0) {
 		annulus04_branch = tree->GetBranch("annulus04");
 		if (annulus04_branch) {annulus04_branch->SetAddress(&annulus04_);}
+	}
+	AbsTrkIso_branch = 0;
+	if (tree->GetBranch("AbsTrkIso") != 0) {
+		AbsTrkIso_branch = tree->GetBranch("AbsTrkIso");
+		if (AbsTrkIso_branch) {AbsTrkIso_branch->SetAddress(&AbsTrkIso_);}
+	}
+	TrkAn04_branch = 0;
+	if (tree->GetBranch("TrkAn04") != 0) {
+		TrkAn04_branch = tree->GetBranch("TrkAn04");
+		if (TrkAn04_branch) {TrkAn04_branch->SetAddress(&TrkAn04_);}
 	}
 	iso03sumPt_branch = 0;
 	if (tree->GetBranch("iso03sumPt") != 0) {
@@ -1667,6 +1671,11 @@ void Init(TTree *tree) {
 		tag_HLT_Ele22_eta2p1_WPTight_Gsf_branch = tree->GetBranch("tag_HLT_Ele22_eta2p1_WPTight_Gsf");
 		if (tag_HLT_Ele22_eta2p1_WPTight_Gsf_branch) {tag_HLT_Ele22_eta2p1_WPTight_Gsf_branch->SetAddress(&tag_HLT_Ele22_eta2p1_WPTight_Gsf_);}
 	}
+	tag_HLT_Ele25_eta2p1_WPTight_Gsf_branch = 0;
+	if (tree->GetBranch("tag_HLT_Ele25_eta2p1_WPTight_Gsf") != 0) {
+		tag_HLT_Ele25_eta2p1_WPTight_Gsf_branch = tree->GetBranch("tag_HLT_Ele25_eta2p1_WPTight_Gsf");
+		if (tag_HLT_Ele25_eta2p1_WPTight_Gsf_branch) {tag_HLT_Ele25_eta2p1_WPTight_Gsf_branch->SetAddress(&tag_HLT_Ele25_eta2p1_WPTight_Gsf_);}
+	}
 	tag_HLT_Ele23_WPLoose_Gsf_branch = 0;
 	if (tree->GetBranch("tag_HLT_Ele23_WPLoose_Gsf") != 0) {
 		tag_HLT_Ele23_WPLoose_Gsf_branch = tree->GetBranch("tag_HLT_Ele23_WPLoose_Gsf");
@@ -1777,6 +1786,11 @@ void Init(TTree *tree) {
 		tag_HLT_IsoTkMu20_branch = tree->GetBranch("tag_HLT_IsoTkMu20");
 		if (tag_HLT_IsoTkMu20_branch) {tag_HLT_IsoTkMu20_branch->SetAddress(&tag_HLT_IsoTkMu20_);}
 	}
+	tag_HLT_IsoTkMu20_eta2p1_branch = 0;
+	if (tree->GetBranch("tag_HLT_IsoTkMu20_eta2p1") != 0) {
+		tag_HLT_IsoTkMu20_eta2p1_branch = tree->GetBranch("tag_HLT_IsoTkMu20_eta2p1");
+		if (tag_HLT_IsoTkMu20_eta2p1_branch) {tag_HLT_IsoTkMu20_eta2p1_branch->SetAddress(&tag_HLT_IsoTkMu20_eta2p1_);}
+	}
 	tag_HLT_IsoMu24_eta2p1_branch = 0;
 	if (tree->GetBranch("tag_HLT_IsoMu24_eta2p1") != 0) {
 		tag_HLT_IsoMu24_eta2p1_branch = tree->GetBranch("tag_HLT_IsoMu24_eta2p1");
@@ -1786,6 +1800,16 @@ void Init(TTree *tree) {
 	if (tree->GetBranch("tag_HLT_IsoTkMu24_eta2p1") != 0) {
 		tag_HLT_IsoTkMu24_eta2p1_branch = tree->GetBranch("tag_HLT_IsoTkMu24_eta2p1");
 		if (tag_HLT_IsoTkMu24_eta2p1_branch) {tag_HLT_IsoTkMu24_eta2p1_branch->SetAddress(&tag_HLT_IsoTkMu24_eta2p1_);}
+	}
+	tag_HLT_IsoMu24_branch = 0;
+	if (tree->GetBranch("tag_HLT_IsoMu24") != 0) {
+		tag_HLT_IsoMu24_branch = tree->GetBranch("tag_HLT_IsoMu24");
+		if (tag_HLT_IsoMu24_branch) {tag_HLT_IsoMu24_branch->SetAddress(&tag_HLT_IsoMu24_);}
+	}
+	tag_HLT_IsoTkMu24_branch = 0;
+	if (tree->GetBranch("tag_HLT_IsoTkMu24") != 0) {
+		tag_HLT_IsoTkMu24_branch = tree->GetBranch("tag_HLT_IsoTkMu24");
+		if (tag_HLT_IsoTkMu24_branch) {tag_HLT_IsoTkMu24_branch->SetAddress(&tag_HLT_IsoTkMu24_);}
 	}
 	tag_HLT_IsoMu27_branch = 0;
 	if (tree->GetBranch("tag_HLT_IsoMu27") != 0) {
@@ -1926,6 +1950,11 @@ void Init(TTree *tree) {
 	if (tree->GetBranch("mva_25ns") != 0) {
 		mva_25ns_branch = tree->GetBranch("mva_25ns");
 		if (mva_25ns_branch) {mva_25ns_branch->SetAddress(&mva_25ns_);}
+	}
+	tag_mva_25ns_branch = 0;
+	if (tree->GetBranch("tag_mva_25ns") != 0) {
+		tag_mva_25ns_branch = tree->GetBranch("tag_mva_25ns");
+		if (tag_mva_25ns_branch) {tag_mva_25ns_branch->SetAddress(&tag_mva_25ns_);}
 	}
 	ecalIso_branch = 0;
 	if (tree->GetBranch("ecalIso") != 0) {
@@ -2157,6 +2186,11 @@ void Init(TTree *tree) {
 		HLT_IsoTkMu20_branch = tree->GetBranch("HLT_IsoTkMu20");
 		if (HLT_IsoTkMu20_branch) {HLT_IsoTkMu20_branch->SetAddress(&HLT_IsoTkMu20_);}
 	}
+	HLT_IsoTkMu20_eta2p1_branch = 0;
+	if (tree->GetBranch("HLT_IsoTkMu20_eta2p1") != 0) {
+		HLT_IsoTkMu20_eta2p1_branch = tree->GetBranch("HLT_IsoTkMu20_eta2p1");
+		if (HLT_IsoTkMu20_eta2p1_branch) {HLT_IsoTkMu20_eta2p1_branch->SetAddress(&HLT_IsoTkMu20_eta2p1_);}
+	}
 	HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_branch = 0;
 	if (tree->GetBranch("HLT_Mu10_CentralPFJet30_BTagCSV0p54PF") != 0) {
 		HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_branch = tree->GetBranch("HLT_Mu10_CentralPFJet30_BTagCSV0p54PF");
@@ -2171,6 +2205,16 @@ void Init(TTree *tree) {
 	if (tree->GetBranch("HLT_IsoTkMu24_eta2p1") != 0) {
 		HLT_IsoTkMu24_eta2p1_branch = tree->GetBranch("HLT_IsoTkMu24_eta2p1");
 		if (HLT_IsoTkMu24_eta2p1_branch) {HLT_IsoTkMu24_eta2p1_branch->SetAddress(&HLT_IsoTkMu24_eta2p1_);}
+	}
+	HLT_IsoMu24_branch = 0;
+	if (tree->GetBranch("HLT_IsoMu24") != 0) {
+		HLT_IsoMu24_branch = tree->GetBranch("HLT_IsoMu24");
+		if (HLT_IsoMu24_branch) {HLT_IsoMu24_branch->SetAddress(&HLT_IsoMu24_);}
+	}
+	HLT_IsoTkMu24_branch = 0;
+	if (tree->GetBranch("HLT_IsoTkMu24") != 0) {
+		HLT_IsoTkMu24_branch = tree->GetBranch("HLT_IsoTkMu24");
+		if (HLT_IsoTkMu24_branch) {HLT_IsoTkMu24_branch->SetAddress(&HLT_IsoTkMu24_);}
 	}
 	HLT_IsoMu27_branch = 0;
 	if (tree->GetBranch("HLT_IsoMu27") != 0) {
@@ -2202,6 +2246,11 @@ void Init(TTree *tree) {
 		HLT_Ele12_CaloIdM_TrackIdM_PFJet30_branch = tree->GetBranch("HLT_Ele12_CaloIdM_TrackIdM_PFJet30");
 		if (HLT_Ele12_CaloIdM_TrackIdM_PFJet30_branch) {HLT_Ele12_CaloIdM_TrackIdM_PFJet30_branch->SetAddress(&HLT_Ele12_CaloIdM_TrackIdM_PFJet30_);}
 	}
+	HLT_Ele17_CaloIdM_TrackIdM_PFJet30_branch = 0;
+	if (tree->GetBranch("HLT_Ele17_CaloIdM_TrackIdM_PFJet30") != 0) {
+		HLT_Ele17_CaloIdM_TrackIdM_PFJet30_branch = tree->GetBranch("HLT_Ele17_CaloIdM_TrackIdM_PFJet30");
+		if (HLT_Ele17_CaloIdM_TrackIdM_PFJet30_branch) {HLT_Ele17_CaloIdM_TrackIdM_PFJet30_branch->SetAddress(&HLT_Ele17_CaloIdM_TrackIdM_PFJet30_);}
+	}
 	HLT_Ele18_CaloIdM_TrackIdM_PFJet30_branch = 0;
 	if (tree->GetBranch("HLT_Ele18_CaloIdM_TrackIdM_PFJet30") != 0) {
 		HLT_Ele18_CaloIdM_TrackIdM_PFJet30_branch = tree->GetBranch("HLT_Ele18_CaloIdM_TrackIdM_PFJet30");
@@ -2217,10 +2266,20 @@ void Init(TTree *tree) {
 		HLT_Ele33_CaloIdM_TrackIdM_PFJet30_branch = tree->GetBranch("HLT_Ele33_CaloIdM_TrackIdM_PFJet30");
 		if (HLT_Ele33_CaloIdM_TrackIdM_PFJet30_branch) {HLT_Ele33_CaloIdM_TrackIdM_PFJet30_branch->SetAddress(&HLT_Ele33_CaloIdM_TrackIdM_PFJet30_);}
 	}
+	HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_branch = 0;
+	if (tree->GetBranch("HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30") != 0) {
+		HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_branch = tree->GetBranch("HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30");
+		if (HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_branch) {HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_branch->SetAddress(&HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_);}
+	}
 	HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_branch = 0;
 	if (tree->GetBranch("HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30") != 0) {
 		HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_branch = tree->GetBranch("HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30");
 		if (HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_branch) {HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_branch->SetAddress(&HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_);}
+	}
+	HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_branch = 0;
+	if (tree->GetBranch("HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30") != 0) {
+		HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_branch = tree->GetBranch("HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30");
+		if (HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_branch) {HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_branch->SetAddress(&HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_);}
 	}
 	HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_branch = 0;
 	if (tree->GetBranch("HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30") != 0) {
@@ -2291,6 +2350,11 @@ void Init(TTree *tree) {
 	if (tree->GetBranch("HLT_Ele22_eta2p1_WPTight_Gsf") != 0) {
 		HLT_Ele22_eta2p1_WPTight_Gsf_branch = tree->GetBranch("HLT_Ele22_eta2p1_WPTight_Gsf");
 		if (HLT_Ele22_eta2p1_WPTight_Gsf_branch) {HLT_Ele22_eta2p1_WPTight_Gsf_branch->SetAddress(&HLT_Ele22_eta2p1_WPTight_Gsf_);}
+	}
+	HLT_Ele25_eta2p1_WPTight_Gsf_branch = 0;
+	if (tree->GetBranch("HLT_Ele25_eta2p1_WPTight_Gsf") != 0) {
+		HLT_Ele25_eta2p1_WPTight_Gsf_branch = tree->GetBranch("HLT_Ele25_eta2p1_WPTight_Gsf");
+		if (HLT_Ele25_eta2p1_WPTight_Gsf_branch) {HLT_Ele25_eta2p1_WPTight_Gsf_branch->SetAddress(&HLT_Ele25_eta2p1_WPTight_Gsf_);}
 	}
 	HLT_Ele23_WPLoose_Gsf_branch = 0;
 	if (tree->GetBranch("HLT_Ele23_WPLoose_Gsf") != 0) {
@@ -2384,10 +2448,6 @@ void GetEntry(unsigned int idx)
 		evt_trackmetPhi_isLoaded = false;
 		evt_corrMET_isLoaded = false;
 		evt_corrMETPhi_isLoaded = false;
-		evt_met3p0_isLoaded = false;
-		evt_met3p0Phi_isLoaded = false;
-		evt_t1met3p0_isLoaded = false;
-		evt_t1met3p0Phi_isLoaded = false;
 		evt_pfsumet_isLoaded = false;
 		evt_pfmetSig_isLoaded = false;
 		evt_event_isLoaded = false;
@@ -2434,6 +2494,7 @@ void GetEntry(unsigned int idx)
 		mc_id_isLoaded = false;
 		RelIso03_isLoaded = false;
 		RelIso03EA_isLoaded = false;
+		tag_RelIso03EA_isLoaded = false;
 		RelIso03DB_isLoaded = false;
 		pfChargedHadronIso_isLoaded = false;
 		pfPhotonIso_isLoaded = false;
@@ -2464,14 +2525,12 @@ void GetEntry(unsigned int idx)
 		passes_SS_fo_looseMVA_noiso_v5_isLoaded = false;
 		passes_SS_veto_v5_isLoaded = false;
 		passes_SS_veto_noiso_v5_isLoaded = false;
-		passes_WW_medium_v1_isLoaded = false;
-		passes_WW_medium_noiso_v1_isLoaded = false;
-		passes_WW_fo_v1_isLoaded = false;
-		passes_WW_fo_noiso_v1_isLoaded = false;
-		passes_WW_fo_looseMVA_v1_isLoaded = false;
-		passes_WW_fo_looseMVA_noiso_v1_isLoaded = false;
-		passes_WW_veto_v1_isLoaded = false;
-		passes_WW_veto_noiso_v1_isLoaded = false;
+		passes_WW_medium_v2_isLoaded = false;
+		passes_WW_medium_noiso_v2_isLoaded = false;
+		passes_WW_fo_v2_isLoaded = false;
+		passes_WW_fo_noiso_v2_isLoaded = false;
+		passes_WW_veto_v2_isLoaded = false;
+		passes_WW_veto_noiso_v2_isLoaded = false;
 		passes_HAD_veto_v3_isLoaded = false;
 		passes_HAD_veto_noiso_v3_isLoaded = false;
 		passes_HAD_loose_v3_isLoaded = false;
@@ -2480,7 +2539,6 @@ void GetEntry(unsigned int idx)
 		passes_POG_looseID_isLoaded = false;
 		passes_POG_mediumID_isLoaded = false;
 		passes_POG_tightID_isLoaded = false;
-		passes_isTightElectronPOGspring15_isLoaded = false;
 		ip3d_isLoaded = false;
 		ip3derr_isLoaded = false;
 		type_isLoaded = false;
@@ -2491,6 +2549,8 @@ void GetEntry(unsigned int idx)
 		miniisoDB_isLoaded = false;
 		reliso04_isLoaded = false;
 		annulus04_isLoaded = false;
+		AbsTrkIso_isLoaded = false;
+		TrkAn04_isLoaded = false;
 		iso03sumPt_isLoaded = false;
 		iso03emEt_isLoaded = false;
 		iso03hadEt_isLoaded = false;
@@ -2531,6 +2591,7 @@ void GetEntry(unsigned int idx)
 		tag_HLT_Ele32_eta2p1_WPTight_Gsf_isLoaded = false;
 		tag_HLT_Ele22_eta2p1_WPLoose_Gsf_isLoaded = false;
 		tag_HLT_Ele22_eta2p1_WPTight_Gsf_isLoaded = false;
+		tag_HLT_Ele25_eta2p1_WPTight_Gsf_isLoaded = false;
 		tag_HLT_Ele23_WPLoose_Gsf_isLoaded = false;
 		tag_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_LeadingLeg_isLoaded = false;
 		tag_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_isLoaded = false;
@@ -2553,8 +2614,11 @@ void GetEntry(unsigned int idx)
 		tag_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg_isLoaded = false;
 		tag_HLT_IsoMu20_isLoaded = false;
 		tag_HLT_IsoTkMu20_isLoaded = false;
+		tag_HLT_IsoTkMu20_eta2p1_isLoaded = false;
 		tag_HLT_IsoMu24_eta2p1_isLoaded = false;
 		tag_HLT_IsoTkMu24_eta2p1_isLoaded = false;
+		tag_HLT_IsoMu24_isLoaded = false;
+		tag_HLT_IsoTkMu24_isLoaded = false;
 		tag_HLT_IsoMu27_isLoaded = false;
 		tag_HLT_IsoTkMu27_isLoaded = false;
 		tag_HLT_Mu8_TrkIsoVVL_isLoaded = false;
@@ -2583,6 +2647,7 @@ void GetEntry(unsigned int idx)
 		threeChargeAgree_isLoaded = false;
 		mva_isLoaded = false;
 		mva_25ns_isLoaded = false;
+		tag_mva_25ns_isLoaded = false;
 		ecalIso_isLoaded = false;
 		hcalIso_isLoaded = false;
 		ecalPFClusterIso_isLoaded = false;
@@ -2629,19 +2694,25 @@ void GetEntry(unsigned int idx)
 		HLT_Mu10_CentralPFJet30_BTagCSV0p5PF_isLoaded = false;
 		HLT_IsoMu20_isLoaded = false;
 		HLT_IsoTkMu20_isLoaded = false;
+		HLT_IsoTkMu20_eta2p1_isLoaded = false;
 		HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_isLoaded = false;
 		HLT_IsoMu24_eta2p1_isLoaded = false;
 		HLT_IsoTkMu24_eta2p1_isLoaded = false;
+		HLT_IsoMu24_isLoaded = false;
+		HLT_IsoTkMu24_isLoaded = false;
 		HLT_IsoMu27_isLoaded = false;
 		HLT_IsoTkMu27_isLoaded = false;
 		HLT_Mu45_eta2p1_isLoaded = false;
 		HLT_Mu50_isLoaded = false;
 		HLT_Ele8_CaloIdM_TrackIdM_PFJet30_isLoaded = false;
 		HLT_Ele12_CaloIdM_TrackIdM_PFJet30_isLoaded = false;
+		HLT_Ele17_CaloIdM_TrackIdM_PFJet30_isLoaded = false;
 		HLT_Ele18_CaloIdM_TrackIdM_PFJet30_isLoaded = false;
 		HLT_Ele23_CaloIdM_TrackIdM_PFJet30_isLoaded = false;
 		HLT_Ele33_CaloIdM_TrackIdM_PFJet30_isLoaded = false;
+		HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_isLoaded = false;
 		HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_isLoaded = false;
+		HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_isLoaded = false;
 		HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_isLoaded = false;
 		HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_isLoaded = false;
 		HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30_isLoaded = false;
@@ -2656,6 +2727,7 @@ void GetEntry(unsigned int idx)
 		HLT_Ele32_eta2p1_WPTight_Gsf_isLoaded = false;
 		HLT_Ele22_eta2p1_WPLoose_Gsf_isLoaded = false;
 		HLT_Ele22_eta2p1_WPTight_Gsf_isLoaded = false;
+		HLT_Ele25_eta2p1_WPTight_Gsf_isLoaded = false;
 		HLT_Ele23_WPLoose_Gsf_isLoaded = false;
 		HLT_Ele23_CaloIdL_TrackIdL_IsoVL_isLoaded = false;
 		HLT_Ele12_CaloIdL_TrackIdL_IsoVL_isLoaded = false;
@@ -2683,10 +2755,6 @@ void LoadAllBranches()
 	if (evt_trackmetPhi_branch != 0) evt_trackmetPhi();
 	if (evt_corrMET_branch != 0) evt_corrMET();
 	if (evt_corrMETPhi_branch != 0) evt_corrMETPhi();
-	if (evt_met3p0_branch != 0) evt_met3p0();
-	if (evt_met3p0Phi_branch != 0) evt_met3p0Phi();
-	if (evt_t1met3p0_branch != 0) evt_t1met3p0();
-	if (evt_t1met3p0Phi_branch != 0) evt_t1met3p0Phi();
 	if (evt_pfsumet_branch != 0) evt_pfsumet();
 	if (evt_pfmetSig_branch != 0) evt_pfmetSig();
 	if (evt_event_branch != 0) evt_event();
@@ -2733,6 +2801,7 @@ void LoadAllBranches()
 	if (mc_id_branch != 0) mc_id();
 	if (RelIso03_branch != 0) RelIso03();
 	if (RelIso03EA_branch != 0) RelIso03EA();
+	if (tag_RelIso03EA_branch != 0) tag_RelIso03EA();
 	if (RelIso03DB_branch != 0) RelIso03DB();
 	if (pfChargedHadronIso_branch != 0) pfChargedHadronIso();
 	if (pfPhotonIso_branch != 0) pfPhotonIso();
@@ -2763,14 +2832,12 @@ void LoadAllBranches()
 	if (passes_SS_fo_looseMVA_noiso_v5_branch != 0) passes_SS_fo_looseMVA_noiso_v5();
 	if (passes_SS_veto_v5_branch != 0) passes_SS_veto_v5();
 	if (passes_SS_veto_noiso_v5_branch != 0) passes_SS_veto_noiso_v5();
-	if (passes_WW_medium_v1_branch != 0) passes_WW_medium_v1();
-	if (passes_WW_medium_noiso_v1_branch != 0) passes_WW_medium_noiso_v1();
-	if (passes_WW_fo_v1_branch != 0) passes_WW_fo_v1();
-	if (passes_WW_fo_noiso_v1_branch != 0) passes_WW_fo_noiso_v1();
-	if (passes_WW_fo_looseMVA_v1_branch != 0) passes_WW_fo_looseMVA_v1();
-	if (passes_WW_fo_looseMVA_noiso_v1_branch != 0) passes_WW_fo_looseMVA_noiso_v1();
-	if (passes_WW_veto_v1_branch != 0) passes_WW_veto_v1();
-	if (passes_WW_veto_noiso_v1_branch != 0) passes_WW_veto_noiso_v1();
+	if (passes_WW_medium_v2_branch != 0) passes_WW_medium_v2();
+	if (passes_WW_medium_noiso_v2_branch != 0) passes_WW_medium_noiso_v2();
+	if (passes_WW_fo_v2_branch != 0) passes_WW_fo_v2();
+	if (passes_WW_fo_noiso_v2_branch != 0) passes_WW_fo_noiso_v2();
+	if (passes_WW_veto_v2_branch != 0) passes_WW_veto_v2();
+	if (passes_WW_veto_noiso_v2_branch != 0) passes_WW_veto_noiso_v2();
 	if (passes_HAD_veto_v3_branch != 0) passes_HAD_veto_v3();
 	if (passes_HAD_veto_noiso_v3_branch != 0) passes_HAD_veto_noiso_v3();
 	if (passes_HAD_loose_v3_branch != 0) passes_HAD_loose_v3();
@@ -2779,7 +2846,6 @@ void LoadAllBranches()
 	if (passes_POG_looseID_branch != 0) passes_POG_looseID();
 	if (passes_POG_mediumID_branch != 0) passes_POG_mediumID();
 	if (passes_POG_tightID_branch != 0) passes_POG_tightID();
-	if (passes_isTightElectronPOGspring15_branch != 0) passes_isTightElectronPOGspring15();
 	if (ip3d_branch != 0) ip3d();
 	if (ip3derr_branch != 0) ip3derr();
 	if (type_branch != 0) type();
@@ -2790,6 +2856,8 @@ void LoadAllBranches()
 	if (miniisoDB_branch != 0) miniisoDB();
 	if (reliso04_branch != 0) reliso04();
 	if (annulus04_branch != 0) annulus04();
+	if (AbsTrkIso_branch != 0) AbsTrkIso();
+	if (TrkAn04_branch != 0) TrkAn04();
 	if (iso03sumPt_branch != 0) iso03sumPt();
 	if (iso03emEt_branch != 0) iso03emEt();
 	if (iso03hadEt_branch != 0) iso03hadEt();
@@ -2830,6 +2898,7 @@ void LoadAllBranches()
 	if (tag_HLT_Ele32_eta2p1_WPTight_Gsf_branch != 0) tag_HLT_Ele32_eta2p1_WPTight_Gsf();
 	if (tag_HLT_Ele22_eta2p1_WPLoose_Gsf_branch != 0) tag_HLT_Ele22_eta2p1_WPLoose_Gsf();
 	if (tag_HLT_Ele22_eta2p1_WPTight_Gsf_branch != 0) tag_HLT_Ele22_eta2p1_WPTight_Gsf();
+	if (tag_HLT_Ele25_eta2p1_WPTight_Gsf_branch != 0) tag_HLT_Ele25_eta2p1_WPTight_Gsf();
 	if (tag_HLT_Ele23_WPLoose_Gsf_branch != 0) tag_HLT_Ele23_WPLoose_Gsf();
 	if (tag_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_LeadingLeg_branch != 0) tag_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_LeadingLeg();
 	if (tag_HLT_Ele23_CaloIdL_TrackIdL_IsoVL_branch != 0) tag_HLT_Ele23_CaloIdL_TrackIdL_IsoVL();
@@ -2852,8 +2921,11 @@ void LoadAllBranches()
 	if (tag_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg_branch != 0) tag_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg();
 	if (tag_HLT_IsoMu20_branch != 0) tag_HLT_IsoMu20();
 	if (tag_HLT_IsoTkMu20_branch != 0) tag_HLT_IsoTkMu20();
+	if (tag_HLT_IsoTkMu20_eta2p1_branch != 0) tag_HLT_IsoTkMu20_eta2p1();
 	if (tag_HLT_IsoMu24_eta2p1_branch != 0) tag_HLT_IsoMu24_eta2p1();
 	if (tag_HLT_IsoTkMu24_eta2p1_branch != 0) tag_HLT_IsoTkMu24_eta2p1();
+	if (tag_HLT_IsoMu24_branch != 0) tag_HLT_IsoMu24();
+	if (tag_HLT_IsoTkMu24_branch != 0) tag_HLT_IsoTkMu24();
 	if (tag_HLT_IsoMu27_branch != 0) tag_HLT_IsoMu27();
 	if (tag_HLT_IsoTkMu27_branch != 0) tag_HLT_IsoTkMu27();
 	if (tag_HLT_Mu8_TrkIsoVVL_branch != 0) tag_HLT_Mu8_TrkIsoVVL();
@@ -2882,6 +2954,7 @@ void LoadAllBranches()
 	if (threeChargeAgree_branch != 0) threeChargeAgree();
 	if (mva_branch != 0) mva();
 	if (mva_25ns_branch != 0) mva_25ns();
+	if (tag_mva_25ns_branch != 0) tag_mva_25ns();
 	if (ecalIso_branch != 0) ecalIso();
 	if (hcalIso_branch != 0) hcalIso();
 	if (ecalPFClusterIso_branch != 0) ecalPFClusterIso();
@@ -2928,19 +3001,25 @@ void LoadAllBranches()
 	if (HLT_Mu10_CentralPFJet30_BTagCSV0p5PF_branch != 0) HLT_Mu10_CentralPFJet30_BTagCSV0p5PF();
 	if (HLT_IsoMu20_branch != 0) HLT_IsoMu20();
 	if (HLT_IsoTkMu20_branch != 0) HLT_IsoTkMu20();
+	if (HLT_IsoTkMu20_eta2p1_branch != 0) HLT_IsoTkMu20_eta2p1();
 	if (HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_branch != 0) HLT_Mu10_CentralPFJet30_BTagCSV0p54PF();
 	if (HLT_IsoMu24_eta2p1_branch != 0) HLT_IsoMu24_eta2p1();
 	if (HLT_IsoTkMu24_eta2p1_branch != 0) HLT_IsoTkMu24_eta2p1();
+	if (HLT_IsoMu24_branch != 0) HLT_IsoMu24();
+	if (HLT_IsoTkMu24_branch != 0) HLT_IsoTkMu24();
 	if (HLT_IsoMu27_branch != 0) HLT_IsoMu27();
 	if (HLT_IsoTkMu27_branch != 0) HLT_IsoTkMu27();
 	if (HLT_Mu45_eta2p1_branch != 0) HLT_Mu45_eta2p1();
 	if (HLT_Mu50_branch != 0) HLT_Mu50();
 	if (HLT_Ele8_CaloIdM_TrackIdM_PFJet30_branch != 0) HLT_Ele8_CaloIdM_TrackIdM_PFJet30();
 	if (HLT_Ele12_CaloIdM_TrackIdM_PFJet30_branch != 0) HLT_Ele12_CaloIdM_TrackIdM_PFJet30();
+	if (HLT_Ele17_CaloIdM_TrackIdM_PFJet30_branch != 0) HLT_Ele17_CaloIdM_TrackIdM_PFJet30();
 	if (HLT_Ele18_CaloIdM_TrackIdM_PFJet30_branch != 0) HLT_Ele18_CaloIdM_TrackIdM_PFJet30();
 	if (HLT_Ele23_CaloIdM_TrackIdM_PFJet30_branch != 0) HLT_Ele23_CaloIdM_TrackIdM_PFJet30();
 	if (HLT_Ele33_CaloIdM_TrackIdM_PFJet30_branch != 0) HLT_Ele33_CaloIdM_TrackIdM_PFJet30();
+	if (HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_branch != 0) HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30();
 	if (HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_branch != 0) HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30();
+	if (HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_branch != 0) HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30();
 	if (HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30_branch != 0) HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30();
 	if (HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30_branch != 0) HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30();
 	if (HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30_branch != 0) HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30();
@@ -2955,6 +3034,7 @@ void LoadAllBranches()
 	if (HLT_Ele32_eta2p1_WPTight_Gsf_branch != 0) HLT_Ele32_eta2p1_WPTight_Gsf();
 	if (HLT_Ele22_eta2p1_WPLoose_Gsf_branch != 0) HLT_Ele22_eta2p1_WPLoose_Gsf();
 	if (HLT_Ele22_eta2p1_WPTight_Gsf_branch != 0) HLT_Ele22_eta2p1_WPTight_Gsf();
+	if (HLT_Ele25_eta2p1_WPTight_Gsf_branch != 0) HLT_Ele25_eta2p1_WPTight_Gsf();
 	if (HLT_Ele23_WPLoose_Gsf_branch != 0) HLT_Ele23_WPLoose_Gsf();
 	if (HLT_Ele23_CaloIdL_TrackIdL_IsoVL_branch != 0) HLT_Ele23_CaloIdL_TrackIdL_IsoVL();
 	if (HLT_Ele12_CaloIdL_TrackIdL_IsoVL_branch != 0) HLT_Ele12_CaloIdL_TrackIdL_IsoVL();
@@ -3050,58 +3130,6 @@ void LoadAllBranches()
 			evt_corrMETPhi_isLoaded = true;
 		}
 		return evt_corrMETPhi_;
-	}
-	float &evt_met3p0()
-	{
-		if (not evt_met3p0_isLoaded) {
-			if (evt_met3p0_branch != 0) {
-				evt_met3p0_branch->GetEntry(index);
-			} else { 
-				printf("branch evt_met3p0_branch does not exist!\n");
-				exit(1);
-			}
-			evt_met3p0_isLoaded = true;
-		}
-		return evt_met3p0_;
-	}
-	float &evt_met3p0Phi()
-	{
-		if (not evt_met3p0Phi_isLoaded) {
-			if (evt_met3p0Phi_branch != 0) {
-				evt_met3p0Phi_branch->GetEntry(index);
-			} else { 
-				printf("branch evt_met3p0Phi_branch does not exist!\n");
-				exit(1);
-			}
-			evt_met3p0Phi_isLoaded = true;
-		}
-		return evt_met3p0Phi_;
-	}
-	float &evt_t1met3p0()
-	{
-		if (not evt_t1met3p0_isLoaded) {
-			if (evt_t1met3p0_branch != 0) {
-				evt_t1met3p0_branch->GetEntry(index);
-			} else { 
-				printf("branch evt_t1met3p0_branch does not exist!\n");
-				exit(1);
-			}
-			evt_t1met3p0_isLoaded = true;
-		}
-		return evt_t1met3p0_;
-	}
-	float &evt_t1met3p0Phi()
-	{
-		if (not evt_t1met3p0Phi_isLoaded) {
-			if (evt_t1met3p0Phi_branch != 0) {
-				evt_t1met3p0Phi_branch->GetEntry(index);
-			} else { 
-				printf("branch evt_t1met3p0Phi_branch does not exist!\n");
-				exit(1);
-			}
-			evt_t1met3p0Phi_isLoaded = true;
-		}
-		return evt_t1met3p0Phi_;
 	}
 	float &evt_pfsumet()
 	{
@@ -3701,6 +3729,19 @@ void LoadAllBranches()
 		}
 		return RelIso03EA_;
 	}
+	float &tag_RelIso03EA()
+	{
+		if (not tag_RelIso03EA_isLoaded) {
+			if (tag_RelIso03EA_branch != 0) {
+				tag_RelIso03EA_branch->GetEntry(index);
+			} else { 
+				printf("branch tag_RelIso03EA_branch does not exist!\n");
+				exit(1);
+			}
+			tag_RelIso03EA_isLoaded = true;
+		}
+		return tag_RelIso03EA_;
+	}
 	float &RelIso03DB()
 	{
 		if (not RelIso03DB_isLoaded) {
@@ -4091,109 +4132,83 @@ void LoadAllBranches()
 		}
 		return passes_SS_veto_noiso_v5_;
 	}
-	bool &	passes_WW_medium_v1()
+	bool &	passes_WW_medium_v2()
 	{
-		if (not passes_WW_medium_v1_isLoaded) {
-			if (passes_WW_medium_v1_branch != 0) {
-				passes_WW_medium_v1_branch->GetEntry(index);
+		if (not passes_WW_medium_v2_isLoaded) {
+			if (passes_WW_medium_v2_branch != 0) {
+				passes_WW_medium_v2_branch->GetEntry(index);
 			} else { 
-				printf("branch passes_WW_medium_v1_branch does not exist!\n");
+				printf("branch passes_WW_medium_v2_branch does not exist!\n");
 				exit(1);
 			}
-			passes_WW_medium_v1_isLoaded = true;
+			passes_WW_medium_v2_isLoaded = true;
 		}
-		return passes_WW_medium_v1_;
+		return passes_WW_medium_v2_;
 	}
-	bool &	passes_WW_medium_noiso_v1()
+	bool &	passes_WW_medium_noiso_v2()
 	{
-		if (not passes_WW_medium_noiso_v1_isLoaded) {
-			if (passes_WW_medium_noiso_v1_branch != 0) {
-				passes_WW_medium_noiso_v1_branch->GetEntry(index);
+		if (not passes_WW_medium_noiso_v2_isLoaded) {
+			if (passes_WW_medium_noiso_v2_branch != 0) {
+				passes_WW_medium_noiso_v2_branch->GetEntry(index);
 			} else { 
-				printf("branch passes_WW_medium_noiso_v1_branch does not exist!\n");
+				printf("branch passes_WW_medium_noiso_v2_branch does not exist!\n");
 				exit(1);
 			}
-			passes_WW_medium_noiso_v1_isLoaded = true;
+			passes_WW_medium_noiso_v2_isLoaded = true;
 		}
-		return passes_WW_medium_noiso_v1_;
+		return passes_WW_medium_noiso_v2_;
 	}
-	bool &	passes_WW_fo_v1()
+	bool &	passes_WW_fo_v2()
 	{
-		if (not passes_WW_fo_v1_isLoaded) {
-			if (passes_WW_fo_v1_branch != 0) {
-				passes_WW_fo_v1_branch->GetEntry(index);
+		if (not passes_WW_fo_v2_isLoaded) {
+			if (passes_WW_fo_v2_branch != 0) {
+				passes_WW_fo_v2_branch->GetEntry(index);
 			} else { 
-				printf("branch passes_WW_fo_v1_branch does not exist!\n");
+				printf("branch passes_WW_fo_v2_branch does not exist!\n");
 				exit(1);
 			}
-			passes_WW_fo_v1_isLoaded = true;
+			passes_WW_fo_v2_isLoaded = true;
 		}
-		return passes_WW_fo_v1_;
+		return passes_WW_fo_v2_;
 	}
-	bool &	passes_WW_fo_noiso_v1()
+	bool &	passes_WW_fo_noiso_v2()
 	{
-		if (not passes_WW_fo_noiso_v1_isLoaded) {
-			if (passes_WW_fo_noiso_v1_branch != 0) {
-				passes_WW_fo_noiso_v1_branch->GetEntry(index);
+		if (not passes_WW_fo_noiso_v2_isLoaded) {
+			if (passes_WW_fo_noiso_v2_branch != 0) {
+				passes_WW_fo_noiso_v2_branch->GetEntry(index);
 			} else { 
-				printf("branch passes_WW_fo_noiso_v1_branch does not exist!\n");
+				printf("branch passes_WW_fo_noiso_v2_branch does not exist!\n");
 				exit(1);
 			}
-			passes_WW_fo_noiso_v1_isLoaded = true;
+			passes_WW_fo_noiso_v2_isLoaded = true;
 		}
-		return passes_WW_fo_noiso_v1_;
+		return passes_WW_fo_noiso_v2_;
 	}
-	bool &	passes_WW_fo_looseMVA_v1()
+	bool &	passes_WW_veto_v2()
 	{
-		if (not passes_WW_fo_looseMVA_v1_isLoaded) {
-			if (passes_WW_fo_looseMVA_v1_branch != 0) {
-				passes_WW_fo_looseMVA_v1_branch->GetEntry(index);
+		if (not passes_WW_veto_v2_isLoaded) {
+			if (passes_WW_veto_v2_branch != 0) {
+				passes_WW_veto_v2_branch->GetEntry(index);
 			} else { 
-				printf("branch passes_WW_fo_looseMVA_v1_branch does not exist!\n");
+				printf("branch passes_WW_veto_v2_branch does not exist!\n");
 				exit(1);
 			}
-			passes_WW_fo_looseMVA_v1_isLoaded = true;
+			passes_WW_veto_v2_isLoaded = true;
 		}
-		return passes_WW_fo_looseMVA_v1_;
+		return passes_WW_veto_v2_;
 	}
-	bool &	passes_WW_fo_looseMVA_noiso_v1()
+	bool &	passes_WW_veto_noiso_v2()
 	{
-		if (not passes_WW_fo_looseMVA_noiso_v1_isLoaded) {
-			if (passes_WW_fo_looseMVA_noiso_v1_branch != 0) {
-				passes_WW_fo_looseMVA_noiso_v1_branch->GetEntry(index);
+		if (not passes_WW_veto_noiso_v2_isLoaded) {
+			if (passes_WW_veto_noiso_v2_branch != 0) {
+				passes_WW_veto_noiso_v2_branch->GetEntry(index);
 			} else { 
-				printf("branch passes_WW_fo_looseMVA_noiso_v1_branch does not exist!\n");
+				printf("branch passes_WW_veto_noiso_v2_branch does not exist!\n");
 				exit(1);
 			}
-			passes_WW_fo_looseMVA_noiso_v1_isLoaded = true;
+			passes_WW_veto_noiso_v2_isLoaded = true;
 		}
-		return passes_WW_fo_looseMVA_noiso_v1_;
-	}
-	bool &	passes_WW_veto_v1()
-	{
-		if (not passes_WW_veto_v1_isLoaded) {
-			if (passes_WW_veto_v1_branch != 0) {
-				passes_WW_veto_v1_branch->GetEntry(index);
-			} else { 
-				printf("branch passes_WW_veto_v1_branch does not exist!\n");
-				exit(1);
-			}
-			passes_WW_veto_v1_isLoaded = true;
-		}
-		return passes_WW_veto_v1_;
-	}
-	bool &	passes_WW_veto_noiso_v1()
-	{
-		if (not passes_WW_veto_noiso_v1_isLoaded) {
-			if (passes_WW_veto_noiso_v1_branch != 0) {
-				passes_WW_veto_noiso_v1_branch->GetEntry(index);
-			} else { 
-				printf("branch passes_WW_veto_noiso_v1_branch does not exist!\n");
-				exit(1);
-			}
-			passes_WW_veto_noiso_v1_isLoaded = true;
-		}
-		return passes_WW_veto_noiso_v1_;
+		return passes_WW_veto_noiso_v2_;
 	}
 	bool &	passes_HAD_veto_v3()
 	{
@@ -4298,19 +4313,6 @@ void LoadAllBranches()
 			passes_POG_tightID_isLoaded = true;
 		}
 		return passes_POG_tightID_;
-	}
-	bool &  passes_isTightElectronPOGspring15()
-	{
-	        if (not passes_isTightElectronPOGspring15_isLoaded) {
-	                if (passes_isTightElectronPOGspring15_branch != 0) {
-	                        passes_isTightElectronPOGspring15_branch->GetEntry(index);
-	                } else { 
-	                        printf("branch passes_isTightElectronPOGspring15_branch does not exist!\n");
-	                        exit(1);
-	                }
-	                passes_isTightElectronPOGspring15_isLoaded = true;
-	        }
-	        return passes_isTightElectronPOGspring15_;
 	}
 	float &ip3d()
 	{
@@ -4441,6 +4443,32 @@ void LoadAllBranches()
 			annulus04_isLoaded = true;
 		}
 		return annulus04_;
+	}
+	float &AbsTrkIso()
+	{
+		if (not AbsTrkIso_isLoaded) {
+			if (AbsTrkIso_branch != 0) {
+				AbsTrkIso_branch->GetEntry(index);
+			} else { 
+				printf("branch AbsTrkIso_branch does not exist!\n");
+				exit(1);
+			}
+			AbsTrkIso_isLoaded = true;
+		}
+		return AbsTrkIso_;
+	}
+	float &TrkAn04()
+	{
+		if (not TrkAn04_isLoaded) {
+			if (TrkAn04_branch != 0) {
+				TrkAn04_branch->GetEntry(index);
+			} else { 
+				printf("branch TrkAn04_branch does not exist!\n");
+				exit(1);
+			}
+			TrkAn04_isLoaded = true;
+		}
+		return TrkAn04_;
 	}
 	float &iso03sumPt()
 	{
@@ -4962,6 +4990,19 @@ void LoadAllBranches()
 		}
 		return tag_HLT_Ele22_eta2p1_WPTight_Gsf_;
 	}
+	int &tag_HLT_Ele25_eta2p1_WPTight_Gsf()
+	{
+		if (not tag_HLT_Ele25_eta2p1_WPTight_Gsf_isLoaded) {
+			if (tag_HLT_Ele25_eta2p1_WPTight_Gsf_branch != 0) {
+				tag_HLT_Ele25_eta2p1_WPTight_Gsf_branch->GetEntry(index);
+			} else { 
+				printf("branch tag_HLT_Ele25_eta2p1_WPTight_Gsf_branch does not exist!\n");
+				exit(1);
+			}
+			tag_HLT_Ele25_eta2p1_WPTight_Gsf_isLoaded = true;
+		}
+		return tag_HLT_Ele25_eta2p1_WPTight_Gsf_;
+	}
 	int &tag_HLT_Ele23_WPLoose_Gsf()
 	{
 		if (not tag_HLT_Ele23_WPLoose_Gsf_isLoaded) {
@@ -5248,6 +5289,19 @@ void LoadAllBranches()
 		}
 		return tag_HLT_IsoTkMu20_;
 	}
+	int &tag_HLT_IsoTkMu20_eta2p1()
+	{
+		if (not tag_HLT_IsoTkMu20_eta2p1_isLoaded) {
+			if (tag_HLT_IsoTkMu20_eta2p1_branch != 0) {
+				tag_HLT_IsoTkMu20_eta2p1_branch->GetEntry(index);
+			} else { 
+				printf("branch tag_HLT_IsoTkMu20_eta2p1_branch does not exist!\n");
+				exit(1);
+			}
+			tag_HLT_IsoTkMu20_eta2p1_isLoaded = true;
+		}
+		return tag_HLT_IsoTkMu20_eta2p1_;
+	}
 	int &tag_HLT_IsoMu24_eta2p1()
 	{
 		if (not tag_HLT_IsoMu24_eta2p1_isLoaded) {
@@ -5273,6 +5327,32 @@ void LoadAllBranches()
 			tag_HLT_IsoTkMu24_eta2p1_isLoaded = true;
 		}
 		return tag_HLT_IsoTkMu24_eta2p1_;
+	}
+	int &tag_HLT_IsoMu24()
+	{
+		if (not tag_HLT_IsoMu24_isLoaded) {
+			if (tag_HLT_IsoMu24_branch != 0) {
+				tag_HLT_IsoMu24_branch->GetEntry(index);
+			} else { 
+				printf("branch tag_HLT_IsoMu24_branch does not exist!\n");
+				exit(1);
+			}
+			tag_HLT_IsoMu24_isLoaded = true;
+		}
+		return tag_HLT_IsoMu24_;
+	}
+	int &tag_HLT_IsoTkMu24()
+	{
+		if (not tag_HLT_IsoTkMu24_isLoaded) {
+			if (tag_HLT_IsoTkMu24_branch != 0) {
+				tag_HLT_IsoTkMu24_branch->GetEntry(index);
+			} else { 
+				printf("branch tag_HLT_IsoTkMu24_branch does not exist!\n");
+				exit(1);
+			}
+			tag_HLT_IsoTkMu24_isLoaded = true;
+		}
+		return tag_HLT_IsoTkMu24_;
 	}
 	int &tag_HLT_IsoMu27()
 	{
@@ -5637,6 +5717,19 @@ void LoadAllBranches()
 			mva_25ns_isLoaded = true;
 		}
 		return mva_25ns_;
+	}
+	float &tag_mva_25ns()
+	{
+		if (not tag_mva_25ns_isLoaded) {
+			if (tag_mva_25ns_branch != 0) {
+				tag_mva_25ns_branch->GetEntry(index);
+			} else { 
+				printf("branch tag_mva_25ns_branch does not exist!\n");
+				exit(1);
+			}
+			tag_mva_25ns_isLoaded = true;
+		}
+		return tag_mva_25ns_;
 	}
 	float &ecalIso()
 	{
@@ -6236,6 +6329,19 @@ void LoadAllBranches()
 		}
 		return HLT_IsoTkMu20_;
 	}
+	int &HLT_IsoTkMu20_eta2p1()
+	{
+		if (not HLT_IsoTkMu20_eta2p1_isLoaded) {
+			if (HLT_IsoTkMu20_eta2p1_branch != 0) {
+				HLT_IsoTkMu20_eta2p1_branch->GetEntry(index);
+			} else { 
+				printf("branch HLT_IsoTkMu20_eta2p1_branch does not exist!\n");
+				exit(1);
+			}
+			HLT_IsoTkMu20_eta2p1_isLoaded = true;
+		}
+		return HLT_IsoTkMu20_eta2p1_;
+	}
 	int &HLT_Mu10_CentralPFJet30_BTagCSV0p54PF()
 	{
 		if (not HLT_Mu10_CentralPFJet30_BTagCSV0p54PF_isLoaded) {
@@ -6274,6 +6380,32 @@ void LoadAllBranches()
 			HLT_IsoTkMu24_eta2p1_isLoaded = true;
 		}
 		return HLT_IsoTkMu24_eta2p1_;
+	}
+	int &HLT_IsoMu24()
+	{
+		if (not HLT_IsoMu24_isLoaded) {
+			if (HLT_IsoMu24_branch != 0) {
+				HLT_IsoMu24_branch->GetEntry(index);
+			} else { 
+				printf("branch HLT_IsoMu24_branch does not exist!\n");
+				exit(1);
+			}
+			HLT_IsoMu24_isLoaded = true;
+		}
+		return HLT_IsoMu24_;
+	}
+	int &HLT_IsoTkMu24()
+	{
+		if (not HLT_IsoTkMu24_isLoaded) {
+			if (HLT_IsoTkMu24_branch != 0) {
+				HLT_IsoTkMu24_branch->GetEntry(index);
+			} else { 
+				printf("branch HLT_IsoTkMu24_branch does not exist!\n");
+				exit(1);
+			}
+			HLT_IsoTkMu24_isLoaded = true;
+		}
+		return HLT_IsoTkMu24_;
 	}
 	int &HLT_IsoMu27()
 	{
@@ -6353,6 +6485,19 @@ void LoadAllBranches()
 		}
 		return HLT_Ele12_CaloIdM_TrackIdM_PFJet30_;
 	}
+	int &HLT_Ele17_CaloIdM_TrackIdM_PFJet30()
+	{
+		if (not HLT_Ele17_CaloIdM_TrackIdM_PFJet30_isLoaded) {
+			if (HLT_Ele17_CaloIdM_TrackIdM_PFJet30_branch != 0) {
+				HLT_Ele17_CaloIdM_TrackIdM_PFJet30_branch->GetEntry(index);
+			} else { 
+				printf("branch HLT_Ele17_CaloIdM_TrackIdM_PFJet30_branch does not exist!\n");
+				exit(1);
+			}
+			HLT_Ele17_CaloIdM_TrackIdM_PFJet30_isLoaded = true;
+		}
+		return HLT_Ele17_CaloIdM_TrackIdM_PFJet30_;
+	}
 	int &HLT_Ele18_CaloIdM_TrackIdM_PFJet30()
 	{
 		if (not HLT_Ele18_CaloIdM_TrackIdM_PFJet30_isLoaded) {
@@ -6392,6 +6537,19 @@ void LoadAllBranches()
 		}
 		return HLT_Ele33_CaloIdM_TrackIdM_PFJet30_;
 	}
+	int &HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30()
+	{
+		if (not HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_isLoaded) {
+			if (HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_branch != 0) {
+				HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_branch->GetEntry(index);
+			} else { 
+				printf("branch HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_branch does not exist!\n");
+				exit(1);
+			}
+			HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_isLoaded = true;
+		}
+		return HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30_;
+	}
 	int &HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30()
 	{
 		if (not HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_isLoaded) {
@@ -6404,6 +6562,19 @@ void LoadAllBranches()
 			HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_isLoaded = true;
 		}
 		return HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30_;
+	}
+	int &HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30()
+	{
+		if (not HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_isLoaded) {
+			if (HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_branch != 0) {
+				HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_branch->GetEntry(index);
+			} else { 
+				printf("branch HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_branch does not exist!\n");
+				exit(1);
+			}
+			HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_isLoaded = true;
+		}
+		return HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30_;
 	}
 	int &HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30()
 	{
@@ -6586,6 +6757,19 @@ void LoadAllBranches()
 			HLT_Ele22_eta2p1_WPTight_Gsf_isLoaded = true;
 		}
 		return HLT_Ele22_eta2p1_WPTight_Gsf_;
+	}
+	int &HLT_Ele25_eta2p1_WPTight_Gsf()
+	{
+		if (not HLT_Ele25_eta2p1_WPTight_Gsf_isLoaded) {
+			if (HLT_Ele25_eta2p1_WPTight_Gsf_branch != 0) {
+				HLT_Ele25_eta2p1_WPTight_Gsf_branch->GetEntry(index);
+			} else { 
+				printf("branch HLT_Ele25_eta2p1_WPTight_Gsf_branch does not exist!\n");
+				exit(1);
+			}
+			HLT_Ele25_eta2p1_WPTight_Gsf_isLoaded = true;
+		}
+		return HLT_Ele25_eta2p1_WPTight_Gsf_;
 	}
 	int &HLT_Ele23_WPLoose_Gsf()
 	{
@@ -6829,10 +7013,6 @@ namespace lepton_tree {
 	const float &evt_trackmetPhi();
 	const float &evt_corrMET();
 	const float &evt_corrMETPhi();
-	const float &evt_met3p0();
-	const float &evt_met3p0Phi();
-	const float &evt_t1met3p0();
-	const float &evt_t1met3p0Phi();
 	const float &evt_pfsumet();
 	const float &evt_pfmetSig();
 	const int &evt_event();
@@ -6879,6 +7059,7 @@ namespace lepton_tree {
 	const int &mc_id();
 	const float &RelIso03();
 	const float &RelIso03EA();
+	const float &tag_RelIso03EA();
 	const float &RelIso03DB();
 	const float &pfChargedHadronIso();
 	const float &pfPhotonIso();
@@ -6909,14 +7090,12 @@ namespace lepton_tree {
 	const bool &passes_SS_fo_looseMVA_noiso_v5();
 	const bool &passes_SS_veto_v5();
 	const bool &passes_SS_veto_noiso_v5();
-	const bool &passes_WW_medium_v1();
-	const bool &passes_WW_medium_noiso_v1();
-	const bool &passes_WW_fo_v1();
-	const bool &passes_WW_fo_noiso_v1();
-	const bool &passes_WW_fo_looseMVA_v1();
-	const bool &passes_WW_fo_looseMVA_noiso_v1();
-	const bool &passes_WW_veto_v1();
-	const bool &passes_WW_veto_noiso_v1();
+	const bool &passes_WW_medium_v2();
+	const bool &passes_WW_medium_noiso_v2();
+	const bool &passes_WW_fo_v2();
+	const bool &passes_WW_fo_noiso_v2();
+	const bool &passes_WW_veto_v2();
+	const bool &passes_WW_veto_noiso_v2();
 	const bool &passes_HAD_veto_v3();
 	const bool &passes_HAD_veto_noiso_v3();
 	const bool &passes_HAD_loose_v3();
@@ -6925,7 +7104,6 @@ namespace lepton_tree {
 	const bool &passes_POG_looseID();
 	const bool &passes_POG_mediumID();
 	const bool &passes_POG_tightID();
-	const bool &passes_isTightElectronPOGspring15();
 	const float &ip3d();
 	const float &ip3derr();
 	const int &type();
@@ -6936,6 +7114,8 @@ namespace lepton_tree {
 	const float &miniisoDB();
 	const float &reliso04();
 	const float &annulus04();
+	const float &AbsTrkIso();
+	const float &TrkAn04();
 	const float &iso03sumPt();
 	const float &iso03emEt();
 	const float &iso03hadEt();
@@ -6976,6 +7156,7 @@ namespace lepton_tree {
 	const int &tag_HLT_Ele32_eta2p1_WPTight_Gsf();
 	const int &tag_HLT_Ele22_eta2p1_WPLoose_Gsf();
 	const int &tag_HLT_Ele22_eta2p1_WPTight_Gsf();
+	const int &tag_HLT_Ele25_eta2p1_WPTight_Gsf();
 	const int &tag_HLT_Ele23_WPLoose_Gsf();
 	const int &tag_HLT_Ele23_Ele12_CaloIdL_TrackIdL_IsoVL_DZ_LeadingLeg();
 	const int &tag_HLT_Ele23_CaloIdL_TrackIdL_IsoVL();
@@ -6998,8 +7179,11 @@ namespace lepton_tree {
 	const int &tag_HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_LeadingLeg();
 	const int &tag_HLT_IsoMu20();
 	const int &tag_HLT_IsoTkMu20();
+	const int &tag_HLT_IsoTkMu20_eta2p1();
 	const int &tag_HLT_IsoMu24_eta2p1();
 	const int &tag_HLT_IsoTkMu24_eta2p1();
+	const int &tag_HLT_IsoMu24();
+	const int &tag_HLT_IsoTkMu24();
 	const int &tag_HLT_IsoMu27();
 	const int &tag_HLT_IsoTkMu27();
 	const int &tag_HLT_Mu8_TrkIsoVVL();
@@ -7028,6 +7212,7 @@ namespace lepton_tree {
 	const bool &threeChargeAgree();
 	const float &mva();
 	const float &mva_25ns();
+	const float &tag_mva_25ns();
 	const float &ecalIso();
 	const float &hcalIso();
 	const float &ecalPFClusterIso();
@@ -7074,19 +7259,25 @@ namespace lepton_tree {
 	const int &HLT_Mu10_CentralPFJet30_BTagCSV0p5PF();
 	const int &HLT_IsoMu20();
 	const int &HLT_IsoTkMu20();
+	const int &HLT_IsoTkMu20_eta2p1();
 	const int &HLT_Mu10_CentralPFJet30_BTagCSV0p54PF();
 	const int &HLT_IsoMu24_eta2p1();
 	const int &HLT_IsoTkMu24_eta2p1();
+	const int &HLT_IsoMu24();
+	const int &HLT_IsoTkMu24();
 	const int &HLT_IsoMu27();
 	const int &HLT_IsoTkMu27();
 	const int &HLT_Mu45_eta2p1();
 	const int &HLT_Mu50();
 	const int &HLT_Ele8_CaloIdM_TrackIdM_PFJet30();
 	const int &HLT_Ele12_CaloIdM_TrackIdM_PFJet30();
+	const int &HLT_Ele17_CaloIdM_TrackIdM_PFJet30();
 	const int &HLT_Ele18_CaloIdM_TrackIdM_PFJet30();
 	const int &HLT_Ele23_CaloIdM_TrackIdM_PFJet30();
 	const int &HLT_Ele33_CaloIdM_TrackIdM_PFJet30();
+	const int &HLT_Ele8_CaloIdL_TrackIdL_IsoVL_PFJet30();
 	const int &HLT_Ele12_CaloIdL_TrackIdL_IsoVL_PFJet30();
+	const int &HLT_Ele17_CaloIdL_TrackIdL_IsoVL_PFJet30();
 	const int &HLT_Ele18_CaloIdL_TrackIdL_IsoVL_PFJet30();
 	const int &HLT_Ele23_CaloIdL_TrackIdL_IsoVL_PFJet30();
 	const int &HLT_Ele33_CaloIdL_TrackIdL_IsoVL_PFJet30();
@@ -7101,6 +7292,7 @@ namespace lepton_tree {
 	const int &HLT_Ele32_eta2p1_WPTight_Gsf();
 	const int &HLT_Ele22_eta2p1_WPLoose_Gsf();
 	const int &HLT_Ele22_eta2p1_WPTight_Gsf();
+	const int &HLT_Ele25_eta2p1_WPTight_Gsf();
 	const int &HLT_Ele23_WPLoose_Gsf();
 	const int &HLT_Ele23_CaloIdL_TrackIdL_IsoVL();
 	const int &HLT_Ele12_CaloIdL_TrackIdL_IsoVL();

@@ -41,6 +41,9 @@ namespace tnp
 	    EGammaTightSSMVA3ch,
 	    EGammaTightSSMVA3chIP,
 	    EGammaTightSSMVA3chIPconv,
+	    EGammaSoftIso,
+	    EGammaSoftISOLike,
+	    EGammaSoftIDLike,
 
             // Muon POG tight working point
             MuTightWPDenID,
@@ -49,6 +52,7 @@ namespace tnp
             MuTightWPNum,
 	    MuPFDen,
 	    MuPFChIso,
+	    MuSoftIso,
 	    
             static_size
         };
