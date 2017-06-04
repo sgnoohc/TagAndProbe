@@ -53,6 +53,7 @@ namespace tnp
 	    MuPFDen,
 	    MuPFChIso,
 	    MuSoftIso,
+            MuTightVVV,
 	    
             static_size
         };

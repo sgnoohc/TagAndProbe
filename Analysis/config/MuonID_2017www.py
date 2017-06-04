@@ -27,10 +27,10 @@ tnp_parameters = cms.PSet(
 	## --------------------------------------------------------- #
 	
 	## type of lepton 
-	lepton_type = cms.string("electron"),
+	lepton_type = cms.string("muon"),
 
 	## output label to give it a unique name
-	output_label = cms.string("ElectronID_test"),
+	output_label = cms.string("MuonID_Activity"),
  
 	## suffix to print the plots (before the fit)
 	## blank means do not print
@@ -53,34 +53,26 @@ tnp_parameters = cms.PSet(
 	mass_bin_width = cms.double(2.0),   # GeV
 	
 	# datasets to run on
-#		datasets = cms.VPSet(dy_full, single_el),
-	datasets = cms.VPSet(dy_full),
-        #datasets = cms.VPSet(single_el),
+#		datasets = cms.VPSet(dy_full, single_mu),
+        datasets = cms.VPSet(dy_full),
         #datasets = cms.VPSet(dy_test, double_el_test),
 
 	## bins for the observables
 	## supported pt, eta, phi, and # vertices
 	## note: for eta and phi, no negative bins means use |eta| and |phi|, respectively
-#	pt_bins   = cms.vdouble(10, 25, 40, 50, 200),
-#	pt_bins   = cms.vdouble(10, 20, 30, 40, 50, 200),
-	pt_bins   = cms.vdouble(20, 30, 40, 50, 200),
-	eta_bins  = cms.vdouble(0, 0.8, 1.4442, 1.566, 2.0, 2.5),
-#	eta_bins  = cms.vdouble(0,  0.8, 1.5, 2.5),
-#	eta_bins  = cms.vdouble(-2.5, -2.0, -1.566, -1.4442, -0.8, 0,  0.8, 1.4442, 1.566, 2.0, 2.5),
-#	phi_bins  = cms.vdouble(0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.15),
-        phi_bins  = cms.vdouble(), 
-#	nvtx_bins = cms.vdouble(0, 5, 10, 15, 20, 25, 30, 35, 40),
+	pt_bins   = cms.vdouble(10, 15, 20, 25, 30, 35, 40, 50, 100, 200),
+	eta_bins  = cms.vdouble(0., 1.5, 2.5),
+    phi_bins  = cms.vdouble(), 
 	nvtx_bins = cms.vdouble(),
-        activity_bins = cms.vdouble(),
+    activity_bins = cms.vdouble(),
 
         ## W/Z measurement bins
         #pt_bins   = cms.vdouble(25, 40, 55, 200),
         #eta_bins  = cms.vdouble(-2.5, -2, -1.566, -1.442, -1, -0.5, 0, 0.5, 1, 1.4442, 1.566, 2, 2.5),
 
 	## selection (from Measurements.h/cc) 
-	numerator   = cms.string("EGammaMediumSTOPIso"),
-	denominator = cms.string("EGammaGsfElectron"),
-#	denominator = cms.string("EGammaTightSSMVA"),
+	numerator   = cms.string("MuTightVVV"),
+	denominator = cms.string("MuTightWPDenBoth"),
 
 	## Parameters for the fitting 
 	## --------------------------------------------------------- #
@@ -91,11 +83,15 @@ tnp_parameters = cms.PSet(
 	## models for pt bins 
 	pt_models = cms.vstring( 
 	#          sig pass,        sig fail,      bkg pass,      bkg fail
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt1
+		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt1
 		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt2
 		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt3
 		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt4
-		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt5
+		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt4
+		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt4
+		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt4
+		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt4
+		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential"  , # pt4
 	),
 	
 	## models for eta bins 
@@ -103,16 +99,18 @@ tnp_parameters = cms.PSet(
 	#          sig pass,        sig fail,      bkg pass,      bkg fail
 		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential", # eta2  
 		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential", # eta3
-		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential", # eta4
-		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential", # eta2  
-		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential", # eta3
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential", # eta2  
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential", # eta3
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential", # eta4
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential", # eta2  
-#		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential", # eta3
 	),
-	
+
+	activity_models = cms.vstring( 
+	#          sig pass,        sig fail,      bkg pass,      bkg fail
+		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential",
+		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential",
+		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential",
+		"MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential",	
+        "MCTemplate"   , "MCTemplate"   , "Exponential"  , "Exponential",
+
+	),	
+
 	## models for phi bins 
 	phi_models = cms.vstring( 
 	#          sig pass,        sig fail,      bkg pass,      bkg fail
@@ -142,69 +140,64 @@ tnp_parameters = cms.PSet(
 
 	pt_vs_eta_models = cms.vstring( # Possibly eta vs pt instead of pt vs eta. need to check
 	#          sig pass,        sig fail,      bkg pass,      bkg fail
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 
+#			"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 
+#			"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-
-		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-
-
-
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
 
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
-#		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential"
 	),
-	
+
+        activity_vs_pt_models = cms.vstring(
+	#          sig pass,        sig fail,      bkg pass,      bkg fail
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+		"MCTemplateCB"   , "MCTemplateCB"   , "Exponential", "Exponential",
+
+	),
 
 )
 

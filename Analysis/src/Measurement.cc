@@ -60,6 +60,7 @@ namespace tnp
         if (lt::string_lower(sel_name) == lt::string_lower("MuPFDen"              )) {return Selection::MuPFDen;              } 
         if (lt::string_lower(sel_name) == lt::string_lower("MuPFChIso"            )) {return Selection::MuPFChIso;            } 
         if (lt::string_lower(sel_name) == lt::string_lower("MuSoftIso"            )) {return Selection::MuSoftIso;            } 
+        if (lt::string_lower(sel_name) == lt::string_lower("MuTightVVV"           )) {return Selection::MuTightVVV;           } 
         throw std::invalid_argument("[tnp::GetSelectionFromString]: ERROR - invalid value!"); 
     }
 
@@ -95,6 +96,7 @@ namespace tnp
         if (sel_type == Selection::MuPFDen              ) return "MuPFDen";
         if (sel_type == Selection::MuPFChIso            ) return "MuPFChIso";
         if (sel_type == Selection::MuSoftIso            ) return "MuSoftIso";
+        if (sel_type == Selection::MuTightVVV           ) return "MuTightVVV";
         throw std::invalid_argument("[tnp::GetStringFromSelection]: ERROR - invalid value!"); 
     }
 
@@ -447,6 +449,12 @@ namespace tnp
                 if (not mu_passes_trig_tag) {return false;}	     
                 if (not mu_passes_softISO)  {return false;}	      
                 if (not mu_passes_softIP)   {return false;}	      
+	    }
+	    if (selection == Selection::MuTightVVV)
+	    {
+                if (not mu_passes_pt)       {return false;}
+                if (not mu_passes_trig_tag) {return false;}	      
+                if (not passes_VVV_cutbased_tight())  {return false;}	      
 	    }
             
         }

@@ -17,6 +17,7 @@ sys.path.append(analysis_path + "/config")
 #lepton_tree_tag  = "v2.04TP"
 lepton_tree_tag  = "ReRecoDataMoriondMC_5PF_7Feb17"
 lepton_tree_path = "/nfs-7/userdata/leptonTree/" + lepton_tree_tag 
+lepton_tree_path = "/nfs-7/userdata/phchang/lepton_babies/v1.0"
 
 ## good run list
 #run_list = cms.string(analysis_path + "/json/Cert_246908-258159_13TeV_PromptReco_Collisions15_25ns_JSON_v3_snt.txt")
