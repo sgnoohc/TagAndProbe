@@ -44,6 +44,8 @@ namespace tnp
 	    EGammaSoftIso,
 	    EGammaSoftISOLike,
 	    EGammaSoftIDLike,
+	    EGammaNumWWW,
+	    EGammaDenWWW,
 
             // Muon POG tight working point
             MuTightWPDenID,

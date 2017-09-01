@@ -233,7 +233,8 @@ namespace tnp
             }
             case Model::Poly2:
             {
-                w.factory(Form("Polynomial::%s(mass,{a0%s[-0.02,0,-0.05],a1%s[0.000, -0.01, 0.01]},a2%s[0]})", model_name.c_str(), ul, ul, ul));
+                //w.factory(Form("Polynomial::%s(mass,{a0%s[-0.02,0,-0.05],a1%s[0.000, -0.01, 0.01]},a2%s[0]})", model_name.c_str(), ul, ul, ul));
+                w.factory(Form("Polynomial::%s(mass,{a0%s[-0.02,-1,-1],a1%s[0.000, -1, 1]},a2%s[0]})", model_name.c_str(), ul, ul, ul));
                 break;
             }
             case Model::Poly3:

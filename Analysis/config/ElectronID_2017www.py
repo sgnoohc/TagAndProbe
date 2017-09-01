@@ -27,10 +27,10 @@ tnp_parameters = cms.PSet(
     ## --------------------------------------------------------- #
 
     ## type of lepton
-    lepton_type = cms.string("muon"),
+    lepton_type = cms.string("electron"),
 
     ## output label to give it a unique name
-    output_label = cms.string("MuonID_Activity"),
+    output_label = cms.string("ElectronID_WWW"),
 
     ## suffix to print the plots (before the fit)
     ## blank means do not print
@@ -60,8 +60,8 @@ tnp_parameters = cms.PSet(
     ## bins for the observables
     ## supported pt, eta, phi, and # vertices
     ## note: for eta and phi, no negative bins means use |eta| and |phi|, respectively
-    pt_bins   = cms.vdouble(20, 25, 30, 35, 40, 50, 100, 200),
-    eta_bins  = cms.vdouble(0., 1.5, 2.5),
+    pt_bins   = cms.vdouble(20, 30, 40, 50, 100, 200, 500),
+    eta_bins  = cms.vdouble(0, 0.8, 1.4442, 1.566, 2.0, 2.5),
     phi_bins  = cms.vdouble(),
     nvtx_bins = cms.vdouble(),
     activity_bins = cms.vdouble(),

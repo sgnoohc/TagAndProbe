@@ -365,6 +365,12 @@ namespace tnp
                 if (el_is_crack) {return false;}
                 if (not el_passes_softISOlikeCuts) {return false;}
 	    } 
+	    if (selection == Selection::EGammaNumWWW  ) {
+                if (not passes_VVV_cutbased_tight()) {return false;}
+	    } 
+	    if (selection == Selection::EGammaDenWWW  ) {
+                if (not passes_VVV_cutbased_veto_noiso_noip()) {return false;}
+	    } 
 
 
 
@@ -420,6 +426,8 @@ namespace tnp
             {
                 if (not mu_passes_pt)       {return false;}
                 if (not mu_passes_trig_tag) {return false;}
+//                if (not passes_VVV_cutbased_tight_noiso())  {return false;}	      
+//                if (not reliso04() < 0.25)  {return false;}	      
             }
 
             // Numerator

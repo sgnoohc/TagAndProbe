@@ -30,7 +30,7 @@ tnp_parameters = cms.PSet(
 	lepton_type = cms.string("electron"),
 
 	## output label to give it a unique name
-	output_label = cms.string("ElectronID_stop2016veto"),
+	output_label = cms.string("ElectronID_VVV"),
  
 	## suffix to print the plots (before the fit)
 	## blank means do not print
@@ -54,7 +54,7 @@ tnp_parameters = cms.PSet(
 	
 	# datasets to run on
 #	datasets = cms.VPSet(dy_madgraph, single_el),
-	datasets = cms.VPSet(dy_full_80X, single_el_2016),
+	datasets = cms.VPSet(dy_full, single_el),
 #        datasets = cms.VPSet(dy_full),
         #datasets = cms.VPSet(dy_test, double_el_test),
 
@@ -79,10 +79,7 @@ tnp_parameters = cms.PSet(
 
 	## selection (from Measurements.h/cc) 
 	numerator   = cms.string("EGammaMediumSTOPIso"),
-#	numerator   = cms.string("EGammaMediumPOGnoDEta"),
-#	numerator   = cms.string("EGammaMediumPOGnoIP"),
-#	numerator   = cms.string("EGammaMediumPOGnoDPhi"),
-	denominator = cms.string("EGammaGsfElectron"),
+	denominator = cms.string("EGammaTight"),
 
 	## Parameters for the fitting 
 	## --------------------------------------------------------- #
